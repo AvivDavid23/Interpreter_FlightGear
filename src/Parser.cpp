@@ -43,7 +43,7 @@ void Parser::lineParse() {
  * @param line the line without space.
  */
 void Parser::commandParse(const vector<string> &line) {
-    commandsTable[line[0]]->calculate(lines, index);
+
 }
 
 /**
