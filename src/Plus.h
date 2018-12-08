@@ -7,7 +7,7 @@
 /**
  * An addition expression
  */
-class Plus : protected BinaryExpression {
+class Plus : public BinaryExpression {
 
 public:
 

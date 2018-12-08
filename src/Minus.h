@@ -5,9 +5,18 @@
 #ifndef PROJECT_MINUS_H
 #define PROJECT_MINUS_H
 
+#include "BinaryExpression.h"
 
-class Minus {
+/**
+ * An subtraction expression
+ */
+class Minus : public BinaryExpression {
 
+public:
+
+    Minus(Expression *right, Expression *left);
+
+    double calculate();
 };
 
 

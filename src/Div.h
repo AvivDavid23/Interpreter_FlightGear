@@ -6,7 +6,7 @@
 /**
  * A division expression
  */
-class Div : protected BinaryExpression {
+class Div : public BinaryExpression {
 public:
     Div(Expression *right, Expression *left);
 
