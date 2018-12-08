@@ -116,8 +116,7 @@ static inline double shuntingYardAlg(string expression) {
     /**
      * From here, calculate the value of the expression:
      */
-    double val = prefixToExp(newExp)->calculate();
-
+    return prefixToExp(newExp)->calculate();
 }
 
 #endif //SECONDYEARPROJECT_BIU_SHUNTING_YARD_H
