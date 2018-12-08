@@ -13,7 +13,7 @@ protected:
     Expression *left;
 
 public:
-    BinaryExpression(Expression *right, Expression *left) : right(right), left(left) {}
+    BinaryExpression(Expression *left, Expression *right) : left(left), right(right) {}
 };
 
 #endif //PROJECT_BINARYEXPRESSION_H

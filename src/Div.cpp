@@ -1,6 +1,6 @@
 
 #include "Div.h"
 
-Div::Div(Expression *right, Expression *left) : BinaryExpression(right, left) {}
+Div::Div(Expression *left, Expression *right) : BinaryExpression(left, right) {}
 
-double Div::calculate() { return right->calculate() / left->calculate(); }
+double Div::calculate() { return left->calculate() / right->calculate(); }

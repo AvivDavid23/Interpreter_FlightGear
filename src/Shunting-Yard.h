@@ -13,11 +13,20 @@
 #include "Number.h"
 
 using namespace std;
+
+static inline int firstOperatorIndex(string exp) {
+    for (int i = 0; i < exp.length(); ++i) {
+        if (!isdigit(exp[i])) return i;
+    }
+    return -1;
+}
+
 /**
  * @param exp string expression
  * @return expression
  */
 static inline Expression* prefixToExp(string exp) {
+    // TODO: FINISH FUNCTION
     if (exp.length() == 3) {
         switch (exp[2]){
             case '+':
@@ -30,6 +39,29 @@ static inline Expression* prefixToExp(string exp) {
                 return new Div(new Number(exp[0] - '0'), new Number(exp[1] - '0'));
         }
     } else{
+        if (!isdigit(exp[exp.length() - 1]) && !isdigit(exp[exp.length() - 2])){
+            switch (exp[exp.length()-1]){
+                case '+':
+                    return new Plus(new Number(exp[0] - '0'), prefixToExp(exp.substr(1, exp.length() - 2)));
+                case '-':
+                    return new Minus(new Number(exp[0] - '0'), prefixToExp(exp.substr(1, exp.length() - 2)));
+                case '*':
+                    return new Mult(new Number(exp[0] - '0'), prefixToExp(exp.substr(1, exp.length() - 2)));
+                case '/':
+                    return new Div(new Number(exp[0] - '0'), prefixToExp(exp.substr(1, exp.length() - 2)));
+            }
+        } else {
+            switch (exp[exp.length()-1]){
+                case '+':
+                    return new Plus(prefixToExp(exp.substr(0, 3)), new Number(exp[exp.length() - 2] - '0'));
+                case '-':
+                    return new Minus(prefixToExp(exp.substr(0, 3)), new Number(exp[exp.length() - 2] - '0'));
+                case '*':
+                    return new Mult(prefixToExp(exp.substr(0, 3)), new Number(exp[exp.length() - 2] - '0'));
+                case '/':
+                    return new Div(prefixToExp(exp.substr(0, 3)), new Number(exp[exp.length() - 2] - '0'));
+            }
+        }
 
     }
 }
@@ -70,21 +102,17 @@ static inline double shuntingYardAlg(string expression) {
         queue1.push(stack1.top());
         stack1.pop();
     }
-    // 'reverse' queue to a string
+    // make a string
+    string newExp;
     stack<char> stack2;
     while (!queue1.empty()) {
-        stack2.push(queue1.front());
+        newExp += queue1.front();
         queue1.pop();
-    }
-    string newExp;
-    while (!stack2.empty()) {
-        newExp += stack2.top();
-        stack2.pop();
     }
     /**
      * From here, calculate the value of the expression:
      */
-
+    double val = prefixToExp(newExp)->calculate();
 }
 
 #endif //SECONDYEARPROJECT_BIU_SHUNTING_YARD_H

@@ -14,7 +14,7 @@ class Minus : public BinaryExpression {
 
 public:
 
-    Minus(Expression *right, Expression *left);
+    Minus(Expression *left, Expression *right);
 
     double calculate();
 };
