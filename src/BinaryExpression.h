@@ -9,11 +9,12 @@
  */
 class BinaryExpression : public Expression {
 protected:
-    Expression *right;
-    Expression *left;
+    Expression *right{};
+    Expression *left{};
 
 public:
-    BinaryExpression(Expression *right, Expression *left) : right(right), left(left) {}
+    BinaryExpression(Expression *right, Expression *left){}
+    double calculate();
 };
 
 #endif //PROJECT_BINARYEXPRESSION_H
