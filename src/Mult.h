@@ -6,7 +6,7 @@
 /**
  * A multiplication expression
  */
-class Mult : protected BinaryExpression{
+class Mult : public BinaryExpression{
 public:
     Mult(Expression *right, Expression *left);
 

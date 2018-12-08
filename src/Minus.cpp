@@ -1,5 +1,5 @@
-//
-// Created by dvir on 12/7/18.
-//
 
 #include "Minus.h"
+Minus::Minus(Expression *right, Expression *left) : BinaryExpression(right, left) {}
+
+double Minus::calculate() { return right->calculate() - left->calculate();}

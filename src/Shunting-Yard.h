@@ -6,9 +6,33 @@
 #include "queue"
 #include "stack"
 #include "Expression.h"
+#include "Plus.h"
+#include "Minus.h"
+#include "Mult.h"
+#include "Div.h"
+#include "Number.h"
 
 using namespace std;
+/**
+ * @param exp string expression
+ * @return expression
+ */
+static inline Expression* prefixToExp(string exp) {
+    if (exp.length() == 3) {
+        switch (exp[2]){
+            case '+':
+                return new Plus(new Number(exp[0] - '0'), new Number(exp[1] - '0'));
+            case '-':
+                return new Minus(new Number(exp[0] - '0'), new Number(exp[1] - '0'));
+            case '*':
+                return new Mult(new Number(exp[0] - '0'), new Number(exp[1] - '0'));
+            case '/':
+                return new Div(new Number(exp[0] - '0'), new Number(exp[1] - '0'));
+        }
+    } else{
 
+    }
+}
 
 /**
  * implementation of Shunting Yard Algorithm
@@ -60,47 +84,7 @@ static inline double shuntingYardAlg(string expression) {
     /**
      * From here, calculate the value of the expression:
      */
-    stack<double >stack3;
-    for (long j = newExp.length() - 1; j >= 0; --j) {
-        if (isdigit(newExp[j])) stack3.push(newExp[j] - '0');
-        else {
-            double o1 = stack3.top();
-            stack3.pop();
-            double o2 = stack3.top();
-            stack3.pop();
-            switch (newExp[j]) {
-                case '+':
-                    stack3.push(o1 + o2);
-                    break;
-                case '-':
-                    stack3.push(o1 - o2);
-                    break;
-                case '*':
-                    stack3.push(o1 * o2);
-                    break;
-                case '/':
-                    stack3.push(o1 / o2);
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-    // case where the whole algorithm got only a number:
-    if (stack3.size() > 1) {
-        string temp;
-        while (!stack3.empty()) {
-            temp += stack3.top() + '0';
-            stack3.pop();
-        }
-        // reverse and calculate string:
-        double val = 0;
-        for (long i = temp.length() - 1; i >= 0; --i) {
-            val *= 10;
-            val += temp[i] - '0';
-        }
-        return val;
-    } else return stack3.top();
+
 }
 
 #endif //SECONDYEARPROJECT_BIU_SHUNTING_YARD_H
