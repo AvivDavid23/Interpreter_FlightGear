@@ -86,7 +86,21 @@ static inline double shuntingYardAlg(string expression) {
             }
         }
     }
-    return stack3.top();
+    // case where the whole algorithm got only a number:
+    if (stack3.size() > 1) {
+        string temp;
+        while (!stack3.empty()) {
+            temp += stack3.top() + '0';
+            stack3.pop();
+        }
+        // reverse and calculate string:
+        double val = 0;
+        for (long i = temp.length() - 1; i >= 0; --i) {
+            val *= 10;
+            val += temp[i] - '0';
+        }
+        return val;
+    } else return stack3.top();
 }
 
 #endif //SECONDYEARPROJECT_BIU_SHUNTING_YARD_H
