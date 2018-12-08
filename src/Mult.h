@@ -8,7 +8,7 @@
  */
 class Mult : public BinaryExpression{
 public:
-    Mult(Expression *right, Expression *left);
+    Mult(Expression *left, Expression *right);
 
     double calculate();
 };

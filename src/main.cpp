@@ -1,6 +1,7 @@
 
 #include <fstream>
 #include "Parser.h"
+#include "Shunting-Yard.h"
 
 #define TEXT "file.txt"
 /**
@@ -21,8 +22,6 @@ vector<string> lexer(const string &fileName) {
 }
 
 int main() {
-    vector<string> lines = lexer(TEXT);
-    auto *parser = new Parser(lines);
-    parser->lineParse();
+    shuntingYardAlg("3+(4/2)*5");
     return 0;
 }

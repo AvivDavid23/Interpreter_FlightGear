@@ -11,7 +11,7 @@ class Plus : public BinaryExpression {
 
 public:
 
-    Plus(Expression *right, Expression *left);
+    Plus(Expression *left, Expression *right);
 
     double calculate();
 };
