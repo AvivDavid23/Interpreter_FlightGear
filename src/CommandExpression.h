@@ -12,6 +12,10 @@ public:
      CommandExpression(Command *command);
 
     virtual double calculate();
+    void setWords(const vector<string> &words);
+
+protected:
+    vector<string> words;
 };
 
 

@@ -7,11 +7,11 @@
 /**
  * An addition expression
  */
-class Plus : protected BinaryExpression {
+class Plus : public BinaryExpression {
 
 public:
 
-    Plus(Expression *right, Expression *left);
+    Plus(Expression *left, Expression *right);
 
     double calculate();
 };

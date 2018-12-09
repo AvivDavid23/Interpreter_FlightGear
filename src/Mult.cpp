@@ -1,6 +1,6 @@
 
 #include "Mult.h"
 
-Mult::Mult(Expression *right, Expression *left) : BinaryExpression(right, left) {}
+Mult::Mult(Expression *left, Expression *right) : BinaryExpression(left, right) {}
 
-double Mult::calculate() { return right->calculate() * left->calculate();}
+double Mult::calculate() { return left->calculate() * right->calculate();}

@@ -1,6 +1,8 @@
 
 #include "Number.h"
 
-Number::Number(double value) : value(value) {}
+Number::Number(double value)  {
+    this->value =value;
+}
 
 double Number::calculate() { return value; }

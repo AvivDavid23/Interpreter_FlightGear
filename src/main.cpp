@@ -16,15 +16,12 @@ vector<string> lexer(const string &fileName) {
     if (!file.is_open()) {
         file.open(fileName, fstream::in | fstream::app);
     }
-    while (getline(file, tmp)) vector.push_back(tmp);
+    while (file>> tmp ) vector.push_back(tmp);
     file.close();
     return vector;
 }
 
 int main() {
-    vector<string> lines = lexer(TEXT);
-    auto *parser = new Parser(lines);
-    double x = shuntingYardAlg("3+(4/2)*5");
-    parser->lineParse();
+    shuntingYardAlg( " 3+(4/2)*5");
     return 0;
 }

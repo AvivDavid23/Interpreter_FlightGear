@@ -11,3 +11,8 @@ double CommandExpression::calculate() {
 }
 
 CommandExpression::CommandExpression(Command *command) : command(command) {}
+
+void CommandExpression::setWords(const vector<string> &words) {
+    CommandExpression::words = words;
+}
+

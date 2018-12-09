@@ -6,7 +6,7 @@
  *
  * @param lines the lines of the file.
  */
-Parser::Parser(const vector<string> &lines): lines(lines), index(0) {
+Parser::Parser(const vector<string> &lines) : lines(lines), index(0) {
     // create commands table:
     commandsTable["openDataServer"] = new CommandExpression(new OpenServerCommand());
     commandsTable["connect"] = new CommandExpression(new ConnectCommand());
@@ -39,17 +39,19 @@ void Parser::lineParse() {
 }
 
 /**
- * The function gets a vector of words, which all belongs to a specific live in the script
- * @param line the line without space.
+ * @param lines all the words of the file.
  */
-void Parser::commandParse(const vector<string> &line) {
-
+void Parser::commandParse(const vector<string> &lines) {
+    for (auto const &item: lines) {
+        Expression *expression = commandsTable.at(lines[index]); // key- worlds, value - command.
+        index += (int)expression->calculate();
+    }
 }
 
 /**
  * Creates and returns a list of commands for a While/If command
  */
-list<Command*> Parser::listCreator() {
+list<Command *> Parser::listCreator() {
     // TODO : iterate the lines vector and return list for caller command
 
 }
