@@ -46,8 +46,8 @@ inline int longNumber(string exp) {
     if(newNumber.empty()) newNumber = exp[0];
     return stoi(newNumber);
 }
-inline int howmuchDoDrop(string exp) {
-    int count = 1;
+inline unsigned long howMuchToDrop(string exp) {
+    unsigned long count = 1;
     bool  check = false;
     for(int i =0 ; i <exp.length();i++) {
         if(exp[i] == ')') {
@@ -84,13 +84,16 @@ inline Expression *prefixToExp(string exp) {
             switch (exp[exp.length() - 1]) {
                 case '+':
                     return new Plus(new Number(longNumber(exp)),
-                            prefixToExp(exp.substr(howmuchDoDrop(exp), exp.length() - howmuchDoDrop(exp) - 1)));
+                            prefixToExp(exp.substr(howMuchToDrop(exp), exp.length() - howMuchToDrop(exp) - 1)));
                 case '-':
-                    return new Minus(new Number(longNumber(exp)), prefixToExp(exp.substr(howmuchDoDrop(exp), exp.length() - 2)));
+                    return new Minus(new Number(longNumber(exp)),
+                            prefixToExp(exp.substr(howMuchToDrop(exp), exp.length() - 2)));
                 case '*':
-                    return new Mult(new Number(longNumber(exp)), prefixToExp(exp.substr(howmuchDoDrop(exp), exp.length() - 2)));
+                    return new Mult(new Number(longNumber(exp)),
+                            prefixToExp(exp.substr(howMuchToDrop(exp), exp.length() - 2)));
                 case '/':
-                    return new Div(new Number(longNumber(exp)), prefixToExp(exp.substr(howmuchDoDrop(exp), exp.length() - 2)));
+                    return new Div(new Number(longNumber(exp)),
+                            prefixToExp(exp.substr(howMuchToDrop(exp), exp.length() - 2)));
             }
         } else {
             switch (exp[exp.length() - 1]) {

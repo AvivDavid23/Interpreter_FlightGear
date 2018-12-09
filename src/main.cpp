@@ -22,6 +22,6 @@ vector<string> lexer(const string &fileName) {
 }
 
 int main() {
-    shuntingYardAlg( " 3+(4/2)*5");
+    cout << shuntingYardAlg("3+(4/2)*5");
     return 0;
 }
