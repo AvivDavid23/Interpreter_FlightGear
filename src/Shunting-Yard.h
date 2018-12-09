@@ -23,12 +23,21 @@ inline int firstOperatorIndex(string exp) {
     }
     return -1;
 }
-
+inline double stringToDouble(string exp){
+    double val = 0;
+    for (long i = 0; i < exp.length(); ++i) {
+        val *= 10;
+        val += exp[i] - '0';
+    }
+    return val;
+}
 /**
  * @param exp string expression
  * @return expression
  */
 inline Expression *prefixToExp(string exp) {
+    // case where we got only a number:
+    if(firstOperatorIndex(exp) == -1) return new Number(stringToDouble(exp));
     if (exp.length() == 1) return new Number(exp[0] - '0');
     // TODO: FINISH FUNCTION
     if (exp.length() == 3) {
