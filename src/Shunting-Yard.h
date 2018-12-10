@@ -105,6 +105,8 @@ inline Expression *prefixToExp(string exp) {
                     return new Mult(prefixToExp(exp.substr(0, 3)), prefixToExp(exp.substr(3, exp.length() - 4)));
                 case '/':
                     return new Div(prefixToExp(exp.substr(0, 3)), prefixToExp(exp.substr(3, exp.length() - 4)));
+                default:
+                    return 0;
             }
         }
 
@@ -157,7 +159,8 @@ static inline double shuntingYardAlg(string expression) {
                 }
                 stack1.pop();
             } else { // char is an operator:
-                while (!stack1.empty() && precedences[stack1.top()] > precedences[expression[i]]) {
+                while (!stack1.empty() && precedences[stack1.top()] > precedences[expression[i]] &&
+                    expression[i]!=' ') {
                     queue1.push(stack1.top());
                     stack1.pop();
                 }
