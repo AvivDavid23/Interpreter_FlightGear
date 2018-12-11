@@ -21,8 +21,5 @@ vector<string> lexer(const string &fileName) {
 }
 
 int main() {
-    vector<string> lines = lexer(TEXT);
-    auto *parser = new Parser(lines);
-    parser->lineParse();
     return 0;
 }
