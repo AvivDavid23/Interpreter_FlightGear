@@ -1,7 +1,7 @@
 
 #include <fstream>
 #include "Parser.h"
-
+#include "Shunting-Yard.h"
 #define TEXT "file.txt"
 /**
  * Runs on the file script, creates vector which each value has a string which represent a line
@@ -21,8 +21,5 @@ vector<string> lexer(const string &fileName) {
 }
 
 int main() {
-    vector<string> lines = lexer(TEXT);
-    auto *parser = new Parser(lines);
-    parser->lineParse();
     return 0;
 }

@@ -1,4 +1,5 @@
 
+
 #ifndef SECONDYEARPROJECT_BIU_SHUNTING_YARD_H
 #define SECONDYEARPROJECT_BIU_SHUNTING_YARD_H
 
@@ -11,72 +12,100 @@
 #include "Mult.h"
 #include "Div.h"
 #include "Number.h"
+#include "tuple"
+#include <algorithm>
 
 using namespace std;
+
+
 /**
- * @param exp string expression
- * @return first operator index
+ *
+ * @param exp the expression.
+ * @param index start index
+ * @return the value of the first number in exp which begins at index.
  */
-inline int firstOperatorIndex(string exp) {
-    for (int i = 0; i < exp.length(); ++i) {
-        if (!isdigit(exp[i])) return i;
+inline double calculateFirstNum(string exp, unsigned long &index) {
+    if (exp[index] != '(') {
+        return (exp[index] - '0');
     }
-    return -1;
-}
-inline double stringToDouble(string exp){
     double val = 0;
-    for (long i = 0; i < exp.length(); ++i) {
+    ++index;
+    while (exp[index] != ')') {
         val *= 10;
-        val += exp[i] - '0';
+        val += exp[index] - '0';
+        index++;
     }
     return val;
 }
 /**
+ * @param c char
+ * @return true if char is an operator
+ */
+inline bool isOperator(char c) {
+    return c == '+' || c == '-' || c == '*' || c == '/';
+}
+
+
+
+inline Expression* createExpression(char type, Expression* left, Expression* right) {
+    switch (type) {
+        case '+':
+            return new Plus(left, right);
+        case '-':
+            return new Minus(left, right);
+        case '*':
+            return new Mult(left, right);
+        case '/':
+            return new Div(left, right);
+    }
+}
+
+/**
  * @param exp string expression
  * @return expression
  */
-inline Expression *prefixToExp(string exp) {
-    // case where we got only a number:
-    if(firstOperatorIndex(exp) == -1) return new Number(stringToDouble(exp));
-    if (exp.length() == 1) return new Number(exp[0] - '0');
-    // TODO: FINISH FUNCTION
-    if (exp.length() == 3) {
-        switch (exp[2]) {
-            case '+':
-                return new Plus(new Number(exp[0] - '0'), new Number(exp[1] - '0'));
-            case '-':
-                return new Minus(new Number(exp[0] - '0'), new Number(exp[1] - '0'));
-            case '*':
-                return new Mult(new Number(exp[0] - '0'), new Number(exp[1] - '0'));
-            case '/':
-                return new Div(new Number(exp[0] - '0'), new Number(exp[1] - '0'));
-        }
-    } else {
-        if (!isdigit(exp[exp.length() - 1]) && firstOperatorIndex(exp) > 2) {
-            switch (exp[exp.length() - 1]) {
-                case '+':
-                    return new Plus(new Number(exp[0] - '0'), prefixToExp(exp.substr(1, exp.length() - 2)));
-                case '-':
-                    return new Minus(new Number(exp[0] - '0'), prefixToExp(exp.substr(1, exp.length() - 2)));
-                case '*':
-                    return new Mult(new Number(exp[0] - '0'), prefixToExp(exp.substr(1, exp.length() - 2)));
-                case '/':
-                    return new Div(new Number(exp[0] - '0'), prefixToExp(exp.substr(1, exp.length() - 2)));
+inline Expression *postToExp(string exp) {
+    stack<tuple<double ,unsigned int>> numStack;
+    stack<tuple<Expression* ,unsigned int> > expStack;
+    unsigned int time = 0;
+    unsigned long index = 0;
+    while (exp[index]) {
+        if (!isOperator(exp[index])) {
+            numStack.push(tuple<double, unsigned int>(calculateFirstNum(exp, index), time));
+            ++index;
+            ++time;
+        } else{
+            // take first two numbers and push new Expression:
+            if (expStack.empty()) {
+                double v2 = get<0>(numStack.top());
+                numStack.pop();
+                double v1 = get<0>(numStack.top());
+                numStack.pop();
+                expStack.push(tuple<Expression* ,unsigned int>(createExpression(exp[index], new Number(v1),
+                        new Number(v2)), time));
+                ++index;
+                ++time;
+            } else {
+                // check who came first, if number, number will be on left side of the new operator. else right side
+                if (get<1>(numStack.top()) > get<1>(expStack.top())) {
+                    double val = get<0>(numStack.top());
+                    numStack.pop();
+                    expStack.push(tuple<Expression* ,unsigned int>(createExpression(exp[index], get<0>(expStack.top()),
+                                                                                    new Number(val)), time));
+                    ++index;
+                    ++time;
+                } else {
+                    double val = get<0>(numStack.top());
+                    numStack.pop();
+                    expStack.push(tuple<Expression* ,unsigned int>(createExpression(exp[index], new Number(val),
+                                                                                    get<0>(expStack.top())), time));
+                    ++index;
+                    ++time;
+                }
             }
-        } else {
-            switch (exp[exp.length() - 1]) {
-                case '+':
-                    return new Plus(prefixToExp(exp.substr(0, 3)), prefixToExp(exp.substr(3, exp.length() - 4)));
-                case '-':
-                    return new Minus(prefixToExp(exp.substr(0, 3)), prefixToExp(exp.substr(3, exp.length() - 4)));
-                case '*':
-                    return new Mult(prefixToExp(exp.substr(0, 3)), prefixToExp(exp.substr(3, exp.length() - 4)));
-                case '/':
-                    return new Div(prefixToExp(exp.substr(0, 3)), prefixToExp(exp.substr(3, exp.length() - 4)));
-            }
         }
-
     }
+    return get<0>(expStack.top());
 }
 
 /**
@@ -89,10 +118,31 @@ static inline double shuntingYardAlg(string expression) {
     precedences['+'] = precedences['-'] = 1;
     precedences['*'] = precedences['/'] = 2;
     stack<char> stack1;
+    queue<char> queue2;
+    queue2.push('(');
     queue<char> queue1;
     for (int i = 0; i < expression.length(); ++i) {
-        if (isdigit(expression[i])) queue1.push(expression[i]);
-        else {
+        if (isdigit(expression[i])) {
+            queue2.push(expression[i]);
+            // if the number is bigger the  2
+            if (i < expression.length() && !isdigit(expression[i + 1])) {
+                queue2.push(')');
+                if (queue2.size() > 3) {
+                    while (!queue2.empty()) {
+                        queue1.push(queue2.front());
+                        queue2.pop();
+                    }
+                    queue2.push('(');
+                } else {
+                    while (!queue2.empty()) {
+                        if (!(queue2.front() == ')' || queue2.front() == '('))
+                            queue1.push(queue2.front());
+                        queue2.pop();
+                    }
+                    queue2.push('(');
+                }
+            }
+        } else {
             if (expression[i] == '(') {
                 stack1.push(expression[i]);
             } else if (expression[i] == ')') {
@@ -102,11 +152,13 @@ static inline double shuntingYardAlg(string expression) {
                 }
                 stack1.pop();
             } else { // char is an operator:
-                while (!stack1.empty() && precedences[stack1.top()] > precedences[expression[i]]) {
+                while (!stack1.empty() && precedences[stack1.top()] > precedences[expression[i]] &&
+                       expression[i] != ' ') {
                     queue1.push(stack1.top());
                     stack1.pop();
                 }
-                stack1.push(expression[i]);
+                if (expression[i] != ' ')
+                    stack1.push(expression[i]);
             }
         }
     }
@@ -125,7 +177,7 @@ static inline double shuntingYardAlg(string expression) {
     /**
      * From here, calculate the value of the expression:
      */
-    return prefixToExp(newExp)->calculate();
+    return postToExp(newExp)->calculate();
 }
 
 #endif //SECONDYEARPROJECT_BIU_SHUNTING_YARD_H
