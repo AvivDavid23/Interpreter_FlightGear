@@ -12,105 +12,174 @@
 #include "Mult.h"
 #include "Div.h"
 #include "Number.h"
+#include <algorithm>
 
 using namespace std;
+
 /**
  * @param exp string expression
  * @return first operator index
  */
-inline int firstOperatorIndex(string exp) {
-    for (int i = 0; i < exp.length(); ++i) {
+inline unsigned long firstOperatorIndex(string exp) {
+    for (unsigned long i = 0; i < exp.length(); ++i) {
         if (!isdigit(exp[i]) && (!(exp[i] == '(' || exp[i] == ')'))) return i;
     }
-    return -1;
+    return 0;
 }
-inline double stringToDouble(string exp){
+
+/**
+ *
+ * @param exp the expression.
+ * @return the value of the first number in exp.
+ */
+inline double calculateFirstNum(string exp) {
+    if (exp[0] != '(')
+        return (exp[0] - '0');
     double val = 0;
-    for (long i = 0; i < exp.length(); ++i) {
+    int i = 1;
+    while (exp[i] != ')') {
         val *= 10;
         val += exp[i] - '0';
+        i++;
     }
     return val;
 }
 
-inline int longNumber(string exp) {
-    string newNumber;
-    bool check = false;
-    for(int i =0 ; i <exp.length();i++) {
-        if(exp[i] == ')') {
-            break;
-        }
-        if(check) newNumber += exp[i];
-        if( exp[i] == '(') check = true;
-    }
-    if(newNumber.empty()) newNumber = exp[0];
-    return stoi(newNumber);
-}
-inline unsigned long howMuchToDrop(string exp) {
-    unsigned long count = 1;
-    bool  check = false;
-    for(int i =0 ; i <exp.length();i++) {
-        if(exp[i] == ')') {
-            count++;
-            break;
-        }
-        if(check) count++;
-        if( exp[i] == '(') check = true;
+inline int howManyOperators(string exp) {
+    int count = 0;
+    for (char i : exp) {
+        if (!isdigit(i) && (!(i == '(' || i == ')'))) count++;
     }
     return count;
+}
+
+/**
+ *
+ * @param exp the expression
+ * @return how much to move the index
+ */
+inline unsigned long howMuchToDrop(string exp) {
+    unsigned long i = 1;
+    if (exp[0] != '(') return i;
+    while (exp[i] != ')') ++i;
+    return i + 1;
+}
+
+/**
+ * In case where we have something like :25+8/5-, we want to extract (5) in order to give it as second parameter
+ * to Minus expression
+ * @param exp expression
+ * @param indexEnd the index where the numbers ends.
+ * @return the value of the number.
+ *
+ */
+inline double exctractNum(string exp, unsigned long indexEnd) {
+    if (exp[indexEnd] != ')') return exp[indexEnd] - '0';
+    string num;
+    while (exp[indexEnd] != '(') num += exp[indexEnd];
+    num += '(';
+    reverse(num.begin(), num.end());
+    return calculateFirstNum(num);
+}
+
+int manyNumber(string exp) {
+    int count = 0, i = 0;
+    while (isdigit(exp[i] - '0') || exp[i] == '(' || exp[i] == ')')
+        if (exp[i] != '(') count++;
+        else {
+            while (exp[i] != ')') i++;
+            i++,count++;
+        }
 }
 /**
  * @param exp string expression
  * @return expression
  */
-inline Expression *prefixToExp(string exp) {
+inline Expression *postToExp(string exp) {
     // case where we got only a number:
-    if(firstOperatorIndex(exp) == -1) return new Number(stringToDouble(exp));
-    if (exp.length() == 1) return new Number(exp[0] - '0');
+    if (firstOperatorIndex(exp) == -1) return new Number(calculateFirstNum(exp));
     // TODO: FINISH FUNCTION
-    if (exp.length() == 3) {
-        switch (exp[2]) {
+    if (howManyOperators(exp) == 1) {
+        switch (exp.at(exp.length() - 1)) {
             case '+':
-                return new Plus(new Number(exp[0] - '0'), new Number(exp[1] - '0'));
+                return new Plus(new Number(calculateFirstNum(exp)),
+                                new Number(calculateFirstNum(
+                                        exp.substr(howMuchToDrop(exp), exp.length() - howMuchToDrop(exp) - 1))));
             case '-':
-                return new Minus(new Number(exp[0] - '0'), new Number(exp[1] - '0'));
+                return new Minus(new Number(calculateFirstNum(exp)),
+                                 new Number(calculateFirstNum(
+                                         exp.substr(howMuchToDrop(exp), exp.length() - howMuchToDrop(exp) - 1))));
             case '*':
-                return new Mult(new Number(exp[0] - '0'), new Number(exp[1] - '0'));
+                return new Mult(new Number(calculateFirstNum(exp)),
+                                new Number(calculateFirstNum(
+                                        exp.substr(howMuchToDrop(exp), exp.length() - howMuchToDrop(exp) - 1))));
             case '/':
-                return new Div(new Number(exp[0] - '0'), new Number(exp[1] - '0'));
+                return new Div(new Number(calculateFirstNum(exp)),
+                               new Number(calculateFirstNum(
+                                       exp.substr(howMuchToDrop(exp), exp.length() - howMuchToDrop(exp) - 1))));
         }
     } else {
-        if (!isdigit(exp[exp.length() - 1]) && firstOperatorIndex(exp) > 2) {
-            switch (exp[exp.length() - 1]) {
-                case '+':
-                    return new Plus(new Number(longNumber(exp)),
-                            prefixToExp(exp.substr(howMuchToDrop(exp), exp.length() - howMuchToDrop(exp) - 1)));
-                case '-':
-                    return new Minus(new Number(longNumber(exp)),
-                            prefixToExp(exp.substr(howMuchToDrop(exp), exp.length() - 2)));
-                case '*':
-                    return new Mult(new Number(longNumber(exp)),
-                            prefixToExp(exp.substr(howMuchToDrop(exp), exp.length() - 2)));
-                case '/':
-                    return new Div(new Number(longNumber(exp)),
-                            prefixToExp(exp.substr(howMuchToDrop(exp), exp.length() - 2)));
-            }
-        } else {
-            switch (exp[exp.length() - 1]) {
-                case '+':
-                    return new Plus(prefixToExp(exp.substr(0, 3)), prefixToExp(exp.substr(3, exp.length() - 4)));
-                case '-':
-                    return new Minus(prefixToExp(exp.substr(0, 3)), prefixToExp(exp.substr(3, exp.length() - 4)));
-                case '*':
-                    return new Mult(prefixToExp(exp.substr(0, 3)), prefixToExp(exp.substr(3, exp.length() - 4)));
-                case '/':
-                    return new Div(prefixToExp(exp.substr(0, 3)), prefixToExp(exp.substr(3, exp.length() - 4)));
-                default:
-                    return 0;
+        if (!isdigit(exp[exp.length() - 1])) {
+            if (manyNumber(exp) > 2) {
+                switch (exp[exp.length() - 1]) {
+                    case '+':
+                        return new Plus(new Number(calculateFirstNum(exp)),
+                                        postToExp(
+                                                exp.substr(howMuchToDrop(exp), exp.length() - howMuchToDrop(exp) - 1)));
+                    case '-':
+                        return new Minus(new Number(calculateFirstNum(exp)),
+                                         postToExp(exp.substr(howMuchToDrop(exp),
+                                                              exp.length() - howMuchToDrop(exp) - 1)));
+                    case '*':
+                        return new Mult(new Number(calculateFirstNum(exp)),
+                                        postToExp(
+                                                exp.substr(howMuchToDrop(exp), exp.length() - howMuchToDrop(exp) - 1)));
+                    case '/':
+                        return new Div(new Number(calculateFirstNum(exp)),
+                                       postToExp(
+                                               exp.substr(howMuchToDrop(exp), exp.length() - howMuchToDrop(exp) - 1)));
+                }
+            } else {
+                if (isdigit(exp[exp.length() - 2]) || exp[exp.length() - 2] == ')') {
+                    double exctracted = exctractNum(exp, exp.length() - 2);
+                    switch (exp[exp.length() - 1]) {
+                        case '+':
+                            return new Plus(postToExp(exp.substr(0, exp.length() - to_string(exctracted).length() - 1))
+                                    , new Number(exctracted));
+                        case '-':
+                            return new Minus(postToExp(exp.substr(0, exp.length() - to_string(exctracted).length() - 1))
+                                    , new Number(exctracted));
+                        case '*':
+                            return new Mult(postToExp(exp.substr(0, exp.length() - to_string(exctracted).length() - 1))
+                                    , new Number(exctracted));
+                        case '/':
+                            return new Div(postToExp(exp.substr(0, exp.length() - to_string(exctracted).length() - 1))
+                                    , new Number(exctracted));
+                    }
+                } else{
+                    switch (exp[exp.length() - 1]) {
+                        case '+':
+                            return new Plus(postToExp(exp.substr(0, firstOperatorIndex(exp))),
+                                    postToExp(exp.substr(firstOperatorIndex(exp) + 1,
+                                            exp.length() - firstOperatorIndex(exp) - 2)));
+                        case '-':
+                            return new Minus(postToExp(exp.substr(0, firstOperatorIndex(exp))),
+                                             postToExp(exp.substr(firstOperatorIndex(exp) + 1,
+                                                                  exp.length() - firstOperatorIndex(exp) - 2)));
+                        case '*':
+                            return new Mult(postToExp(exp.substr(0, firstOperatorIndex(exp))),
+                                            postToExp(exp.substr(firstOperatorIndex(exp) + 1,
+                                                                 exp.length() - firstOperatorIndex(exp) - 2)));
+                        case '/':
+                            return new Div(postToExp(exp.substr(0, firstOperatorIndex(exp))),
+                                           postToExp(exp.substr(firstOperatorIndex(exp) + 1,
+                                                                exp.length() - firstOperatorIndex(exp) - 2)));
+                    }
+                }
             }
         }
-
     }
+    return NULL;
 }
 
 /**
@@ -124,7 +193,7 @@ static inline double shuntingYardAlg(string expression) {
     precedences['+'] = precedences['-'] = 1;
     precedences['*'] = precedences['/'] = 2;
     stack<char> stack1;
-    queue <char> quene2;
+    queue<char> quene2;
     quene2.push('(');
     queue<char> queue1;
     for (int i = 0; i < expression.length(); ++i) {
@@ -135,12 +204,12 @@ static inline double shuntingYardAlg(string expression) {
                 quene2.push(')');
                 if (quene2.size() > 3) {
                     while (!quene2.empty()) {
-                            queue1.push(quene2.front());
+                        queue1.push(quene2.front());
                         quene2.pop();
                     }
                     quene2.push('(');
                 } else {
-                    while(!quene2.empty()) {
+                    while (!quene2.empty()) {
                         if (!(quene2.front() == ')' || quene2.front() == '('))
                             queue1.push(quene2.front());
                         quene2.pop();
@@ -148,8 +217,7 @@ static inline double shuntingYardAlg(string expression) {
                     quene2.push('(');
                 }
             }
-        }
-        else {
+        } else {
             if (expression[i] == '(') {
                 stack1.push(expression[i]);
             } else if (expression[i] == ')') {
@@ -160,12 +228,12 @@ static inline double shuntingYardAlg(string expression) {
                 stack1.pop();
             } else { // char is an operator:
                 while (!stack1.empty() && precedences[stack1.top()] > precedences[expression[i]] &&
-                    expression[i]!=' ') {
+                       expression[i] != ' ') {
                     queue1.push(stack1.top());
                     stack1.pop();
                 }
-                if(expression[i] != ' ')
-                stack1.push(expression[i]);
+                if (expression[i] != ' ')
+                    stack1.push(expression[i]);
             }
         }
     }
@@ -184,7 +252,7 @@ static inline double shuntingYardAlg(string expression) {
     /**
      * From here, calculate the value of the expression:
      */
-    return prefixToExp(newExp)->calculate();
+    return postToExp(newExp)->calculate();
 }
 
 #endif //SECONDYEARPROJECT_BIU_SHUNTING_YARD_H
