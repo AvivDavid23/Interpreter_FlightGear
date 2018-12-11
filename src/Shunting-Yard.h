@@ -127,8 +127,10 @@ inline Expression *postToExp(string exp) {
  */
 static inline double shuntingYardAlg(string expression) {
     map<char, int> precedences;
-    precedences['+'] = precedences['-'] = 1;
-    precedences['*'] = precedences['/'] = 2;
+    precedences['+'] = 1;
+    precedences['-'] = 2;
+    precedences['*'] = 3;
+    precedences['/'] = 4;
     stack<char> stack1;
     queue<char> queue2;
     queue2.push('(');
