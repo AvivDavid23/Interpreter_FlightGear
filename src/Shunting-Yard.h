@@ -71,22 +71,25 @@ inline Expression *postToExp(string exp) {
     unsigned int time = 0;
     unsigned long index = 0;
     while (exp[index]) {
-        if(expStack.size() == 2 && isOperator(exp[index]) && numStack.empty()){
-         Expression* ex2 = get<0>(expStack.top());
-         expStack.pop();
-         Expression* ex1 = get<0>(expStack.top());
-         expStack.pop();
-         expStack.push(tuple<Expression *, unsigned int>(createExpression(exp[index], ex1,ex2), time));
-            ++index;
-            ++time;
-        }
+        // add new Number:
         if (!isOperator(exp[index])) {
             numStack.push(tuple<double, unsigned int>(calculateFirstNum(exp, index), time));
             ++index;
             ++time;
+        }
+            // take two expressions and create one with them:
+        else if (expStack.size() >= 2 && isOperator(exp[index])
+        && (numStack.empty() || time - get<1>(expStack.top()) == 1)) {
+            Expression *ex2 = get<0>(expStack.top());
+            expStack.pop();
+            Expression *ex1 = get<0>(expStack.top());
+            expStack.pop();
+            expStack.push(tuple<Expression *, unsigned int>(createExpression(exp[index], ex1, ex2), time));
+            ++index;
+            ++time;
         } else {
             // take first two numbers and push new Expression:
-            if ((expStack.empty() || time - get<1>(expStack.top()) > 2) && !numStack.empty()) {
+            if ((expStack.empty() || time - get<1>(expStack.top()) > 2)&& !numStack.empty()) {
                 double v2 = get<0>(numStack.top());
                 numStack.pop();
                 double v1 = get<0>(numStack.top());
