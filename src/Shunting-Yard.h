@@ -46,7 +46,12 @@ inline bool isOperator(char c) {
     return c == '+' || c == '-' || c == '*' || c == '/';
 }
 
-
+/**
+ * @param type operation for exp
+ * @param left left exp
+ * @param right right exp
+ * @return disired expression, based on the operation
+ */
 inline Expression *createExpression(char type, Expression *left, Expression *right) {
     switch (type) {
         case '+':
@@ -76,10 +81,8 @@ inline Expression *postToExp(string exp) {
             numStack.push(tuple<double, unsigned int>(calculateFirstNum(exp, index), time));
             ++index;
             ++time;
-        }
             // take two expressions and create one with them:
-        else if (expStack.size() >= 2 && isOperator(exp[index])
-        && (numStack.empty() || time - get<1>(expStack.top()) == 1)) {
+        } else if (expStack.size() >= 2 && (numStack.empty() || time - get<1>(expStack.top()) == 1)) {
             Expression *ex2 = get<0>(expStack.top());
             expStack.pop();
             Expression *ex1 = get<0>(expStack.top());
@@ -89,7 +92,7 @@ inline Expression *postToExp(string exp) {
             ++time;
         } else {
             // take first two numbers and push new Expression:
-            if ((expStack.empty() || time - get<1>(expStack.top()) > 2)&& !numStack.empty()) {
+            if ((expStack.empty() || time - get<1>(expStack.top()) > 2) && !numStack.empty()) {
                 double v2 = get<0>(numStack.top());
                 numStack.pop();
                 double v1 = get<0>(numStack.top());
@@ -109,18 +112,16 @@ inline Expression *postToExp(string exp) {
                 if (get<1>(numberTup) > get<1>(expressionTup)) {
                     expStack.push(tuple<Expression *, unsigned int>(createExpression(exp[index], expression,
                                                                                      new Number(val)), time));
-                    ++index;
-                    ++time;
-                } else {
+                }else {
                     expStack.push(tuple<Expression *, unsigned int>(createExpression(exp[index], new Number(val),
                                                                                      expression), time));
-                    ++index;
-                    ++time;
                 }
+                ++index;
+                ++time;
             }
         }
     }
-    return get<0>(expStack.top());
+    return get<0>(expStack.top()); // the full exp is at the top of the stack
 }
 
 /**
