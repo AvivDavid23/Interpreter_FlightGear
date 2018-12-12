@@ -71,7 +71,7 @@ inline Expression *postToExp(string exp) {
     unsigned int time = 0;
     unsigned long index = 0;
     while (exp[index]) {
-        if(expStack.size() == 2 && isOperator(exp[index])){
+        if(expStack.size() == 2 && isOperator(exp[index]) && numStack.empty()){
          Expression* ex2 = get<0>(expStack.top());
          expStack.pop();
          Expression* ex1 = get<0>(expStack.top());
