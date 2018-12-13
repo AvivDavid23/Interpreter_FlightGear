@@ -14,8 +14,6 @@ class OpenServerCommand: public Command {
 public:
     OpenServerCommand(unsigned int &index);
 
-    OpenServerCommand(unsigned int &index);
-
     int execute(const vector<string> &line, unsigned int i);
 };
 

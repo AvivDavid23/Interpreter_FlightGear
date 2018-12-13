@@ -1,5 +1,4 @@
 
-
 #ifndef SECONDYEARPROJECT_BIU_SHUNTING_YARD_H
 #define SECONDYEARPROJECT_BIU_SHUNTING_YARD_H
 
@@ -37,6 +36,7 @@ inline double calculateFirstNum(string exp, unsigned long &index) {
     }
     return val;
 }
+
 /**
  * @param c char
  * @return true if char is an operator
@@ -45,9 +45,13 @@ inline bool isOperator(char c) {
     return c == '+' || c == '-' || c == '*' || c == '/';
 }
 
-
-
-inline Expression* createExpression(char type, Expression* left, Expression* right) {
+/**
+ * @param type operation for exp
+ * @param left left exp
+ * @param right right exp
+ * @return disired expression, based on the operation
+ */
+inline Expression *createExpression(char type, Expression *left, Expression *right) {
     switch (type) {
         case '+':
             return new Plus(left, right);
@@ -61,51 +65,62 @@ inline Expression* createExpression(char type, Expression* left, Expression* rig
 }
 
 /**
+ * Transfers the string into an Expression
  * @param exp string expression
  * @return expression
  */
 inline Expression *postToExp(string exp) {
-    stack<tuple<double ,unsigned int>> numStack;
-    stack<tuple<Expression* ,unsigned int> > expStack;
+    stack<tuple<double, unsigned int>> numStack;
+    stack<tuple<Expression *, unsigned int> > expStack;
     unsigned int time = 0;
     unsigned long index = 0;
     while (exp[index]) {
+        // add new Number:
         if (!isOperator(exp[index])) {
             numStack.push(tuple<double, unsigned int>(calculateFirstNum(exp, index), time));
             ++index;
             ++time;
-        } else{
+            // take two expressions and create one with them:
+        } else if (expStack.size() >= 2 && (numStack.empty() || time - get<1>(expStack.top()) == 1)) {
+            Expression *ex2 = get<0>(expStack.top());
+            expStack.pop();
+            Expression *ex1 = get<0>(expStack.top());
+            expStack.pop();
+            expStack.push(tuple<Expression *, unsigned int>(createExpression(exp[index], ex1, ex2), time));
+            ++index;
+            ++time;
+        } else {
             // take first two numbers and push new Expression:
-            if (expStack.empty()) {
+            if ((expStack.empty() || time - get<1>(expStack.top()) > 2) && !numStack.empty()) {
                 double v2 = get<0>(numStack.top());
                 numStack.pop();
                 double v1 = get<0>(numStack.top());
                 numStack.pop();
-                expStack.push(tuple<Expression* ,unsigned int>(createExpression(exp[index], new Number(v1),
-                        new Number(v2)), time));
+                expStack.push(tuple<Expression *, unsigned int>(createExpression(exp[index], new Number(v1),
+                                                                                 new Number(v2)), time));
                 ++index;
                 ++time;
             } else {
+                tuple<double, unsigned int> numberTup = numStack.top();
+                double val = get<0>(numberTup); // value
+                numStack.pop();
+                tuple<Expression *, unsigned int> expressionTup = expStack.top();
+                Expression *expression = get<0>(expressionTup); // expression
+                expStack.pop();
                 // check who came first, if number, number will be on left side of the new operator. else right side
-                if (get<1>(numStack.top()) > get<1>(expStack.top())) {
-                    double val = get<0>(numStack.top());
-                    numStack.pop();
-                    expStack.push(tuple<Expression* ,unsigned int>(createExpression(exp[index], get<0>(expStack.top()),
-                                                                                    new Number(val)), time));
-                    ++index;
-                    ++time;
-                } else {
-                    double val = get<0>(numStack.top());
-                    numStack.pop();
-                    expStack.push(tuple<Expression* ,unsigned int>(createExpression(exp[index], new Number(val),
-                                                                                    get<0>(expStack.top())), time));
-                    ++index;
-                    ++time;
+                if (get<1>(numberTup) > get<1>(expressionTup)) {
+                    expStack.push(tuple<Expression *, unsigned int>(createExpression(exp[index], expression,
+                                                                                     new Number(val)), time));
+                }else {
+                    expStack.push(tuple<Expression *, unsigned int>(createExpression(exp[index], new Number(val),
+                                                                                     expression), time));
                 }
+                ++index;
+                ++time;
             }
         }
     }
-    return get<0>(expStack.top());
+    return get<0>(expStack.top()); // the full exp is at the top of the stack
 }
 
 /**
@@ -115,8 +130,10 @@ inline Expression *postToExp(string exp) {
  */
 static inline double shuntingYardAlg(string expression) {
     map<char, int> precedences;
-    precedences['+'] = precedences['-'] = 1;
-    precedences['*'] = precedences['/'] = 2;
+    precedences['+'] = 1;
+    precedences['-'] = 2;
+    precedences['*'] = 3;
+    precedences['/'] = 4;
     stack<char> stack1;
     queue<char> queue2;
     queue2.push('(');
@@ -177,7 +194,6 @@ static inline double shuntingYardAlg(string expression) {
     /**
      * From here, calculate the value of the expression:
      */
-     vector<string> vector1;
     return postToExp(newExp)->calculate();
 }
 
