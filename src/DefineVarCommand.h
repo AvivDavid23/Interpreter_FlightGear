@@ -16,7 +16,7 @@ public:
 
 public:
 
-    int execute(const vector<string> &line, unsigned int i);
+    int execute(const vector<string> &words, unsigned int i);
 
 };
 

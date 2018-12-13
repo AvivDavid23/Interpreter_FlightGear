@@ -20,7 +20,7 @@ public:
      */
     void setList(vector<string> &lines, unsigned int currentIndex);
 
-    int execute(const vector<string> &line, unsigned int i);
+    int execute(const vector<string> &words, unsigned int i);
 
     IfCommand(unsigned int &index);
 };

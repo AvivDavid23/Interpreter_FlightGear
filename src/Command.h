@@ -14,7 +14,7 @@ public:
     /**
      * Execute the command.
      */
-    virtual int execute(const vector<string> &line, unsigned int i) = 0;
+    virtual int execute(const vector<string> &words, unsigned int i) = 0;
 };
 
 #endif //PROJECT_COMMAND_H
