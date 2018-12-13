@@ -10,8 +10,12 @@
  */
 // TODO: finish class
 class OpenServerCommand: public Command {
+    unsigned int &index;
 public:
-    OpenServerCommand();
+    OpenServerCommand(unsigned int &index);
+
+    OpenServerCommand(unsigned int &index);
+
     int execute(const vector<string> &line, unsigned int i);
 };
 

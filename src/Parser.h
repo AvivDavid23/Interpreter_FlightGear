@@ -20,7 +20,7 @@ class Parser {
 private:
     unsigned int index;
     map<string, Expression *> commandsTable;
-    map<string, double> symbolTable;
+    map<string, double>    symbolTable;
     vector<string> words;
 public:
     void createFunction(vector<string>lines);
@@ -28,7 +28,7 @@ public:
 
     void lineParse();
 
-    void commandParse(const vector<string> &line);
+    void commandParse(const vector<string> &words);
 
     list<Command*> listCreator();
 

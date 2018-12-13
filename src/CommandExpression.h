@@ -11,9 +11,9 @@ protected:
     vector<string> words;
     unsigned int index;
 public:
+    CommandExpression(Command *command, const vector<string> &words);
 
-public:
-    CommandExpression(Command *command, const vector<string> &words, unsigned int index);
+    void setIndex(unsigned int index);
 
     virtual double calculate();
 

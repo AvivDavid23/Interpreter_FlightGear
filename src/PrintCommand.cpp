@@ -2,8 +2,6 @@
 
 #include "PrintCommand.h"
 
-PrintCommand::PrintCommand(map<string, double> &smblTablePtr) : smblTablePtr(smblTablePtr) {}
-
 void PrintCommand::setOutput(string &str) { output = str; }
 
 int PrintCommand::execute(const vector<string> &line, unsigned int i) {
@@ -13,3 +11,6 @@ int PrintCommand::execute(const vector<string> &line, unsigned int i) {
     cout << "\n";
     return 1;
 }
+
+PrintCommand::PrintCommand(map<string, double> &smblTablePtr, unsigned int &index) : smblTablePtr(smblTablePtr),
+                                                                                     index(index) {}

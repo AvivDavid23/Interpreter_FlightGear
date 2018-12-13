@@ -9,8 +9,9 @@
  */
 // TODO: finish class
 class ConnectCommand : public Command {
+    unsigned int &index;
 public:
-    ConnectCommand();
+    ConnectCommand(unsigned int &index);
 
     int execute(const vector<string> &line, unsigned int i);
 };

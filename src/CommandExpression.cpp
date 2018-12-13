@@ -10,6 +10,10 @@ double CommandExpression::calculate() {
     return command->execute(words, index);
 }
 
-CommandExpression::CommandExpression(Command *command, const vector<string> &words, unsigned int index) : command(
-        command), words(words), index(index) {}
+void CommandExpression::setIndex(unsigned int index) {
+    CommandExpression::index = index;
+}
+
+CommandExpression::CommandExpression(Command *command, const vector<string> &words) : command(
+        command), words(words) {}
 

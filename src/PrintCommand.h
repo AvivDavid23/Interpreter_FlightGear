@@ -13,6 +13,10 @@
 class PrintCommand : public Command {
     string output;
     map<string, double> &smblTablePtr;
+    unsigned int &index;
+public:
+    PrintCommand(map<string, double> &smblTablePtr, unsigned int &index);
+
 public:
     PrintCommand(map<string, double> &smblTablePtr);
 
