@@ -12,7 +12,7 @@ class ConnectCommand : public Command {
 public:
     ConnectCommand();
 
-    int execute();
+    int execute(const vector<string> &line, unsigned int i);
 };
 
 

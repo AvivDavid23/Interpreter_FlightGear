@@ -18,7 +18,7 @@ public:
 
     void setOutput(string& str);
 
-    int execute();
+    int execute(const vector<string> &line, unsigned int i);
 };
 
 

@@ -12,174 +12,100 @@
 #include "Mult.h"
 #include "Div.h"
 #include "Number.h"
+#include "tuple"
 #include <algorithm>
 
 using namespace std;
 
-/**
- * @param exp string expression
- * @return first operator index
- */
-inline unsigned long firstOperatorIndex(string exp) {
-    for (unsigned long i = 0; i < exp.length(); ++i) {
-        if (!isdigit(exp[i]) && (!(exp[i] == '(' || exp[i] == ')'))) return i;
-    }
-    return 0;
-}
 
 /**
  *
  * @param exp the expression.
- * @return the value of the first number in exp.
+ * @param index start index
+ * @return the value of the first number in exp which begins at index.
  */
-inline double calculateFirstNum(string exp) {
-    if (exp[0] != '(')
-        return (exp[0] - '0');
+inline double calculateFirstNum(string exp, unsigned long &index) {
+    if (exp[index] != '(') {
+        return (exp[index] - '0');
+    }
     double val = 0;
-    int i = 1;
-    while (exp[i] != ')') {
+    ++index;
+    while (exp[index] != ')') {
         val *= 10;
-        val += exp[i] - '0';
-        i++;
+        val += exp[index] - '0';
+        index++;
     }
     return val;
 }
+/**
+ * @param c char
+ * @return true if char is an operator
+ */
+inline bool isOperator(char c) {
+    return c == '+' || c == '-' || c == '*' || c == '/';
+}
 
-inline int howManyOperators(string exp) {
-    int count = 0;
-    for (char i : exp) {
-        if (!isdigit(i) && (!(i == '(' || i == ')'))) count++;
+
+
+inline Expression* createExpression(char type, Expression* left, Expression* right) {
+    switch (type) {
+        case '+':
+            return new Plus(left, right);
+        case '-':
+            return new Minus(left, right);
+        case '*':
+            return new Mult(left, right);
+        case '/':
+            return new Div(left, right);
     }
-    return count;
 }
 
-/**
- *
- * @param exp the expression
- * @return how much to move the index
- */
-inline unsigned long howMuchToDrop(string exp) {
-    unsigned long i = 1;
-    if (exp[0] != '(') return i;
-    while (exp[i] != ')') ++i;
-    return i + 1;
-}
-
-/**
- * In case where we have something like :25+8/5-, we want to extract (5) in order to give it as second parameter
- * to Minus expression
- * @param exp expression
- * @param indexEnd the index where the numbers ends.
- * @return the value of the number.
- *
- */
-inline double exctractNum(string exp, unsigned long indexEnd) {
-    if (exp[indexEnd] != ')') return exp[indexEnd] - '0';
-    string num;
-    while (exp[indexEnd] != '(') num += exp[indexEnd];
-    num += '(';
-    reverse(num.begin(), num.end());
-    return calculateFirstNum(num);
-}
-
-int manyNumber(string exp) {
-    int count = 0, i = 0;
-    while (isdigit(exp[i] - '0') || exp[i] == '(' || exp[i] == ')')
-        if (exp[i] != '(') count++;
-        else {
-            while (exp[i] != ')') i++;
-            i++,count++;
-        }
-}
 /**
  * @param exp string expression
  * @return expression
  */
 inline Expression *postToExp(string exp) {
-    // case where we got only a number:
-    if (firstOperatorIndex(exp) == -1) return new Number(calculateFirstNum(exp));
-    // TODO: FINISH FUNCTION
-    if (howManyOperators(exp) == 1) {
-        switch (exp.at(exp.length() - 1)) {
-            case '+':
-                return new Plus(new Number(calculateFirstNum(exp)),
-                                new Number(calculateFirstNum(
-                                        exp.substr(howMuchToDrop(exp), exp.length() - howMuchToDrop(exp) - 1))));
-            case '-':
-                return new Minus(new Number(calculateFirstNum(exp)),
-                                 new Number(calculateFirstNum(
-                                         exp.substr(howMuchToDrop(exp), exp.length() - howMuchToDrop(exp) - 1))));
-            case '*':
-                return new Mult(new Number(calculateFirstNum(exp)),
-                                new Number(calculateFirstNum(
-                                        exp.substr(howMuchToDrop(exp), exp.length() - howMuchToDrop(exp) - 1))));
-            case '/':
-                return new Div(new Number(calculateFirstNum(exp)),
-                               new Number(calculateFirstNum(
-                                       exp.substr(howMuchToDrop(exp), exp.length() - howMuchToDrop(exp) - 1))));
-        }
-    } else {
-        if (!isdigit(exp[exp.length() - 1])) {
-            if (manyNumber(exp) > 2) {
-                switch (exp[exp.length() - 1]) {
-                    case '+':
-                        return new Plus(new Number(calculateFirstNum(exp)),
-                                        postToExp(
-                                                exp.substr(howMuchToDrop(exp), exp.length() - howMuchToDrop(exp) - 1)));
-                    case '-':
-                        return new Minus(new Number(calculateFirstNum(exp)),
-                                         postToExp(exp.substr(howMuchToDrop(exp),
-                                                              exp.length() - howMuchToDrop(exp) - 1)));
-                    case '*':
-                        return new Mult(new Number(calculateFirstNum(exp)),
-                                        postToExp(
-                                                exp.substr(howMuchToDrop(exp), exp.length() - howMuchToDrop(exp) - 1)));
-                    case '/':
-                        return new Div(new Number(calculateFirstNum(exp)),
-                                       postToExp(
-                                               exp.substr(howMuchToDrop(exp), exp.length() - howMuchToDrop(exp) - 1)));
-                }
+    stack<tuple<double ,unsigned int>> numStack;
+    stack<tuple<Expression* ,unsigned int> > expStack;
+    unsigned int time = 0;
+    unsigned long index = 0;
+    while (exp[index]) {
+        if (!isOperator(exp[index])) {
+            numStack.push(tuple<double, unsigned int>(calculateFirstNum(exp, index), time));
+            ++index;
+            ++time;
+        } else{
+            // take first two numbers and push new Expression:
+            if (expStack.empty()) {
+                double v2 = get<0>(numStack.top());
+                numStack.pop();
+                double v1 = get<0>(numStack.top());
+                numStack.pop();
+                expStack.push(tuple<Expression* ,unsigned int>(createExpression(exp[index], new Number(v1),
+                        new Number(v2)), time));
+                ++index;
+                ++time;
             } else {
-                if (isdigit(exp[exp.length() - 2]) || exp[exp.length() - 2] == ')') {
-                    double exctracted = exctractNum(exp, exp.length() - 2);
-                    switch (exp[exp.length() - 1]) {
-                        case '+':
-                            return new Plus(postToExp(exp.substr(0, exp.length() - to_string(exctracted).length() - 1))
-                                    , new Number(exctracted));
-                        case '-':
-                            return new Minus(postToExp(exp.substr(0, exp.length() - to_string(exctracted).length() - 1))
-                                    , new Number(exctracted));
-                        case '*':
-                            return new Mult(postToExp(exp.substr(0, exp.length() - to_string(exctracted).length() - 1))
-                                    , new Number(exctracted));
-                        case '/':
-                            return new Div(postToExp(exp.substr(0, exp.length() - to_string(exctracted).length() - 1))
-                                    , new Number(exctracted));
-                    }
-                } else{
-                    switch (exp[exp.length() - 1]) {
-                        case '+':
-                            return new Plus(postToExp(exp.substr(0, firstOperatorIndex(exp))),
-                                    postToExp(exp.substr(firstOperatorIndex(exp) + 1,
-                                            exp.length() - firstOperatorIndex(exp) - 2)));
-                        case '-':
-                            return new Minus(postToExp(exp.substr(0, firstOperatorIndex(exp))),
-                                             postToExp(exp.substr(firstOperatorIndex(exp) + 1,
-                                                                  exp.length() - firstOperatorIndex(exp) - 2)));
-                        case '*':
-                            return new Mult(postToExp(exp.substr(0, firstOperatorIndex(exp))),
-                                            postToExp(exp.substr(firstOperatorIndex(exp) + 1,
-                                                                 exp.length() - firstOperatorIndex(exp) - 2)));
-                        case '/':
-                            return new Div(postToExp(exp.substr(0, firstOperatorIndex(exp))),
-                                           postToExp(exp.substr(firstOperatorIndex(exp) + 1,
-                                                                exp.length() - firstOperatorIndex(exp) - 2)));
-                    }
+                // check who came first, if number, number will be on left side of the new operator. else right side
+                if (get<1>(numStack.top()) > get<1>(expStack.top())) {
+                    double val = get<0>(numStack.top());
+                    numStack.pop();
+                    expStack.push(tuple<Expression* ,unsigned int>(createExpression(exp[index], get<0>(expStack.top()),
+                                                                                    new Number(val)), time));
+                    ++index;
+                    ++time;
+                } else {
+                    double val = get<0>(numStack.top());
+                    numStack.pop();
+                    expStack.push(tuple<Expression* ,unsigned int>(createExpression(exp[index], new Number(val),
+                                                                                    get<0>(expStack.top())), time));
+                    ++index;
+                    ++time;
                 }
             }
         }
     }
-    return NULL;
+    return get<0>(expStack.top());
 }
 
 /**
@@ -189,32 +115,31 @@ inline Expression *postToExp(string exp) {
  */
 static inline double shuntingYardAlg(string expression) {
     map<char, int> precedences;
-    bool biggerThen9 = false;
     precedences['+'] = precedences['-'] = 1;
     precedences['*'] = precedences['/'] = 2;
     stack<char> stack1;
-    queue<char> quene2;
-    quene2.push('(');
+    queue<char> queue2;
+    queue2.push('(');
     queue<char> queue1;
     for (int i = 0; i < expression.length(); ++i) {
         if (isdigit(expression[i])) {
-            quene2.push(expression[i]);
+            queue2.push(expression[i]);
             // if the number is bigger the  2
             if (i < expression.length() && !isdigit(expression[i + 1])) {
-                quene2.push(')');
-                if (quene2.size() > 3) {
-                    while (!quene2.empty()) {
-                        queue1.push(quene2.front());
-                        quene2.pop();
+                queue2.push(')');
+                if (queue2.size() > 3) {
+                    while (!queue2.empty()) {
+                        queue1.push(queue2.front());
+                        queue2.pop();
                     }
-                    quene2.push('(');
+                    queue2.push('(');
                 } else {
-                    while (!quene2.empty()) {
-                        if (!(quene2.front() == ')' || quene2.front() == '('))
-                            queue1.push(quene2.front());
-                        quene2.pop();
+                    while (!queue2.empty()) {
+                        if (!(queue2.front() == ')' || queue2.front() == '('))
+                            queue1.push(queue2.front());
+                        queue2.pop();
                     }
-                    quene2.push('(');
+                    queue2.push('(');
                 }
             }
         } else {
@@ -252,6 +177,7 @@ static inline double shuntingYardAlg(string expression) {
     /**
      * From here, calculate the value of the expression:
      */
+     vector<string> vector1;
     return postToExp(newExp)->calculate();
 }
 

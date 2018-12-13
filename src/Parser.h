@@ -19,12 +19,12 @@ class Parser {
 
 private:
     unsigned int index;
-    vector<string> lines;
     map<string, Expression *> commandsTable;
     map<string, double> symbolTable;
+    vector<string> words;
 public:
-
-    Parser(const vector<string> &lines);
+    void createFunction(vector<string>lines);
+    Parser();
 
     void lineParse();
 

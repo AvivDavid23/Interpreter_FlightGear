@@ -3,4 +3,4 @@
 
 WhileCommand::WhileCommand() {}
 
-int WhileCommand::execute() { return 0; }
+int WhileCommand::execute(const vector<string> &line, unsigned int i) { return 0; }

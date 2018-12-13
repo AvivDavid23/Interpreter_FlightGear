@@ -19,7 +19,7 @@ public:
      */
     void setList(vector<string>& lines, unsigned int currentIndex);
 
-    int execute();
+    int execute(const vector<string> &line, unsigned int i);
 };
 
 

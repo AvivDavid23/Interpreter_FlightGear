@@ -1,8 +1,11 @@
 
+#include <iostream>
 #include "OpenServerCommand.h"
+#include <thread>
 
 OpenServerCommand::OpenServerCommand() {}
 
-int OpenServerCommand::execute() {
-    return 0;
+// TODO: thread, client-server.
+int OpenServerCommand::execute(const vector<string> &line, unsigned int index) {
+
 }

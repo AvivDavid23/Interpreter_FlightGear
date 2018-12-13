@@ -2,7 +2,6 @@
 #include <fstream>
 #include "Parser.h"
 #include "Shunting-Yard.h"
-
 #define TEXT "file.txt"
 /**
  * Runs on the file script, creates vector which each value has a string which represent a line
@@ -16,12 +15,14 @@ vector<string> lexer(const string &fileName) {
     if (!file.is_open()) {
         file.open(fileName, fstream::in | fstream::app);
     }
-    while (file>> tmp ) vector.push_back(tmp);
+    while (file >> tmp) vector.push_back(tmp);
     file.close();
     return vector;
 }
 
 int main() {
-    cout << shuntingYardAlg("(10+4)/2");
+    vector<string>words = lexer("dvir.txt");
+    Parser parser;
+    parser.commandParse(words);
     return 0;
 }
