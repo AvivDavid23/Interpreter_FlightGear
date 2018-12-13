@@ -17,7 +17,6 @@
 
 using namespace std;
 
-
 /**
  *
  * @param exp the expression.
@@ -126,11 +125,28 @@ inline Expression *postToExp(string exp) {
 }
 
 /**
+ * Input check
+ * @param str string
+ * @return true if good, else false
+ */
+inline bool inputCheck(string str){
+    for (auto item : str)
+        if (!isdigit(item) && !isOperator(item) && item != ' ' && item != '(' && item != ')') return false;
+    return true;
+}
+
+/**
  * implementation of Shunting Yard Algorithm
  * @param expression the expression ass a string
  * @return value of the expression
  */
 static inline double shuntingYardAlg(string expression) {
+    // if its only a number:
+    if (expression.find('(') == string::npos && expression.find(')') == string::npos &&
+    expression.find('+') == string::npos && expression.find('-') == string::npos &&
+    expression.find('/') == string::npos && expression.find('*') == string::npos)
+        return atof(expression.c_str());
+    if (!inputCheck(expression)) throw "Input Error!";
     map<char, int> precedences;
     precedences['+'] = 1;
     precedences['-'] = 2;

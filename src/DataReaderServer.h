@@ -7,7 +7,12 @@
 
 
 class DataReaderServer {
+    int port;
+    int hz;
+public:
+    DataReaderServer(int port, int hz);
 
+    void openServer();
 };
 
 
