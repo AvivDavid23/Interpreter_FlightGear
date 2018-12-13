@@ -13,7 +13,7 @@ class Number : public Expression {
 public:
     Number(double value);
 
-    double calculate(const vector<string> &vector1, unsigned int i);
+    double calculate();
 
 };
 
