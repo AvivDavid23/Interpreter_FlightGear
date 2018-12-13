@@ -10,8 +10,8 @@
 // TODO: finish class
 class IfCommand : public Command {
     list<Command*> commandList;
+    unsigned int &index;
 public:
-    IfCommand();
 
     /**
      * Sets the command list for the condition
@@ -20,7 +20,9 @@ public:
      */
     void setList(vector<string> &lines, unsigned int currentIndex);
 
-    int execute();
+    int execute(const vector<string> &line, unsigned int i);
+
+    IfCommand(unsigned int &index);
 };
 
 

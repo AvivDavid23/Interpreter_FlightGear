@@ -6,16 +6,17 @@
 #include "Command.h"
 
 class CommandExpression : public Expression {
-public:
+protected:
     Command *command;
+    vector<string> words;
+    unsigned int index;
+public:
+    CommandExpression(Command *command, const vector<string> &words);
 
-     CommandExpression(Command *command);
+    void setIndex(unsigned int index);
 
     virtual double calculate();
-    void setWords(const vector<string> &words);
 
-protected:
-    vector<string> words;
 };
 
 

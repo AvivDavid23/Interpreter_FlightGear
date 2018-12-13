@@ -7,12 +7,13 @@
  * @return the command execution value.
  */
 double CommandExpression::calculate() {
-    return command->execute();
+    return command->execute(words, index);
 }
 
-CommandExpression::CommandExpression(Command *command) : command(command) {}
-
-void CommandExpression::setWords(const vector<string> &words) {
-    CommandExpression::words = words;
+void CommandExpression::setIndex(unsigned int index) {
+    CommandExpression::index = index;
 }
+
+CommandExpression::CommandExpression(Command *command, const vector<string> &words) : command(
+        command), words(words) {}
 

@@ -10,16 +10,18 @@
 // TODO: finish class
 class WhileCommand : public Command {
     list<Command*> commandList;
+    unsigned int &index;
 public:
-    WhileCommand();
+    WhileCommand(unsigned int &index);
+
     /**
      * Sets the command list for the loop
      * @param lines vector of line that we get from the lexer
      * @param currentIndex current index to start reading
      */
-    void setList(vector<string>& lines, unsigned int currentIndex);
+    void setList(vector<string>& lines);
 
-    int execute();
+    int execute(const vector<string> &line, unsigned int i);
 };
 
 
