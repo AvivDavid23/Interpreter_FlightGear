@@ -20,21 +20,18 @@ class Parser {
 private:
     unsigned int index;
     map<string, Expression *> commandsTable;
-    map<string, double>    symbolTable;
-    vector<string> words;
+    map<string, double> symbolTable;
 public:
-    void createFunction(vector<string>lines);
+    void createFunction(vector<string> lines);
+
     Parser();
 
-    void lineParse();
 
     void commandParse(const vector<string> &words);
 
-    list<Command*> listCreator();
 
     virtual ~Parser();
 
-    double run(Expression *pExpression);
 };
 
 #endif //PROJECT_PARSER_H

@@ -1,7 +1,6 @@
 
 #include <fstream>
 #include "Parser.h"
-#include "Shunting-Yard.h"
 #define TEXT "file.txt"
 /**
  * Runs on the file script, creates vector which each value has a string which represent a line
@@ -21,8 +20,10 @@ vector<string> lexer(const string &fileName) {
 }
 
 int main() {
-    vector<string>words = lexer("dvir.txt");
+    vector<string>words = lexer("file.txt");
     Parser parser;
+    parser.createFunction(words);
     parser.commandParse(words);
+
     return 0;
 }

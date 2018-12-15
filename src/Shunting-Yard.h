@@ -1,4 +1,5 @@
 
+
 #ifndef SECONDYEARPROJECT_BIU_SHUNTING_YARD_H
 #define SECONDYEARPROJECT_BIU_SHUNTING_YARD_H
 
@@ -15,7 +16,6 @@
 #include <algorithm>
 
 using namespace std;
-
 
 /**
  *
@@ -81,7 +81,8 @@ inline Expression *postToExp(string exp) {
             ++index;
             ++time;
             // take two expressions and create one with them:
-        } else if (expStack.size() >= 2 && (numStack.empty() || time - get<1>(expStack.top()) == 1)) {
+        } else if (expStack.size() >= 2 && ((numStack.empty() || ((time - get<1>(expStack.top()) == 1)
+                                                                  && (time - get<1>(numStack.top()) > 2))))) {
             Expression *ex2 = get<0>(expStack.top());
             expStack.pop();
             Expression *ex1 = get<0>(expStack.top());
@@ -124,11 +125,28 @@ inline Expression *postToExp(string exp) {
 }
 
 /**
+ * Input check
+ * @param str string
+ * @return true if good, else false
+ */
+inline bool inputCheck(string str){
+    for (auto item : str)
+        if (!isdigit(item) && !isOperator(item) && item != ' ' && item != '(' && item != ')') return false;
+    return true;
+}
+
+/**
  * implementation of Shunting Yard Algorithm
  * @param expression the expression ass a string
  * @return value of the expression
  */
 static inline double shuntingYardAlg(string expression) {
+    if (!inputCheck(expression)) throw "Input Error!";
+    // if its only a number:
+    if (expression.find('(') == string::npos && expression.find(')') == string::npos &&
+        expression.find('+') == string::npos && expression.find('-') == string::npos &&
+        expression.find('/') == string::npos && expression.find('*') == string::npos)
+        return atof(expression.c_str());
     map<char, int> precedences;
     precedences['+'] = 1;
     precedences['-'] = 2;
