@@ -2,7 +2,6 @@
 
 #include "PrintCommand.h"
 
-void PrintCommand::setOutput(string &str) { output = str; }
 
 int PrintCommand::execute(const vector<string> &words, unsigned int i) {
 

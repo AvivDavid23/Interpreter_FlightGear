@@ -2,6 +2,7 @@
 #include <fstream>
 #include "Parser.h"
 #include "Shunting-Yard.h"
+#include "OpenServerCommand.h"
 #define TEXT "file.txt"
 /**
  * Runs on the file script, creates vector which each value has a string which represent a line
@@ -21,10 +22,16 @@ vector<string> lexer(const string &fileName) {
 }
 
 int main() {
-    try {
-        cout << shuntingYardAlg("3+(4/2)*5/5-5+5");
-    } catch(...){
-        cerr << "Error!";
+    vector<string> vec;
+    vec.emplace_back("test");
+    vec.emplace_back("5401");
+    vec.emplace_back("20/2");
+    map<string, double>s;
+    unsigned int a = 0;
+    OpenServerCommand command(s, a);
+    command.execute(vec, 0);
+    while(true){
+
     }
     return 0;
 }

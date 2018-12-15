@@ -5,14 +5,14 @@
 #ifndef SECONDYEARPROJECT_BIU_DATAREADERSERVER_H
 #define SECONDYEARPROJECT_BIU_DATAREADERSERVER_H
 
+#include "thread"
+#include "map"
+
 
 class DataReaderServer {
-    int port;
-    int hz;
-public:
-    DataReaderServer(int port, int hz);
 
-    void openServer();
+public:
+    static void openServer(int port, int hz, std::map<std::string, double> &symbolTable);
 };
 
 

@@ -5,14 +5,18 @@
 
 #include <string>
 #include "Command.h"
+#include "map"
+#include "DataReaderServer.h"
 /**
  * A class which opens a thread which opens a server that listens to a specific given port
  */
 // TODO: finish class
 class OpenServerCommand : public Command {
     unsigned int &index;
+    map<string, double> &symbolTable;
+
 public:
-    OpenServerCommand(unsigned int &index);
+    OpenServerCommand(map<string, double> &symbolTable, unsigned int &index);
 
 
     int execute(const vector<string> &words, unsigned int i);

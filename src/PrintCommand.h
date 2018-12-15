@@ -14,13 +14,9 @@ class PrintCommand : public Command {
     string output;
     map<string, double> &smblTablePtr;
     unsigned int &index;
+
 public:
     PrintCommand(map<string, double> &smblTablePtr, unsigned int &index);
-
-public:
-    PrintCommand(map<string, double> &smblTablePtr);
-
-    void setOutput(string& str);
 
     int execute(const vector<string> &words, unsigned int i);
 };

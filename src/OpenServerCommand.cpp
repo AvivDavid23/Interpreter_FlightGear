@@ -3,10 +3,10 @@
 #include "OpenServerCommand.h"
 #include <thread>
 #include "Shunting-Yard.h"
-#include "DataReaderServer.h"
 
-// TODO: thread, client-server.
-OpenServerCommand::OpenServerCommand(unsigned int &index) : index(index) {}
+
+OpenServerCommand::OpenServerCommand(map<string, double> &symbolTable, unsigned int &index) : symbolTable(symbolTable),
+                                                                                              index(index){}
 
 int OpenServerCommand::execute(const vector<string> &words, unsigned int index) {
     int port, hz;
@@ -17,8 +17,8 @@ int OpenServerCommand::execute(const vector<string> &words, unsigned int index) 
         cerr << "Syntax/Parameter Error!" << endl;
         return 0;
     }
-    DataReaderServer server(port, hz);
-    server.openServer();
+    thread t(&DataReaderServer::openServer, port, hz, std::ref(symbolTable));
+    t.detach();
     return 3;
 }
 

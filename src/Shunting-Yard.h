@@ -141,12 +141,12 @@ inline bool inputCheck(string str){
  * @return value of the expression
  */
 static inline double shuntingYardAlg(string expression) {
+    if (!inputCheck(expression)) throw "Input Error!";
     // if its only a number:
     if (expression.find('(') == string::npos && expression.find(')') == string::npos &&
     expression.find('+') == string::npos && expression.find('-') == string::npos &&
     expression.find('/') == string::npos && expression.find('*') == string::npos)
         return atof(expression.c_str());
-    if (!inputCheck(expression)) throw "Input Error!";
     map<char, int> precedences;
     precedences['+'] = 1;
     precedences['-'] = 2;
