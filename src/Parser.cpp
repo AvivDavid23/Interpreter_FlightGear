@@ -33,7 +33,7 @@ void Parser::commandParse(const vector<string> &words) {
 void Parser:: createFunction(vector<string>lines){
     // create commands table:
     commandsTable["openDataServer"] = new CommandExpression(new OpenServerCommand(symbolTable, index),lines);
-    commandsTable["connect"] = new CommandExpression(new ConnectCommand(index),lines);
+    commandsTable["connect"] = new CommandExpression(new ConnectCommand(symbolTable, index),lines);
     commandsTable["var"] = new CommandExpression(new DefineVarCommand(symbolTable,index),lines);
     commandsTable["while"] = new CommandExpression(new WhileCommand(index),lines);
     commandsTable["if"] = new CommandExpression(new IfCommand(index),lines);

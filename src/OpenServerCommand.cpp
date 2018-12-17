@@ -11,8 +11,8 @@ OpenServerCommand::OpenServerCommand(map<string, double> &symbolTable, unsigned 
 int OpenServerCommand::execute(const vector<string> &words, unsigned int index) {
     int port, hz;
     try {
-        port = (int) shuntingYardAlg(words[index + 1]);
-        hz = (int) shuntingYardAlg(words[index + 2]);
+        port = (int) ShuntingYard::shuntingYardAlg(words[index + 1]);
+        hz = (int) ShuntingYard::shuntingYardAlg(words[index + 2]);
     } catch (...) {
         cerr << "Syntax/Parameter Error!" << endl;
         return 0;

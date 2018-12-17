@@ -36,7 +36,7 @@ class ShuntingYard {
  * @param type operation for exp
  * @param left left exp
  * @param right right exp
- * @return disired expression, based on the operation
+ * @return desired expression, based on the operation
  */
     static Expression *createExpression(char type, Expression *left, Expression *right);
 
