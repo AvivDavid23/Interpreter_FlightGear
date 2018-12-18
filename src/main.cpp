@@ -2,13 +2,9 @@
 #include <fstream>
 #include "Parser.h"
 #include "Lexer.h"
+#include "DataReaderServer.h"
 #define TEXT "file.txt"
 int main() {
-    Lexer lexer;
-    vector<string>words = lexer.active(TEXT);
-    Parser parser;
-    parser.createFunction(words);
-    parser.commandParse(words);
-
+    DataReaderServer::openServer(5400, 10);
     return 0;
 }

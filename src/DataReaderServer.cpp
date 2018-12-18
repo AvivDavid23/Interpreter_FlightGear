@@ -11,11 +11,40 @@
 #include <string.h>
 #include <sys/socket.h>
 #include "DataReaderServer.h"
+#include "PathsTable.h"
+#include "SymbolTable.h"
+#include "BindingTable.h"
 
+std::vector<std::string> DataReaderServer::splitByComma(char *buffer) {
+    std::vector<std::string> vec;
+    std::string tmp;
+    while (*buffer) {
+        while (*buffer != ',' && *buffer != '\n') {
+            tmp += *buffer;
+            ++buffer;
+        }
+        vec.push_back(tmp);
+        tmp = "";
+        ++buffer;
+    }
+    return vec;
+}
 
-void DataReaderServer::openServer(int port, int hz, std::map<std::string, double> &symbolTable) {
+void DataReaderServer::updatePathsTable(std::vector<std::string> vector) {
+    for (int i = 0; i < PARAMETERS_SIZE; ++i) {
+        PathsTable::setValue(paths[i],atof(vector[i].c_str()));
+    }
+}
+
+void DataReaderServer::updateSymbolTable() {
+    for (auto const& str : Symtable){
+        SymbolTable::setValue(str.first,PathsTable::getValue(BindingTable::getValue(str.first)));
+    }
+}
+void DataReaderServer::openServer(int port, int hz) {
+    bool firstTime = true;
     int sockfd, newsockfd, clilen;
-    char buffer[256];
+    char buffer[500];
     struct sockaddr_in serv_addr, cli_addr;
     int n;
 
@@ -56,14 +85,17 @@ void DataReaderServer::openServer(int port, int hz, std::map<std::string, double
     }
     while (true) {
         /* If connection is established then start communicating */
-        bzero(buffer, 256);
-        n = read(newsockfd, buffer, 255);
+        bzero(buffer, 500);
+        n = read(newsockfd, buffer, 500);
 
         if (n < 0) {
             perror("ERROR reading from socket");
             exit(1);
         }
-        printf("Here is the message: %s\n", buffer);
+
+        std::vector<std::string> parameters = splitByComma(buffer);
+        updatePathsTable(parameters);
+        updateSymbolTable();
         if (n < 0) {
             perror("ERROR writing to socket");
             exit(1);

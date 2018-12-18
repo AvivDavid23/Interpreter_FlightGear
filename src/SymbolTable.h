@@ -5,11 +5,12 @@
 #ifndef SECONDYEARPROJECT_BIU_SYMBOLTABLE_H
 #define SECONDYEARPROJECT_BIU_SYMBOLTABLE_H
 
-#endif //SECONDYEARPROJECT_BIU_SYMBOLTABLE_H
 
 #include "map"
-
-static std::map<std::string, double> table;
+/**
+ * A tables which hold our vars values
+ */
+static std::map<std::string, double> Symtable;
 
 class SymbolTable {
 public:
@@ -19,7 +20,7 @@ public:
      * @param val val
      */
     static inline void setValue(const std::string &key, double val) {
-        table[key] = val;
+        Symtable[key] = val;
     }
 
     /**
@@ -28,7 +29,7 @@ public:
      * @return table[key]
      */
     static inline double getValue(const std::string &key) {
-        return table[key];
+        return Symtable[key];
     }
 
     /**
@@ -36,6 +37,11 @@ public:
      * @return true if table[key] exists, else false
      */
     static inline bool atTable(const std::string &key) {
-        return table.find(key) != table.end();
+        return Symtable.find(key) != Symtable.end();
+    }
+
+    static inline std::map<std::string, double> getTable(){
+        return Symtable;
     }
 };
+#endif //SECONDYEARPROJECT_BIU_SYMBOLTABLE_H
