@@ -12,13 +12,12 @@
  */
 class PrintCommand : public Command {
     string output;
-    map<string, double> &smblTablePtr;
+    unsigned int &index;
+
 public:
-    PrintCommand(map<string, double> &smblTablePtr);
+    PrintCommand( unsigned int &index);
 
-    void setOutput(string& str);
-
-    int execute();
+    int execute(const vector<string> &line);
 };
 
 

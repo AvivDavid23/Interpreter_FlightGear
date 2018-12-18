@@ -6,12 +6,15 @@
 #include "Command.h"
 
 class CommandExpression : public Expression {
-public:
+protected:
     Command *command;
-
-     CommandExpression(Command *command);
+    vector<string> words;
+    unsigned int index;
+public:
+    CommandExpression(Command *command, const vector<string> &words);
 
     virtual double calculate();
+
 };
 
 

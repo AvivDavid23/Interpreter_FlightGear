@@ -1,20 +1,13 @@
 
 #include "Parser.h"
-
+#include "SymbolTable.h"
 
 /**
  *
  * @param lines the lines of the file.
  */
-Parser::Parser(const vector<string> &lines): lines(lines), index(0) {
-    // create commands table:
-    commandsTable["openDataServer"] = new CommandExpression(new OpenServerCommand());
-    commandsTable["connect"] = new CommandExpression(new ConnectCommand());
-    commandsTable["var"] = new CommandExpression(new DefineVarCommand(&symbolTable));
-    commandsTable["while"] = new CommandExpression(new WhileCommand());
-    commandsTable["if"] = new CommandExpression(new IfCommand());
-    commandsTable["print"] = new CommandExpression(new PrintCommand(symbolTable));
-}
+Parser::Parser() : index(0) {}
+
 
 /**
  * Destructor
@@ -25,40 +18,41 @@ Parser::~Parser() {
     }
 }
 
+
 /**
- * The function uses the vector of lines, each line will be parsed
+ * @param words all the words of the file.
  */
-void Parser::lineParse() {
-    for (auto const &item:lines) { // split into lines.
-        string buf;                 // Have a buffer string
-        stringstream ss(item);       // Insert the string into a stream
-        vector<string> tokens;      // Create vector to hold our words
-        while (ss >> buf) tokens.push_back(buf); // put the words into the vector
-        commandParse(tokens);
+void Parser::commandParse(const vector<string> &words) {
+    string item;
+    while (item != words.back()) {
+        item= words[index];
+        Expression *expression = commandsTable[(words[index])]; // key- worlds, value - command.
+        // if there is no expression in the commandsTable
+        if(expression== nullptr) {
+            if(words[index] == "(" || words[index] == ")") {
+                index ++;
+                continue;
+            }
+            // check if there is a variable in syMbolTable
+            if(SymbolTable::atTable(words[index]))
+                    // if there is, go to DefineVar.
+                    expression = commandsTable.at("var");
+                // if there is no expression like this, throw error.
+            if (expression == nullptr) throw runtime_error(string("no legal expression"));
+        }
+            index += (int) expression->calculate();
     }
 }
-
 /**
- * The function gets a vector of words, which all belongs to a specific live in the script
- * @param line the line without space.
+ * @param lines the array of words.
+ * in this function, we create a map between the string and the expression we want to calculate.
  */
-void Parser::commandParse(const vector<string> &line) {
-
-}
-
-/**
- * Creates and returns a list of commands for a While/If command
- */
-list<Command*> Parser::listCreator() {
-    // TODO : iterate the lines vector and return list for caller command
-
-}
-
-/**
- * Runs command
- * @param pExpression command expression ptr
- * @return
- */
-double Parser::run(Expression *pExpression) {
-    return pExpression->calculate();
+void Parser:: createFunction(vector<string>lines){
+    // create commands table:
+    commandsTable["openDataServer"] = new CommandExpression(new OpenServerCommand(index),lines);
+    commandsTable["connect"] = new CommandExpression(new ConnectCommand(index),lines);
+    commandsTable["var"] = new CommandExpression(new DefineVarCommand(index),lines);
+    commandsTable["while"] = new CommandExpression(new WhileCommand(index),lines);
+    commandsTable["if"] = new CommandExpression(new IfCommand(index), lines);
+    commandsTable["print"] = new CommandExpression(new PrintCommand(index),lines);
 }

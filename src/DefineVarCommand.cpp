@@ -1,6 +1,18 @@
+#include <utility>
+
 
 #include "DefineVarCommand.h"
+#include "SymbolTable.h"
 
-DefineVarCommand::DefineVarCommand(map<string, double> *smblTablePtr) : smblTablePtr(smblTablePtr){}
 
-int DefineVarCommand::execute() { return 0; }
+int DefineVarCommand::execute(const vector<string> &line) {
+    if(line[index] != "var") {
+        double number = stod(line[index+2]);
+        // smblTablePtr.put("line[index]",index+2);
+        if(SymbolTable::atTable(line[index]))
+            SymbolTable::setValue(line[index], number);
+
+    }
+}
+
+DefineVarCommand::DefineVarCommand(unsigned int &i) :index(i) {}

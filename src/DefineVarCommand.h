@@ -9,11 +9,14 @@
  */
  // TODO: finish class
 class DefineVarCommand : public Command{
-    map<string, double>* smblTablePtr;
+    unsigned int &index;
 public:
-    DefineVarCommand(map<string, double>* smblTablePtr);
+    DefineVarCommand(unsigned int &index);
 
-    int execute();
+public:
+
+    int execute(const vector<string> &line);
+
 };
 
 

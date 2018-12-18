@@ -1,6 +1,7 @@
 
+#include <string>
 #include "ConnectCommand.h"
 
-ConnectCommand::ConnectCommand() {}
+int ConnectCommand::execute(const vector<string> &line) { return 0; }
 
-int ConnectCommand::execute() { return 0; }
+ConnectCommand::ConnectCommand(unsigned int &index) : index(index) {}
