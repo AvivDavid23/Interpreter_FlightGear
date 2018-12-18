@@ -48,8 +48,10 @@ public:
         return symTable.find(key) != symTable.end();
     }
 
-    inline std::map<std::string, double> getTable() {
-        return symTable;
-    }
+
+    inline std::map<std::string, double>::iterator getFirst() { return symTable.begin(); }
+
+    inline std::map<std::string, double>::iterator getEnd() { return symTable.end(); }
 };
+
 #endif //SECONDYEARPROJECT_BIU_SYMBOLTABLE_H

@@ -34,9 +34,9 @@ void DataReaderServer::updatePathsTable(std::vector<std::string> vector) {
 }
 
 void DataReaderServer::updateSymbolTable() {
-    for (auto const& str : SymbolTable::instance()->getTable()){
-        SymbolTable::instance()->setValue(str.first,PathsTable::instance()->getValue(BindingTable::instance()->
-        getValue(str.first)));
+    for (auto iter = SymbolTable::instance()->getFirst() ; iter != SymbolTable::instance()->getEnd(); ++iter){
+        SymbolTable::instance()->setValue(iter->first,PathsTable::instance()->getValue(BindingTable::instance()->
+        getValue(iter->first)));
     }
 }
 void DataReaderServer::openServer(int port, int hz) {
@@ -89,9 +89,7 @@ void DataReaderServer::openServer(int port, int hz) {
             perror("ERROR reading from socket");
             exit(1);
         }
-
-        std::vector<std::string> parameters = splitByComma(buffer);
-        updatePathsTable(parameters);
+        updatePathsTable(splitByComma(buffer));
         updateSymbolTable();
         if (n < 0) {
             perror("ERROR writing to socket");
