@@ -9,10 +9,9 @@
  */
  // TODO: finish class
 class DefineVarCommand : public Command{
-    map<string, double> &smblTablePtr;
     unsigned int &index;
 public:
-    DefineVarCommand(map<string, double> &smblTablePtr, unsigned int &index);
+    DefineVarCommand(unsigned int &index);
 
 public:
 

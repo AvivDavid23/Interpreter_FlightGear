@@ -11,10 +11,9 @@
 // TODO: finish class
 class OpenServerCommand : public Command {
     unsigned int &index;
-    map<string, double> &symbolTable;
 
 public:
-    OpenServerCommand(map<string, double> &symbolTable, unsigned int &index);
+    OpenServerCommand(unsigned int &index);
 
 
     int execute(const vector<string> &words);

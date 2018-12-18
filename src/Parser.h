@@ -19,7 +19,6 @@ class Parser {
 private:
     unsigned int index;
     map<string, Expression *> commandsTable;
-    map<string, double> symbolTable;
 public:
      void createFunction(vector<string> lines);
 

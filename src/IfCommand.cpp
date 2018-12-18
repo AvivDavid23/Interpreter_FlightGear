@@ -17,5 +17,5 @@ int IfCommand::execute(const vector<string> &words) {
     }
 }
 
-IfCommand::IfCommand(unsigned int &i, map<string, double> &symbolTable) : ConditionParser(i), symbolTable(symbolTable){}
+IfCommand::IfCommand(unsigned int &i) : ConditionParser(i){}
 

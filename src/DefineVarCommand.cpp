@@ -2,18 +2,17 @@
 
 
 #include "DefineVarCommand.h"
+#include "SymbolTable.h"
 
 
 int DefineVarCommand::execute(const vector<string> &line) {
     if(line[index] != "var") {
         double number = stod(line[index+2]);
         // smblTablePtr.put("line[index]",index+2);
-       for(auto &item:smblTablePtr) {
-           if(item.first == line[index])
-               item.second = number;
-       }
+        if(SymbolTable::atTable(line[index]))
+            SymbolTable::setValue(line[index], number);
+
     }
 }
 
-DefineVarCommand::DefineVarCommand(map<string, double> &smblTablePtr, unsigned int &i) : smblTablePtr(smblTablePtr),
-                                                                                             index(i) {}
+DefineVarCommand::DefineVarCommand(unsigned int &i) :index(i) {}

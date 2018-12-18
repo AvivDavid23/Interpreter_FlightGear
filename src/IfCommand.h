@@ -9,11 +9,10 @@
  * A command which runs if a condition is satisfied
  */
 class IfCommand : public ConditionParser {
-    map<string,double> &symbolTable;
 public:
     int execute(const vector<string> &words);
 
-    IfCommand(unsigned int &index, map<string, double> &symbolTable);
+    IfCommand(unsigned int &index);
 };
 
 

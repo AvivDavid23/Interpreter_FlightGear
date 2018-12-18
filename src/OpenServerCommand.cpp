@@ -4,8 +4,7 @@
 #include "ShuntingYard.h"
 
 
-OpenServerCommand::OpenServerCommand(map<string, double> &symbolTable, unsigned int &index) : symbolTable(symbolTable),
-                                                                                              index(index){}
+OpenServerCommand::OpenServerCommand(unsigned int &index) : index(index){}
 
 int OpenServerCommand::execute(const vector<string> &words) {
     int port, hz;

@@ -1,6 +1,6 @@
 
 #include "Parser.h"
-
+#include "SymbolTable.h"
 
 /**
  *
@@ -33,9 +33,8 @@ void Parser::commandParse(const vector<string> &words) {
                 index ++;
                 continue;
             }
-            // check if there is a variable in sybolTable
-            for (auto const &varName: symbolTable)
-                if (words[index] == varName.first)
+            // check if there is a variable in syMbolTable
+            if(SymbolTable::atTable(words[index]))
                     // if there is, go to DefineVar.
                     expression = commandsTable.at("var");
                 // if there is no expression like this, throw error.
@@ -50,10 +49,10 @@ void Parser::commandParse(const vector<string> &words) {
  */
 void Parser:: createFunction(vector<string>lines){
     // create commands table:
-    commandsTable["openDataServer"] = new CommandExpression(new OpenServerCommand(symbolTable,index),lines);
+    commandsTable["openDataServer"] = new CommandExpression(new OpenServerCommand(index),lines);
     commandsTable["connect"] = new CommandExpression(new ConnectCommand(index),lines);
-    commandsTable["var"] = new CommandExpression(new DefineVarCommand(symbolTable,index),lines);
+    commandsTable["var"] = new CommandExpression(new DefineVarCommand(index),lines);
     commandsTable["while"] = new CommandExpression(new WhileCommand(index),lines);
-    commandsTable["if"] = new CommandExpression(new IfCommand(index, symbolTable), lines);
-    commandsTable["print"] = new CommandExpression(new PrintCommand(symbolTable,index),lines);
+    commandsTable["if"] = new CommandExpression(new IfCommand(index), lines);
+    commandsTable["print"] = new CommandExpression(new PrintCommand(index),lines);
 }
