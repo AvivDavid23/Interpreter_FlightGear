@@ -13,8 +13,6 @@ protected:
 public:
     CommandExpression(Command *command, const vector<string> &words);
 
-    void setIndex(unsigned int index);
-
     virtual double calculate();
 
 };

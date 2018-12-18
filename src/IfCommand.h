@@ -3,26 +3,17 @@
 #define PROJECT_IFCOMMAND_H
 
 #include <iostream>
-#include "Command.h"
+#include "ConditionParser.h"
+#include "Parser.h"
 /**
  * A command which runs if a condition is satisfied
  */
-// TODO: finish class
-class IfCommand : public Command {
-    list<Command*> commandList;
-    unsigned int &index;
+class IfCommand : public ConditionParser {
+    map<string,double> &symbolTable;
 public:
+    int execute(const vector<string> &words);
 
-    /**
-     * Sets the command list for the condition
-     * @param lines vector of line that we get from the lexer
-     * @param currentIndex current index to start reading
-     */
-    void setList(vector<string> &lines, unsigned int currentIndex);
-
-    int execute(const vector<string> &words, unsigned int i);
-
-    IfCommand(unsigned int &index);
+    IfCommand(unsigned int &index, map<string, double> &symbolTable);
 };
 
 

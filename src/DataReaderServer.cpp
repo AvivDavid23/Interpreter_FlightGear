@@ -1,3 +1,4 @@
+
 //
 // Created by dvir on 12/13/18.
 //
@@ -62,7 +63,7 @@ void DataReaderServer::openServer(int port, int hz, std::map<std::string, double
             perror("ERROR reading from socket");
             exit(1);
         }
-        printf("Here is the message: %s\n",buffer);
+        printf("Here is the message: %s\n", buffer);
         if (n < 0) {
             perror("ERROR writing to socket");
             exit(1);

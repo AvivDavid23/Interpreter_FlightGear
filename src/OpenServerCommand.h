@@ -1,5 +1,3 @@
-
-
 #ifndef PROJECT_OPENSERVERCOMMAND_H
 #define PROJECT_OPENSERVERCOMMAND_H
 
@@ -19,7 +17,7 @@ public:
     OpenServerCommand(map<string, double> &symbolTable, unsigned int &index);
 
 
-    int execute(const vector<string> &words, unsigned int i);
+    int execute(const vector<string> &words);
 };
 
 

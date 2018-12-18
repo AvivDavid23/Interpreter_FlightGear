@@ -4,6 +4,7 @@
 #include <vector>
 #include "list"
 #include <string>
+#include "ShuntingYard.h"
 /**
  * Command Interface.
  */
@@ -14,7 +15,7 @@ public:
     /**
      * Execute the command.
      */
-    virtual int execute(const vector<string> &words, unsigned int i) = 0;
+    virtual int execute(const vector<string> &line) = 0;
 };
 
 #endif //PROJECT_COMMAND_H
