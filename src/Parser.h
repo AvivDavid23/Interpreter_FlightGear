@@ -16,13 +16,12 @@
  * A class which used to parse every line in the script and execute it
  */
 class Parser {
-
 private:
     unsigned int index;
     map<string, Expression *> commandsTable;
     map<string, double> symbolTable;
 public:
-    void createFunction(vector<string> lines);
+     void createFunction(vector<string> lines);
 
     Parser();
 

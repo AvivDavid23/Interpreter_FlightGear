@@ -3,9 +3,9 @@
 //
 
 #include "ConditionParser.h"
+#include "Parser.h"
 
-int ConditionParser::execute(const vector<string> &line, unsigned int i) {
-    index = i;
+int ConditionParser::execute(const vector<string> &line) {
     index++;
     // left expression until the operator
     string leftExpression;
@@ -19,32 +19,51 @@ int ConditionParser::execute(const vector<string> &line, unsigned int i) {
     ++index;
     // create the right expression until the end of the condition.
      rightExpression += line[index];
+    setUpCommands(line);
     if (line[count] == ">") {
-        return (shuntingYardAlg(leftExpression) > shuntingYardAlg(rightExpression));
+        return (ShuntingYard::shuntingYardAlg(leftExpression) > ShuntingYard::shuntingYardAlg(rightExpression));
     }
     if (line[count] == ">=") {
-        return (shuntingYardAlg(leftExpression) >= shuntingYardAlg(rightExpression));
+        return (ShuntingYard::shuntingYardAlg(leftExpression) >= ShuntingYard::shuntingYardAlg(rightExpression));
     }
     if (line[count] == "==") {
-        return (shuntingYardAlg(leftExpression) == shuntingYardAlg(rightExpression));
+        return (ShuntingYard::shuntingYardAlg(leftExpression) == ShuntingYard::shuntingYardAlg(rightExpression));
     }
     if (line[count] == "!=") {
-        return (shuntingYardAlg(leftExpression) != shuntingYardAlg(rightExpression));
+        return (ShuntingYard::shuntingYardAlg(leftExpression) != ShuntingYard::shuntingYardAlg(rightExpression));
     }
     if (line[count] == "<") {
-        return (shuntingYardAlg(leftExpression) < shuntingYardAlg(rightExpression));
+        return (ShuntingYard::shuntingYardAlg(leftExpression) <ShuntingYard::shuntingYardAlg(rightExpression));
     }
     if (line[count] == "<=") {
-        return (shuntingYardAlg(leftExpression) <= shuntingYardAlg(rightExpression));
+        return (ShuntingYard::shuntingYardAlg(leftExpression) <= ShuntingYard::shuntingYardAlg(rightExpression));
     }
 }
-
+/**
+ * @param charOperator the string.
+ * @return 1 if the string is operator, 0 otherwise.
+ */
 bool ConditionParser::checkOperator(const string &charOperator) {
     return (charOperator == ">" || charOperator == ">=" || charOperator == "==" || charOperator == "!=" ||
             charOperator == "<" || charOperator == "<=");
 }
-
+/**
+ * @param i index of the array of words.
+ */
 ConditionParser::ConditionParser(unsigned int &i) {
 this->index= i ;
 }
+
+void ConditionParser::setUpCommands(const vector<string> &words1) {
+    unsigned int place = index;
+        while(words1[place] != "{") ++place;
+        ++place;
+        while(words1[place] != "}") {
+            // auto it = parser..find(words1[place]);
+            //if(it!= parser.commandsTable.end()) {
+                //this->expression.push_back(it->second);
+            }
+            ++place;
+        }
+//}
 

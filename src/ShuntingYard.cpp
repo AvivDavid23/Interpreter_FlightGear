@@ -1,29 +1,8 @@
 
+#include "ShuntingYard.h"
 
-#ifndef SECONDYEARPROJECT_BIU_SHUNTING_YARD_H
-#define SECONDYEARPROJECT_BIU_SHUNTING_YARD_H
 
-#include <iostream>
-#include "queue"
-#include "stack"
-#include "Expression.h"
-#include "Plus.h"
-#include "Minus.h"
-#include "Mult.h"
-#include "Div.h"
-#include "Number.h"
-#include "tuple"
-#include <algorithm>
-
-using namespace std;
-
-/**
- *
- * @param exp the expression.
- * @param index start index
- * @return the value of the first number in exp which begins at index.
- */
-inline double calculateFirstNum(string exp, unsigned long &index) {
+double ShuntingYard::calculateFirstNum(string exp, unsigned long &index) {
     if (exp[index] != '(') {
         return (exp[index] - '0');
     }
@@ -37,21 +16,11 @@ inline double calculateFirstNum(string exp, unsigned long &index) {
     return val;
 }
 
-/**
- * @param c char
- * @return true if char is an operator
- */
-inline bool isOperator(char c) {
+bool ShuntingYard::isOperator(char c) {
     return c == '+' || c == '-' || c == '*' || c == '/';
 }
 
-/**
- * @param type operation for exp
- * @param left left exp
- * @param right right exp
- * @return disired expression, based on the operation
- */
-inline Expression *createExpression(char type, Expression *left, Expression *right) {
+Expression *ShuntingYard::createExpression(char type, Expression *left, Expression *right) {
     switch (type) {
         case '+':
             return new Plus(left, right);
@@ -64,12 +33,7 @@ inline Expression *createExpression(char type, Expression *left, Expression *rig
     }
 }
 
-/**
- * Transfers the string into an Expression
- * @param exp string expression
- * @return expression
- */
-inline Expression *postToExp(string exp) {
+Expression *ShuntingYard::postToExp(string exp) {
     stack<tuple<double, unsigned int>> numStack;
     stack<tuple<Expression *, unsigned int> > expStack;
     unsigned int time = 0;
@@ -112,7 +76,7 @@ inline Expression *postToExp(string exp) {
                 if (get<1>(numberTup) > get<1>(expressionTup)) {
                     expStack.push(tuple<Expression *, unsigned int>(createExpression(exp[index], expression,
                                                                                      new Number(val)), time));
-                }else {
+                } else {
                     expStack.push(tuple<Expression *, unsigned int>(createExpression(exp[index], new Number(val),
                                                                                      expression), time));
                 }
@@ -124,23 +88,13 @@ inline Expression *postToExp(string exp) {
     return get<0>(expStack.top()); // the full exp is at the top of the stack
 }
 
-/**
- * Input check
- * @param str string
- * @return true if good, else false
- */
-inline bool inputCheck(string str){
+bool ShuntingYard::inputCheck(string str) {
     for (auto item : str)
         if (!isdigit(item) && !isOperator(item) && item != ' ' && item != '(' && item != ')') return false;
     return true;
 }
 
-/**
- * implementation of Shunting Yard Algorithm
- * @param expression the expression ass a string
- * @return value of the expression
- */
-static inline double shuntingYardAlg(string expression) {
+double ShuntingYard::shuntingYardAlg(string expression) {
     if (!inputCheck(expression)) throw "Input Error!";
     // if its only a number:
     if (expression.find('(') == string::npos && expression.find(')') == string::npos &&
@@ -215,4 +169,3 @@ static inline double shuntingYardAlg(string expression) {
     return postToExp(newExp)->calculate();
 }
 
-#endif //SECONDYEARPROJECT_BIU_SHUNTING_YARD_H
