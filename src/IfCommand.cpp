@@ -11,7 +11,7 @@
  * @return 1 if the condition is true, 0 otherwise.
  */
 int IfCommand::execute(const vector<string> &words) {
-    Parser parser;
+    //Parser parser;
     ConditionParser conditionParser(index);
     if (conditionParser.execute(words)) {
     }

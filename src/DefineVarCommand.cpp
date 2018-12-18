@@ -1,16 +1,13 @@
-#include <utility>
-
 
 #include "DefineVarCommand.h"
-#include "SymbolTable.h"
 
 
 int DefineVarCommand::execute(const vector<string> &line) {
     if(line[index] != "var") {
         double number = stod(line[index+2]);
         // smblTablePtr.put("line[index]",index+2);
-        if(SymbolTable::atTable(line[index]))
-            SymbolTable::setValue(line[index], number);
+        if(SymbolTable::instance()->atTable(line[index]))
+            SymbolTable::instance()->setValue(line[index], number);
 
     }
 }

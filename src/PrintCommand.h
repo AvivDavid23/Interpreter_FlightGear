@@ -5,7 +5,7 @@
 
 #include <iostream>
 #include "Command.h"
-#include "map"
+#include "SymbolTable.h"
 
 /**
  * Command which prints something to the stdout

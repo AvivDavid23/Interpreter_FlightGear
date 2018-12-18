@@ -11,9 +11,6 @@
 #include <string.h>
 #include <sys/socket.h>
 #include "DataReaderServer.h"
-#include "PathsTable.h"
-#include "SymbolTable.h"
-#include "BindingTable.h"
 
 std::vector<std::string> DataReaderServer::splitByComma(char *buffer) {
     std::vector<std::string> vec;
@@ -32,17 +29,17 @@ std::vector<std::string> DataReaderServer::splitByComma(char *buffer) {
 
 void DataReaderServer::updatePathsTable(std::vector<std::string> vector) {
     for (int i = 0; i < PARAMETERS_SIZE; ++i) {
-        PathsTable::setValue(paths[i],atof(vector[i].c_str()));
+        PathsTable::instance()->setValue(pathsVec[i],atof(vector[i].c_str()));
     }
 }
 
 void DataReaderServer::updateSymbolTable() {
-    for (auto const& str : Symtable){
-        SymbolTable::setValue(str.first,PathsTable::getValue(BindingTable::getValue(str.first)));
+    for (auto const& str : SymbolTable::instance()->getTable()){
+        SymbolTable::instance()->setValue(str.first,PathsTable::instance()->getValue(BindingTable::instance()->
+        getValue(str.first)));
     }
 }
 void DataReaderServer::openServer(int port, int hz) {
-    bool firstTime = true;
     int sockfd, newsockfd, clilen;
     char buffer[500];
     struct sockaddr_in serv_addr, cli_addr;

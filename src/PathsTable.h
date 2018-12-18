@@ -6,17 +6,23 @@
 #define SECONDYEARPROJECT_BIU_PATHSTABLE_H
 
 #include "map"
-static std::map<std::string, double> table;
 
 class PathsTable {
+    std::map<std::string, double> pathTable;
+    static PathsTable *s_instance;
 public:
+    static inline PathsTable *instance() {
+        if (!s_instance) s_instance = new PathsTable();
+        return s_instance;
+    }
+
     /**
      * Set a value in the table
      * @param key key
      * @param val val
      */
-    static inline void setValue(const std::string &key, double val) {
-        table[key] = val;
+    inline void setValue(const std::string &key, double val) {
+        pathTable[key] = val;
     }
 
     /**
@@ -24,8 +30,16 @@ public:
      * @param key key
      * @return table[key]
      */
-    static inline double getValue(const std::string &key) {
-        return table[key];
+    inline double getValue(const std::string &key) {
+        return pathTable[key];
+    }
+
+    /**
+     * @param key key
+     * @return true if table[key] exists, else false
+     */
+    inline bool atTable(const std::string &key) {
+        return pathTable.find(key) != pathTable.end();
     }
 };
 #endif //SECONDYEARPROJECT_BIU_PATHSTABLE_H

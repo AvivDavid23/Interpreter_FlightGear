@@ -4,16 +4,16 @@
 
 #include "Command.h"
 #include "map"
+#include "SymbolTable.h"
+
 /**
  * A class which defines variables from the script
  */
- // TODO: finish class
-class DefineVarCommand : public Command{
+// TODO: finish class
+class DefineVarCommand : public Command {
     unsigned int &index;
 public:
     DefineVarCommand(unsigned int &index);
-
-public:
 
     int execute(const vector<string> &line);
 

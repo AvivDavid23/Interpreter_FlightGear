@@ -1,10 +1,15 @@
 
-#include <fstream>
-#include "Parser.h"
-#include "Lexer.h"
-#include "DataReaderServer.h"
-#define TEXT "file.txt"
+#include <iostream>
+#include "BindingTable.h"
+#include "SymbolTable.h"
+#include "PathsTable.h"
+
+BindingTable *BindingTable::s_instance = 0;
+SymbolTable *SymbolTable::s_instance = 0;
+PathsTable *PathsTable::s_instance = 0;
+
+
 int main() {
-    DataReaderServer::openServer(5400, 10);
+    std::cout << "Hello Shin!\n";
     return 0;
 }

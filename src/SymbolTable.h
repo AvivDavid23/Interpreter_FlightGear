@@ -7,20 +7,28 @@
 
 
 #include "map"
+
 /**
  * A tables which hold our vars values
  */
-static std::map<std::string, double> Symtable;
+
 
 class SymbolTable {
+    std::map<std::string, double> symTable;
+    static SymbolTable *s_instance;
 public:
+    static inline SymbolTable *instance() {
+        if (!s_instance) s_instance = new SymbolTable;
+        return s_instance;
+    }
+
     /**
      * Set a value in the table
      * @param key key
      * @param val val
      */
-    static inline void setValue(const std::string &key, double val) {
-        Symtable[key] = val;
+    inline void setValue(const std::string &key, double val) {
+        symTable[key] = val;
     }
 
     /**
@@ -28,20 +36,20 @@ public:
      * @param key key
      * @return table[key]
      */
-    static inline double getValue(const std::string &key) {
-        return Symtable[key];
+    inline double getValue(const std::string &key) {
+        return symTable[key];
     }
 
     /**
      * @param key key
      * @return true if table[key] exists, else false
      */
-    static inline bool atTable(const std::string &key) {
-        return Symtable.find(key) != Symtable.end();
+    inline bool atTable(const std::string &key) {
+        return symTable.find(key) != symTable.end();
     }
 
-    static inline std::map<std::string, double> getTable(){
-        return Symtable;
+    inline std::map<std::string, double> getTable() {
+        return symTable;
     }
 };
 #endif //SECONDYEARPROJECT_BIU_SYMBOLTABLE_H
