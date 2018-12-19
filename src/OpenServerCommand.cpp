@@ -15,7 +15,7 @@ int OpenServerCommand::execute(const vector<string> &words) {
         cerr << "Syntax/Parameter Error!" << endl;
         return 0;
     }
-    //thread t(&DataReaderServer::openServer, port, hz, std::ref(symbolTable));
-    //t.detach();
+    thread t(&DataReaderServer::openServer, port, hz);
+    t.detach();
     return 3;
 }
