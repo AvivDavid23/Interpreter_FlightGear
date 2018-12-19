@@ -11,7 +11,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include "DataReaderServer.h"
-
+#include "mutex"
 std::vector<std::string> DataReaderServer::splitByComma(char *buffer) {
     std::vector<std::string> vec;
     std::string tmp;
@@ -28,16 +28,26 @@ std::vector<std::string> DataReaderServer::splitByComma(char *buffer) {
 }
 
 void DataReaderServer::updatePathsTable(std::vector<std::string> vector) {
+    globalMutex.lock();
     for (int i = 0; i < PARAMETERS_SIZE; ++i) {
         PathsTable::instance()->setValue(pathsVec[i],atof(vector[i].c_str()));
     }
+    globalMutex.unlock();
 }
 
 void DataReaderServer::updateSymbolTable() {
+    globalMutex.lock();
     for (auto iter = SymbolTable::instance()->getFirst() ; iter != SymbolTable::instance()->getEnd(); ++iter){
-        SymbolTable::instance()->setValue(iter->first,PathsTable::instance()->getValue(BindingTable::instance()->
-        getValue(iter->first)));
+        // means the var is binned to a var
+        if(*BindingTable::instance()->getValue(iter->first).c_str() != '/'){
+            SymbolTable::instance()->setValue(iter->first, SymbolTable::instance()->getValue(BindingTable::instance()->
+            getValue(iter->first)));
+        } else {
+            SymbolTable::instance()->setValue(iter->first, PathsTable::instance()->getValue(BindingTable::instance()->
+                    getValue(iter->first)));
+        }
     }
+    globalMutex.unlock();
 }
 void DataReaderServer::openServer(int port, int hz) {
     int sockfd, newsockfd, clilen;

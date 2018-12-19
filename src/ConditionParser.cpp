@@ -21,22 +21,22 @@ int ConditionParser::execute(const vector<string> &line) {
      rightExpression += line[index];
     setUpCommands(line);
     if (line[count] == ">") {
-        return (ShuntingYard::shuntingYardAlg(leftExpression) > ShuntingYard::shuntingYardAlg(rightExpression));
+        return (ExpressionsParser::shuntingYardAlg(leftExpression) > ExpressionsParser::shuntingYardAlg(rightExpression));
     }
     if (line[count] == ">=") {
-        return (ShuntingYard::shuntingYardAlg(leftExpression) >= ShuntingYard::shuntingYardAlg(rightExpression));
+        return (ExpressionsParser::shuntingYardAlg(leftExpression) >= ExpressionsParser::shuntingYardAlg(rightExpression));
     }
     if (line[count] == "==") {
-        return (ShuntingYard::shuntingYardAlg(leftExpression) == ShuntingYard::shuntingYardAlg(rightExpression));
+        return (ExpressionsParser::shuntingYardAlg(leftExpression) == ExpressionsParser::shuntingYardAlg(rightExpression));
     }
     if (line[count] == "!=") {
-        return (ShuntingYard::shuntingYardAlg(leftExpression) != ShuntingYard::shuntingYardAlg(rightExpression));
+        return (ExpressionsParser::shuntingYardAlg(leftExpression) != ExpressionsParser::shuntingYardAlg(rightExpression));
     }
     if (line[count] == "<") {
-        return (ShuntingYard::shuntingYardAlg(leftExpression) <ShuntingYard::shuntingYardAlg(rightExpression));
+        return (ExpressionsParser::shuntingYardAlg(leftExpression) <ExpressionsParser::shuntingYardAlg(rightExpression));
     }
     if (line[count] == "<=") {
-        return (ShuntingYard::shuntingYardAlg(leftExpression) <= ShuntingYard::shuntingYardAlg(rightExpression));
+        return (ExpressionsParser::shuntingYardAlg(leftExpression) <= ExpressionsParser::shuntingYardAlg(rightExpression));
     }
 }
 /**
