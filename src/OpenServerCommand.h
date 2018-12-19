@@ -14,9 +14,9 @@ class OpenServerCommand : public Command {
 
 public:
     OpenServerCommand(unsigned int &index);
-
-
+    vector<string> argv (const  vector<string> & words);
     int execute(const vector<string> &words);
+    bool is_number(const std::string& s);
 };
 
 

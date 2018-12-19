@@ -10,20 +10,15 @@
 * @return the lines vector
 */
 vector<string> Lexer::active(const string &fileName) {
-    createTable();
     vector<string> vector;
     string tmp;
     fstream file;
     if (!file.is_open()) {
         file.open(fileName, fstream::in | fstream::app);
     }
-    while (file >> tmp) {
+    while (file >> tmp ) {
             vector.push_back(tmp);
     }
     file.close();
     return vector;
-}
-
-void Lexer::createTable() {
-    this->parameters["connect"] = 2;
 }
