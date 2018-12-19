@@ -1,26 +1,31 @@
 
-#include "ShuntingYard.h"
+#include "ExpressionsParser.h"
 
 
-double ShuntingYard::calculateFirstNum(string exp, unsigned long &index) {
+double ExpressionsParser::calculateFirstNum(const string& exp, unsigned long &index) {
     if (exp[index] != '(') {
         return (exp[index] - '0');
     }
     double val = 0;
     ++index;
     while (exp[index] != ')') {
+        if (exp[index] == '-'){
+            val *= -1;
+            ++index;
+            continue;
+        }
         val *= 10;
         val += exp[index] - '0';
-        index++;
+        ++index;
     }
     return val;
 }
 
-bool ShuntingYard::isOperator(char c) {
+bool ExpressionsParser::isOperator(char c) {
     return c == '+' || c == '-' || c == '*' || c == '/';
 }
 
-Expression *ShuntingYard::createExpression(char type, Expression *left, Expression *right) {
+Expression *ExpressionsParser::createExpression(char type, Expression *left, Expression *right) {
     switch (type) {
         case '+':
             return new Plus(left, right);
@@ -33,7 +38,7 @@ Expression *ShuntingYard::createExpression(char type, Expression *left, Expressi
     }
 }
 
-Expression *ShuntingYard::postToExp(string exp) {
+Expression *ExpressionsParser::postToExp(const string& exp) {
     stack<tuple<double, unsigned int>> numStack;
     stack<tuple<Expression *, unsigned int> > expStack;
     unsigned int time = 0;
@@ -88,13 +93,13 @@ Expression *ShuntingYard::postToExp(string exp) {
     return get<0>(expStack.top()); // the full exp is at the top of the stack
 }
 
-bool ShuntingYard::inputCheck(string str) {
+bool ExpressionsParser::inputCheck(const string& str) {
     for (auto item : str)
         if (!isdigit(item) && !isOperator(item) && item != ' ' && item != '(' && item != ')') return false;
     return true;
 }
 
-double ShuntingYard::shuntingYardAlg(string expression) {
+double ExpressionsParser::shuntingYardAlg(const string& expression) {
     if (!inputCheck(expression)) throw "Input Error!";
     // if its only a number:
     if (expression.find('(') == string::npos && expression.find(')') == string::npos &&
@@ -169,3 +174,23 @@ double ShuntingYard::shuntingYardAlg(string expression) {
     return postToExp(newExp)->calculate();
 }
 
+string ExpressionsParser::varsExtrication(const string &exp) {
+    const char *pExp = exp.c_str();
+    string newExp;
+    string var;
+    while (*pExp) {
+        if (*pExp == '(' || *pExp == ')' || isdigit(*pExp) || isOperator(*pExp) || *pExp == ' ') {
+            newExp += pExp;
+            ++pExp;
+        } else {
+            while (!(*pExp == '(' || *pExp == ')' || isOperator(*pExp))) {
+                var += pExp;
+                ++pExp;
+            }
+            globalMutex.lock();
+            newExp += to_string(SymbolTable::instance()->getValue(var));
+            var = "";
+        }
+    }
+    return newExp;
+}

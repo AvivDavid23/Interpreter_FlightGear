@@ -8,7 +8,7 @@
 
 #include <mutex>
 #include "map"
-std::mutex globalMutex;
+static std::mutex globalMutex;
 
 /**
  * A tables which hold our vars values
