@@ -7,10 +7,11 @@ double ExpressionsParser::calculateFirstNum(const string& exp, unsigned long &in
         return (exp[index] - '0');
     }
     double val = 0;
+    bool neg = false;
     ++index;
     while (exp[index] != ')') {
         if (exp[index] == '-'){
-            val *= -1;
+          neg = true;
             ++index;
             continue;
         }
@@ -18,6 +19,7 @@ double ExpressionsParser::calculateFirstNum(const string& exp, unsigned long &in
         val += exp[index] - '0';
         ++index;
     }
+    if(neg) return val*(-1);
     return val;
 }
 
@@ -46,9 +48,15 @@ Expression *ExpressionsParser::postToExp(const string& exp) {
     while (exp[index]) {
         // add new Number:
         if (!isOperator(exp[index])) {
-            numStack.push(tuple<double, unsigned int>(calculateFirstNum(exp, index), time));
+            tuple<double,unsigned int> x;
+            x = make_tuple(calculateFirstNum(exp,index),time);
             ++index;
             ++time;
+            //if(exp[index] == '-' && (!isOperator(exp[index+1]))) {
+                //get<0>(x) =  get<0>(x) * -1;
+                //index++;
+            //}
+            numStack.push(x);
             // take two expressions and create one with them:
         } else if (expStack.size() >= 2 && ((numStack.empty() || ((time - get<1>(expStack.top()) == 1)
                                                                   && (time - get<1>(numStack.top()) > 2))))) {
@@ -90,6 +98,28 @@ Expression *ExpressionsParser::postToExp(const string& exp) {
             }
         }
     }
+    while(!numStack.empty()) {
+        tuple<double, unsigned int> numberTup = numStack.top();
+        double val = get<0>(numberTup); // value
+        numStack.pop();
+        Expression *expression;
+        if(!expStack.empty()) {
+            tuple<Expression *, unsigned int> expressionTup = expStack.top();
+             expression = get<0>(expressionTup);
+             expStack.pop();
+             char sign = '-';
+             if(val < 0 ) sign= '+';
+            expStack.push(tuple<Expression *, unsigned int>(createExpression(sign, expression,
+                                                                             new Number(val)), time));
+        }// expression
+        else {
+            double val2 = get<0>(numStack.top());
+            numStack.pop();
+            expression = new Number(val2);
+            expStack.push(tuple<Expression *, unsigned int>(createExpression('+', expression,
+                                                                             new Number(val)), time));
+        }
+    }
     return get<0>(expStack.top()); // the full exp is at the top of the stack
 }
 
@@ -105,6 +135,8 @@ double ExpressionsParser::shuntingYardAlg(const string& expression) {
     if (expression.find('(') == string::npos && expression.find(')') == string::npos &&
         expression.find('+') == string::npos && expression.find('-') == string::npos &&
         expression.find('/') == string::npos && expression.find('*') == string::npos)
+        return atof(expression.c_str());
+    if(checkNeg(expression))
         return atof(expression.c_str());
     map<char, int> precedences;
     precedences['+'] = 1;
@@ -152,6 +184,10 @@ double ExpressionsParser::shuntingYardAlg(const string& expression) {
                     stack1.pop();
                 }
                 if (expression[i] != ' ')
+                    if(expression[i] == '-' && isdigit(expression[i+1]) && (stack1.empty() || stack1.top() == '(')) {
+                        queue2.push(expression[i]);
+                    }
+                    else
                     stack1.push(expression[i]);
             }
         }
@@ -193,4 +229,17 @@ string ExpressionsParser::varsExtrication(const string &exp) {
         }
     }
     return newExp;
+}
+
+bool ExpressionsParser::checkNeg(const string &basic_string) {
+    bool once = false;
+    const char *c = basic_string.c_str();
+    if(c[0]!= '-') return false;
+    while(*c!= '\0' ){
+        if(*c == '-' && !once) once = true;
+        else
+            if(isOperator(*c) && once) return false;
+                c++;
+    }
+    return true;
 }
