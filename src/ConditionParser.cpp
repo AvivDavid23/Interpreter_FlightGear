@@ -5,7 +5,7 @@
 #include "ConditionParser.h"
 #include "Parser.h"
 
-int ConditionParser::execute(const vector<string> &line) {
+void ConditionParser::execute(const vector<string> &line) {
     index++;
     // left expression until the operator
     string leftExpression;

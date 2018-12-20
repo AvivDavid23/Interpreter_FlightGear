@@ -16,7 +16,7 @@ public:
     OpenServerCommand(unsigned int &index);
 
 
-    int execute(const vector<string> &words);
+    void execute(const vector<string> &words);
 };
 
 

@@ -21,7 +21,7 @@ public:
      */
     void setList(vector<string>& lines);
 
-    int execute(const vector<string> &line);
+    void execute(const vector<string> &line);
 };
 
 

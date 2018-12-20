@@ -10,7 +10,7 @@
  */
 class IfCommand : public ConditionParser {
 public:
-    int execute(const vector<string> &words);
+    void execute(const vector<string> &words);
 
     IfCommand(unsigned int &index);
 };

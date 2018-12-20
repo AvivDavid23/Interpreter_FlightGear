@@ -2,13 +2,31 @@
 #include "DefineVarCommand.h"
 
 
-int DefineVarCommand::execute(const vector<string> &line) {
-    if(line[index] != "var") {
-        double number = stod(line[index+2]);
-        if(SymbolTable::instance()->atTable(line[index]))
-            SymbolTable::instance()->setValue(line[index], number);
-
+void DefineVarCommand::execute(const vector<string> &line) {
+    ++index; // skip 'Var'
+    string key = line[index];
+    ++index; // skip '='
+    if (line[index] == "bind") {
+        ++index;
+        string val = line[index];
+        if(val[0] == '/'){ // start of a path
+            globalMutex.lock();
+            BindingTable::instance()->setValue(key, val.substr(1, val.length() - 2));
+            globalMutex.unlock();
+        } else {
+            globalMutex.lock();
+            BindingTable::instance()->setValue(key, val);
+            globalMutex.unlock();
+        }
+    } else {
+        ++index;
+        string val = line[index];
+        globalMutex.lock();
+        SymbolTable::instance()->setValue(key,
+                ExpressionsParser::shuntingYardAlg(ExpressionsParser::varsExtrication(val)));
+        globalMutex.unlock();
     }
+    ++index;
 }
 
-DefineVarCommand::DefineVarCommand(unsigned int &i) :index(i) {}
+DefineVarCommand::DefineVarCommand(unsigned int &i) : index(i) {}

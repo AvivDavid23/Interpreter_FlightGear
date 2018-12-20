@@ -17,7 +17,7 @@ class PrintCommand : public Command {
 public:
     PrintCommand( unsigned int &index);
 
-    int execute(const vector<string> &line);
+    void execute(const vector<string> &line);
 };
 
 
