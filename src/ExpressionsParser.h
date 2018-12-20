@@ -68,6 +68,8 @@ public:
      * @return modified expression
      */
     static string varsExtrication(const string &exp);
+
+    static bool checkNeg(const string &basic_string);
 };
 
 #endif //SECONDYEARPROJECT_BIU_SHUNTING_YARD_H
