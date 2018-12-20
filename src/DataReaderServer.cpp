@@ -12,17 +12,18 @@
 #include <sys/socket.h>
 #include "DataReaderServer.h"
 #include "mutex"
+
 std::vector<std::string> DataReaderServer::splitByComma(char *buffer) {
     std::vector<std::string> vec;
     std::string tmp;
-    while (*buffer) {
-        while (*buffer != ',' && *buffer != '\n') {
+    while (*buffer != '\n') {
+        while (*buffer != ',' && *(buffer + 1) != '\n') {
             tmp += *buffer;
             ++buffer;
         }
         vec.push_back(tmp);
         tmp = "";
-        ++buffer;
+        if (*buffer != '\n') ++buffer;
     }
     return vec;
 }
@@ -30,18 +31,18 @@ std::vector<std::string> DataReaderServer::splitByComma(char *buffer) {
 void DataReaderServer::updatePathsTable(std::vector<std::string> vector) {
     globalMutex.lock();
     for (int i = 0; i < PARAMETERS_SIZE; ++i) {
-        PathsTable::instance()->setValue(pathsVec[i],atof(vector[i].c_str()));
+        PathsTable::instance()->setValue(pathsVec[i], atof(vector[i].c_str()));
     }
     globalMutex.unlock();
 }
 
 void DataReaderServer::updateSymbolTable() {
     globalMutex.lock();
-    for (auto iter = SymbolTable::instance()->getFirst() ; iter != SymbolTable::instance()->getEnd(); ++iter){
+    for (auto iter = SymbolTable::instance()->getFirst(); iter != SymbolTable::instance()->getEnd(); ++iter) {
         // means the var is binned to a var
-        if(*BindingTable::instance()->getValue(iter->first).c_str() != '/'){
+        if (*BindingTable::instance()->getValue(iter->first).c_str() != '/') {
             SymbolTable::instance()->setValue(iter->first, SymbolTable::instance()->getValue(BindingTable::instance()->
-            getValue(iter->first)));
+                    getValue(iter->first)));
         } else {
             SymbolTable::instance()->setValue(iter->first, PathsTable::instance()->getValue(BindingTable::instance()->
                     getValue(iter->first)));
@@ -49,6 +50,7 @@ void DataReaderServer::updateSymbolTable() {
     }
     globalMutex.unlock();
 }
+
 void DataReaderServer::openServer(int port, int hz) {
     int sockfd, newsockfd, clilen;
     char buffer[500];

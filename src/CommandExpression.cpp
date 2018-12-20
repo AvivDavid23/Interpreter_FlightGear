@@ -7,7 +7,8 @@
  * @return the command execution value.
  */
 double CommandExpression::calculate() {
-    return command->execute(words);
+    command->execute(words);
+    return 0;
 }
 
 
