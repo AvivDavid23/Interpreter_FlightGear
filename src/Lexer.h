@@ -13,7 +13,12 @@ using namespace std;
 class Lexer {
 public:
     vector<string> active(const string &fileName);
-    void createTable();
+    vector<string> fromStringToExp(vector<string> commands);
+
+    bool isOperator(string & c);
+
+    bool isComper(char &c);
+    bool is_number(char & s);
 };
 
 

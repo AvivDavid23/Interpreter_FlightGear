@@ -4,8 +4,9 @@
 
 #include "Command.h"
 #include "map"
+#include "ExpressionsParser.h"
 #include "SymbolTable.h"
-
+#include "BindingTable.h"
 /**
  * A class which defines variables from the script
  */
@@ -15,7 +16,7 @@ class DefineVarCommand : public Command {
 public:
     DefineVarCommand(unsigned int &index);
 
-    int execute(const vector<string> &line);
+    void execute(const vector<string> &line);
 
 };
 

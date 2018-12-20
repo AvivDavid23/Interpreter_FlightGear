@@ -11,7 +11,7 @@ double ExpressionsParser::calculateFirstNum(const string& exp, unsigned long &in
     ++index;
     while (exp[index] != ')') {
         if (exp[index] == '-'){
-          neg = true;
+            neg = true;
             ++index;
             continue;
         }
@@ -48,15 +48,9 @@ Expression *ExpressionsParser::postToExp(const string& exp) {
     while (exp[index]) {
         // add new Number:
         if (!isOperator(exp[index])) {
-            tuple<double,unsigned int> x;
-            x = make_tuple(calculateFirstNum(exp,index),time);
+            numStack.push(tuple<double,unsigned int>(calculateFirstNum(exp,index),time));
             ++index;
             ++time;
-            //if(exp[index] == '-' && (!isOperator(exp[index+1]))) {
-                //get<0>(x) =  get<0>(x) * -1;
-                //index++;
-            //}
-            numStack.push(x);
             // take two expressions and create one with them:
         } else if (expStack.size() >= 2 && ((numStack.empty() || ((time - get<1>(expStack.top()) == 1)
                                                                   && (time - get<1>(numStack.top()) > 2))))) {
@@ -105,10 +99,10 @@ Expression *ExpressionsParser::postToExp(const string& exp) {
         Expression *expression;
         if(!expStack.empty()) {
             tuple<Expression *, unsigned int> expressionTup = expStack.top();
-             expression = get<0>(expressionTup);
-             expStack.pop();
-             char sign = '-';
-             if(val < 0 ) sign= '+';
+            expression = get<0>(expressionTup);
+            expStack.pop();
+            char sign = '-';
+            if(val < 0 ) sign= '+';
             expStack.push(tuple<Expression *, unsigned int>(createExpression(sign, expression,
                                                                              new Number(val)), time));
         }// expression
@@ -188,7 +182,7 @@ double ExpressionsParser::shuntingYardAlg(const string& expression) {
                         queue2.push(expression[i]);
                     }
                     else
-                    stack1.push(expression[i]);
+                        stack1.push(expression[i]);
             }
         }
     }
@@ -243,3 +237,4 @@ bool ExpressionsParser::checkNeg(const string &basic_string) {
     }
     return true;
 }
+

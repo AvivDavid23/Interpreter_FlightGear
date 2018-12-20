@@ -12,11 +12,12 @@
 class ConditionParser : public Command {
 protected:
     unsigned int index;
-    list<Expression*> expression;
+    list<Expression *> expression;
 public:
     explicit ConditionParser(unsigned int &i);
 
-    int execute(const vector<string> &line);
+    void execute(const vector<string> &line);
+
     bool checkOperator(const string &charOPerator);
 
     void setUpCommands(const vector<string> &words1);

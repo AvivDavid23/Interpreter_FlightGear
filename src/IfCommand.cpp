@@ -10,11 +10,11 @@
  * @param index
  * @return 1 if the condition is true, 0 otherwise.
  */
-int IfCommand::execute(const vector<string> &words) {
+void IfCommand::execute(const vector<string> &words) {
     //Parser parser;
     ConditionParser conditionParser(index);
-    if (conditionParser.execute(words)) {
-    }
+    //if (conditionParser.execute(words)) {
+    //}
 }
 
 IfCommand::IfCommand(unsigned int &i) : ConditionParser(i){}
