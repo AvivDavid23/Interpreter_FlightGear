@@ -1,6 +1,3 @@
-מה יש עוד לעשות:
-1. לשאול את מיכאל הסתום על thread וsocket
-2. לממש קריאה של קובץ
-3. לטפל בwhile ו if commands
-4. symbolTable
-5. shin
+1. Finish loops and conditions(if, while,(functions?))
+2. Fix server reading from simulator
+3. Write to the simulator
