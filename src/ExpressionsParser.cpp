@@ -232,8 +232,8 @@ bool ExpressionsParser::checkNeg(const string &basic_string) {
     while(*c!= '\0' ){
         if(*c == '-' && !once) once = true;
         else
-        if(isOperator(*c) && once) return false;
-        c++;
+            if(isOperator(*c) && once) return false;
+                c++;
     }
     return true;
 }

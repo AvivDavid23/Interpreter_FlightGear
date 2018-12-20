@@ -52,6 +52,11 @@ class ExpressionsParser {
  * @return true if good, else false
  */
     static bool inputCheck(const string &str);
+    /**
+     * @param basic_string string
+     * @return
+     */
+    static bool checkNeg(const string &basic_string);
 
 public:
 /**
@@ -69,7 +74,6 @@ public:
      */
     static string varsExtrication(const string &exp);
 
-    static bool checkNeg(const string &basic_string);
 };
 
 #endif //SECONDYEARPROJECT_BIU_SHUNTING_YARD_H
