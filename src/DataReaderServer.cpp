@@ -101,6 +101,7 @@ void DataReaderServer::openServer(int port, int hz) {
             perror("ERROR reading from socket");
             exit(1);
         }
+        // update the table
         updatePathsTable(splitByComma(buffer));
         updateSymbolTable();
         if (n < 0) {

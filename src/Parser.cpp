@@ -39,7 +39,7 @@ void Parser::commandParse(const vector<string> &words) {
                 // if there is no expression like this, throw error.
             if (expression == nullptr) throw runtime_error(string("no legal expression"));
         }
-            index += (int) expression->calculate();
+             expression->calculate();
     }
 }
 /**

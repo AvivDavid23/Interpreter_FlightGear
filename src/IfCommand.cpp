@@ -13,9 +13,11 @@
 void IfCommand::execute(const vector<string> &words) {
     //Parser parser;
     ConditionParser conditionParser(index);
-    if (conditionParser.execute(words)) {
-    }
+    //if (conditionParser.execute(words)) {
+    //}
 }
-
+/**
+ * @param i cons'.
+ */
 IfCommand::IfCommand(unsigned int &i) : ConditionParser(i){}
 

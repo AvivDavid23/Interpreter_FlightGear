@@ -1,7 +1,11 @@
 
 #include "ExpressionsParser.h"
 
-
+/**
+ * @param exp
+ * @param index
+ * @return
+ */
 double ExpressionsParser::calculateFirstNum(const string& exp, unsigned long &index) {
     if (exp[index] != '(') {
         return (exp[index] - '0');
@@ -22,11 +26,19 @@ double ExpressionsParser::calculateFirstNum(const string& exp, unsigned long &in
     if(neg) return val*(-1);
     return val;
 }
-
+/**
+ * @param c char.
+ * @return check if the char is operator, return true if it is, 0 otherwise.
+ */
 bool ExpressionsParser::isOperator(char c) {
     return c == '+' || c == '-' || c == '*' || c == '/';
 }
-
+/**
+ * @param type the sign
+ * @param left expression.
+ * @param right expression.
+ * @return the expression with the currenct sign.
+ */
 Expression *ExpressionsParser::createExpression(char type, Expression *left, Expression *right) {
     switch (type) {
         case '+':
@@ -39,7 +51,10 @@ Expression *ExpressionsParser::createExpression(char type, Expression *left, Exp
             return new Div(left, right);
     }
 }
-
+/**
+ * @param string in postfix .
+ * @return the result of this expression.
+ */
 Expression *ExpressionsParser::postToExp(const string& exp) {
     stack<tuple<double, unsigned int>> numStack;
     stack<tuple<Expression *, unsigned int> > expStack;
@@ -122,7 +137,10 @@ bool ExpressionsParser::inputCheck(const string& str) {
         if (!isdigit(item) && !isOperator(item) && item != ' ' && item != '(' && item != ')') return false;
     return true;
 }
-
+/**
+ * @param expression the string
+ * @return the calculate of the expression we build in postfix order.
+ */
 double ExpressionsParser::shuntingYardAlg(const string& expression) {
     if (!inputCheck(expression)) throw "Input Error!";
     // if its only a number:
@@ -130,6 +148,7 @@ double ExpressionsParser::shuntingYardAlg(const string& expression) {
         expression.find('+') == string::npos && expression.find('-') == string::npos &&
         expression.find('/') == string::npos && expression.find('*') == string::npos)
         return atof(expression.c_str());
+    // if number is only a negative number
     if(checkNeg(expression))
         return atof(expression.c_str());
     map<char, int> precedences;
@@ -137,6 +156,7 @@ double ExpressionsParser::shuntingYardAlg(const string& expression) {
     precedences['-'] = 2;
     precedences['*'] = 3;
     precedences['/'] = 4;
+    // from here, it's just alg' of dijkstra.
     stack<char> stack1;
     queue<char> queue2;
     queue2.push('(');
@@ -203,7 +223,10 @@ double ExpressionsParser::shuntingYardAlg(const string& expression) {
      */
     return postToExp(newExp)->calculate();
 }
-
+/**
+ * @param exp string
+ * @return new string that can be calculate in shunting yard.
+ */
 string ExpressionsParser::varsExtrication(const string &exp) {
     const char *pExp = exp.c_str();
     string newExp;
@@ -224,14 +247,21 @@ string ExpressionsParser::varsExtrication(const string &exp) {
     }
     return newExp;
 }
-
+/**
+ * @param basic_string the string
+ * @return true if's just a number negative, 0 otherwise.
+ */
 bool ExpressionsParser::checkNeg(const string &basic_string) {
     bool once = false;
     const char *c = basic_string.c_str();
+    // if there is no '-' in the number
     if(c[0]!= '-') return false;
+    // while the end of the number
     while(*c!= '\0' ){
+        // check if the sign '-' shows once.
         if(*c == '-' && !once) once = true;
         else
+            // if there is more things in the string, return false.
             if(isOperator(*c) && once) return false;
                 c++;
     }
