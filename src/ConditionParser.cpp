@@ -4,7 +4,9 @@
 
 #include "ConditionParser.h"
 #include "Parser.h"
-
+/**
+ * @param line the words
+ */
 void ConditionParser::execute(const vector<string> &line) {
     index++;
     // left expression until the operator

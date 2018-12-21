@@ -11,6 +11,7 @@ void DefineVarCommand::execute(const vector<string> &line) {
         string val = line[index];
         if(val[0] == '/'){ // start of a path
             globalMutex.lock();
+            // set value in the table
             BindingTable::instance()->setValue(key, val.substr(1, val.length() - 2));
             globalMutex.unlock();
         } else {
@@ -22,6 +23,7 @@ void DefineVarCommand::execute(const vector<string> &line) {
         ++index;
         string val = line[index];
         globalMutex.lock();
+        // ca
         SymbolTable::instance()->setValue(key,
                 ExpressionsParser::shuntingYardAlg(ExpressionsParser::varsExtrication(val)));
         globalMutex.unlock();
