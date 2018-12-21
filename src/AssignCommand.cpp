@@ -11,6 +11,9 @@ void AssignCommand::execute(const vector<string> &line) {
     globalMutex.lock();
     SymbolTable::instance()->setValue(key,
             ExpressionsParser::shuntingYardAlg(ExpressionsParser::varsExtrication(line[index])));
+    const string msg = "set " + BindingTable::instance()->getValue(key) +
+            " " + to_string(SymbolTable::instance()->getValue(key)) + "\r\n";
     globalMutex.unlock();
+    DataWriterClient::setMessage(msg);
     ++index;
 }

@@ -12,8 +12,8 @@ SymbolTable *SymbolTable::s_instance = 0;
 PathsTable *PathsTable::s_instance = 0;
 
 int main() {
-//    std::cout << ExpressionsParser::shuntingYardAlg("3-(-4)");
-    Lexer lexer;
-    vector<string> words = lexer.active("file.txt");
+    std::cout << ExpressionsParser::shuntingYardAlg("-2-2-2+1*5");
+    /*Lexer lexer;
+    vector<string> words = lexer.active("file.txt");*/
     return 0;
 }

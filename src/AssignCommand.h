@@ -7,6 +7,8 @@
 
 #include "Command.h"
 #include "ExpressionsParser.h"
+#include "BindingTable.h"
+#include "DataWriterClient.h"
 
 class AssignCommand : public Command{
     unsigned int &index;

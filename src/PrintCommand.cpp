@@ -7,7 +7,8 @@ void PrintCommand::execute(const vector<string> &line) {
 
     // Checks if output is in symbol map. if so, prints his value. else, prints output
     globalMutex.lock();
-    !SymbolTable::instance()->atTable(output) ? cout << output : cout << SymbolTable::instance()->getValue((output));
+    !SymbolTable::instance()->atTable(output) ? cout << output.substr(1, output.length() - 2) :
+    cout << SymbolTable::instance()->getValue((output));
     globalMutex.unlock();
     cout << "\n";
 }

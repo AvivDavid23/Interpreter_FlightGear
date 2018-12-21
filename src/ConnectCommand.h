@@ -4,6 +4,7 @@
 #define PROJECT_CONNECTCOMMAND_H
 
 #include "Command.h"
+#include "DataWriterClient.h"
 /**
  * Connect Command class
  */
