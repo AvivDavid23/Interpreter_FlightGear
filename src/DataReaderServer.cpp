@@ -13,33 +13,26 @@
 #include "DataReaderServer.h"
 #include "mutex"
 
-std::vector<std::string> DataReaderServer::splitByComma(char *buffer) {
-    std::vector<std::string> vec;
-    std::string tmp;
-    while (*buffer != '\n') {
-        while (*buffer != ',' && *(buffer + 1) != '\n') {
+void DataReaderServer::updatePathsTable(char *buffer) {
+    for (int i = 0; i < PARAMETERS_SIZE; ++i) {
+        std::string tmp;
+        while (*buffer != ',' && *buffer != '\n') {
             tmp += *buffer;
             ++buffer;
         }
-        vec.push_back(tmp);
+        globalMutex.lock();
+        PathsTable::instance()->setValue(pathsVec[i], atof(tmp.c_str()));
+        globalMutex.unlock();
         tmp = "";
         if (*buffer != '\n') ++buffer;
     }
-    return vec;
-}
-
-void DataReaderServer::updatePathsTable(std::vector<std::string> vector) {
-    globalMutex.lock();
-    for (int i = 0; i < PARAMETERS_SIZE; ++i) {
-        PathsTable::instance()->setValue(pathsVec[i], atof(vector[i].c_str()));
-    }
-    globalMutex.unlock();
+    ++buffer;
 }
 
 void DataReaderServer::updateSymbolTable() {
-    globalMutex.lock();
     for (auto iter = SymbolTable::instance()->getFirst(); iter != SymbolTable::instance()->getEnd(); ++iter) {
         // means the var is binned to a var
+        globalMutex.lock();
         if (*BindingTable::instance()->getValue(iter->first).c_str() != '/') {
             SymbolTable::instance()->setValue(iter->first, SymbolTable::instance()->getValue(BindingTable::instance()->
                     getValue(iter->first)));
@@ -47,13 +40,12 @@ void DataReaderServer::updateSymbolTable() {
             SymbolTable::instance()->setValue(iter->first, PathsTable::instance()->getValue(BindingTable::instance()->
                     getValue(iter->first)));
         }
+        globalMutex.unlock();
     }
-    globalMutex.unlock();
 }
 
 void DataReaderServer::openServer(int port, int hz) {
     int sockfd, newsockfd, clilen;
-    char buffer[500];
     struct sockaddr_in serv_addr, cli_addr;
     int n;
 
@@ -94,19 +86,20 @@ void DataReaderServer::openServer(int port, int hz) {
     }
     while (true) {
         /* If connection is established then start communicating */
-        bzero(buffer, 500);
-        n = read(newsockfd, buffer, 500);
+        char buffer[512];
+        bzero(buffer, 512);
+        n = read(newsockfd, buffer, 512);
 
         if (n < 0) {
             perror("ERROR reading from socket");
             exit(1);
         }
-        // update the table
-        updatePathsTable(splitByComma(buffer));
+        updatePathsTable(buffer);
         updateSymbolTable();
         if (n < 0) {
             perror("ERROR writing to socket");
             exit(1);
         }
+
     }
 }

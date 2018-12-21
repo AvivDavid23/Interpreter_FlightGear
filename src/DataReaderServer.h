@@ -7,6 +7,7 @@
 #include "PathsTable.h"
 #include "SymbolTable.h"
 #include "BindingTable.h"
+
 #define PARAMETERS_SIZE 23
 static std::vector<std::string> pathsVec{"/instrumentation/airspeed-indicator/indicated-speed-kt",
                                          "/instrumentation/altimeter/indicated-altitude-ft",
@@ -33,16 +34,12 @@ static std::vector<std::string> pathsVec{"/instrumentation/airspeed-indicator/in
                                          "/engines/engine/rpm"};
 
 class DataReaderServer {
-    /**
-     * @return vector of strings, each from the buffer
-     */
-    static std::vector<std::string> splitByComma(char *buffer);
 
     /**
      * Updates the Paths table
      * @param vector vector
      */
-    static void updatePathsTable(std::vector<std::string> vector);
+    static void updatePathsTable(char *buffer);
 
     /**
      * Updates symbol table
