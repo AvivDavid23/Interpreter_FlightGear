@@ -11,6 +11,7 @@
 #include "IfCommand.h"
 #include "WhileCommand.h"
 #include "PrintCommand.h"
+#include "SymbolTable.h"
 
 /**
  * A class which used to parse every line in the script and execute it

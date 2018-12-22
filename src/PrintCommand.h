@@ -5,7 +5,7 @@
 
 #include <iostream>
 #include "Command.h"
-#include "map"
+#include "SymbolTable.h"
 
 /**
  * Command which prints something to the stdout
@@ -17,7 +17,7 @@ class PrintCommand : public Command {
 public:
     PrintCommand( unsigned int &index);
 
-    int execute(const vector<string> &line);
+    void execute(const vector<string> &line);
 };
 
 

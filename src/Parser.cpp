@@ -1,6 +1,5 @@
 
 #include "Parser.h"
-#include "SymbolTable.h"
 
 /**
  *
@@ -34,13 +33,13 @@ void Parser::commandParse(const vector<string> &words) {
                 continue;
             }
             // check if there is a variable in syMbolTable
-            if(SymbolTable::atTable(words[index]))
+            if(SymbolTable::instance()->atTable(words[index]))
                     // if there is, go to DefineVar.
                     expression = commandsTable.at("var");
                 // if there is no expression like this, throw error.
             if (expression == nullptr) throw runtime_error(string("no legal expression"));
         }
-            index += (int) expression->calculate();
+             expression->calculate();
     }
 }
 /**

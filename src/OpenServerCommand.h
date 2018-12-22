@@ -13,10 +13,15 @@ class OpenServerCommand : public Command {
     unsigned int &index;
 
 public:
+    /**
+     * @param index the index of the array
+     */
     OpenServerCommand(unsigned int &index);
-
-
-    int execute(const vector<string> &words);
+    /**
+     * @param words the array of words
+     * get the port and the hz, and create a thread that run the DataReaderServer.
+     */
+    void execute(const vector<string> &words);
 };
 
 

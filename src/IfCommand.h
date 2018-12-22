@@ -8,9 +8,10 @@
 /**
  * A command which runs if a condition is satisfied
  */
-class IfCommand : public ConditionParser {
+class IfCommand : public Command{
+    unsigned int index;
 public:
-    int execute(const vector<string> &words);
+    void execute(const vector<string> &words);
 
     IfCommand(unsigned int &index);
 };

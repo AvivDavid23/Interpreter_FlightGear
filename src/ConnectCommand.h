@@ -4,16 +4,16 @@
 #define PROJECT_CONNECTCOMMAND_H
 
 #include "Command.h"
+#include "DataWriterClient.h"
 /**
  * Connect Command class
  */
-// TODO: finish class
 class ConnectCommand : public Command {
     unsigned int &index;
 public:
     ConnectCommand(unsigned int &index);
 
-    int execute(const vector<string> &line);
+    void execute(const vector<string> &line);
 };
 
 

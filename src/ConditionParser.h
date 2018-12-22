@@ -9,17 +9,15 @@
 #include "Command.h"
 
 
-class ConditionParser : public Command {
-protected:
+class ConditionParser {
     unsigned int index;
-    list<Expression*> expression;
 public:
     explicit ConditionParser(unsigned int &i);
 
-    int execute(const vector<string> &line);
+    bool execute(const vector<string> &line);
+
     bool checkOperator(const string &charOPerator);
 
-    void setUpCommands(const vector<string> &words1);
 };
 
 

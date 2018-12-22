@@ -1,18 +1,35 @@
-#include <utility>
-
 
 #include "DefineVarCommand.h"
-#include "SymbolTable.h"
 
 
-int DefineVarCommand::execute(const vector<string> &line) {
-    if(line[index] != "var") {
-        double number = stod(line[index+2]);
-        // smblTablePtr.put("line[index]",index+2);
-        if(SymbolTable::atTable(line[index]))
-            SymbolTable::setValue(line[index], number);
-
+void DefineVarCommand::execute(const vector<string> &line) {
+    ++index; // skip 'Var'
+    string key = line[index];
+    ++index; // skip '='
+    if (line[index] == "bind") {
+        ++index;
+        string val = line[index];
+        if(val[0] == '/'){ // start of a path
+            globalMutex.lock();
+            // set value in the table
+            BindingTable::instance()->setValue(key, val.substr(1, val.length() - 2));
+            globalMutex.unlock();
+        } else {
+            globalMutex.lock();
+            BindingTable::instance()->setValue(key, val);
+            BindingTable::instance()->setValue(val, key);
+            globalMutex.unlock();
+        }
+    } else {
+        ++index;
+        string val = line[index];
+        globalMutex.lock();
+        // ca
+        SymbolTable::instance()->setValue(key,
+                ExpressionsParser::shuntingYardAlg(ExpressionsParser::varsExtrication(val)));
+        globalMutex.unlock();
     }
+    ++index;
 }
 
-DefineVarCommand::DefineVarCommand(unsigned int &i) :index(i) {}
+DefineVarCommand::DefineVarCommand(unsigned int &i) : index(i) {}

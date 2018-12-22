@@ -1,15 +1,16 @@
 
 
 #include "PrintCommand.h"
-#include "SymbolTable.h"
 
 
-int PrintCommand::execute(const vector<string> &line) {
+void PrintCommand::execute(const vector<string> &line) {
 
     // Checks if output is in symbol map. if so, prints his value. else, prints output
-    !SymbolTable::atTable(output) ? cout << output : cout << SymbolTable::getValue((output));
+    globalMutex.lock();
+    !SymbolTable::instance()->atTable(output) ? cout << output.substr(1, output.length() - 2) :
+    cout << SymbolTable::instance()->getValue((output));
+    globalMutex.unlock();
     cout << "\n";
-    return 1;
 }
 
 PrintCommand::PrintCommand(unsigned int &index) : index(index) {}

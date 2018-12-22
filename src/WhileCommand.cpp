@@ -2,6 +2,6 @@
 #include "WhileCommand.h"
 
 
-int WhileCommand::execute(const vector<string> &line) { return 0; }
+void WhileCommand::execute(const vector<string> &line) {  }
 
 WhileCommand::WhileCommand(unsigned int &index) : index(index) {}

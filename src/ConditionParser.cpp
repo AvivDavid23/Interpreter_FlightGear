@@ -4,14 +4,17 @@
 
 #include "ConditionParser.h"
 #include "Parser.h"
-
-int ConditionParser::execute(const vector<string> &line) {
+/**
+ * @param line the words
+ */
+bool ConditionParser::execute(const vector<string> &line) {
     index++;
     // left expression until the operator
     string leftExpression;
     // check in which index has operator
     while (!checkOperator(line[index])) {
         leftExpression += line[index];
+        leftExpression = ExpressionsParser::varsExtrication(leftExpression);
         index++;
     }
     int count = index; // operator index
@@ -19,24 +22,24 @@ int ConditionParser::execute(const vector<string> &line) {
     ++index;
     // create the right expression until the end of the condition.
      rightExpression += line[index];
-    setUpCommands(line);
+    rightExpression = ExpressionsParser::varsExtrication(rightExpression);
     if (line[count] == ">") {
-        return (ShuntingYard::shuntingYardAlg(leftExpression) > ShuntingYard::shuntingYardAlg(rightExpression));
+        return (ExpressionsParser::shuntingYardAlg(leftExpression) > ExpressionsParser::shuntingYardAlg(rightExpression));
     }
     if (line[count] == ">=") {
-        return (ShuntingYard::shuntingYardAlg(leftExpression) >= ShuntingYard::shuntingYardAlg(rightExpression));
+        return (ExpressionsParser::shuntingYardAlg(leftExpression) >= ExpressionsParser::shuntingYardAlg(rightExpression));
     }
     if (line[count] == "==") {
-        return (ShuntingYard::shuntingYardAlg(leftExpression) == ShuntingYard::shuntingYardAlg(rightExpression));
+        return (ExpressionsParser::shuntingYardAlg(leftExpression) == ExpressionsParser::shuntingYardAlg(rightExpression));
     }
     if (line[count] == "!=") {
-        return (ShuntingYard::shuntingYardAlg(leftExpression) != ShuntingYard::shuntingYardAlg(rightExpression));
+        return (ExpressionsParser::shuntingYardAlg(leftExpression) != ExpressionsParser::shuntingYardAlg(rightExpression));
     }
     if (line[count] == "<") {
-        return (ShuntingYard::shuntingYardAlg(leftExpression) <ShuntingYard::shuntingYardAlg(rightExpression));
+        return (ExpressionsParser::shuntingYardAlg(leftExpression) <ExpressionsParser::shuntingYardAlg(rightExpression));
     }
     if (line[count] == "<=") {
-        return (ShuntingYard::shuntingYardAlg(leftExpression) <= ShuntingYard::shuntingYardAlg(rightExpression));
+        return (ExpressionsParser::shuntingYardAlg(leftExpression) <= ExpressionsParser::shuntingYardAlg(rightExpression));
     }
 }
 /**
@@ -48,22 +51,10 @@ bool ConditionParser::checkOperator(const string &charOperator) {
             charOperator == "<" || charOperator == "<=");
 }
 /**
- * @param i index of the array of words.
+ * @param i index of the array of words.return
  */
 ConditionParser::ConditionParser(unsigned int &i) {
 this->index= i ;
 }
 
-void ConditionParser::setUpCommands(const vector<string> &words1) {
-    unsigned int place = index;
-        while(words1[place] != "{") ++place;
-        ++place;
-        while(words1[place] != "}") {
-            // auto it = parser..find(words1[place]);
-            //if(it!= parser.commandsTable.end()) {
-                //this->expression.push_back(it->second);
-            }
-            ++place;
-        }
-//}
 
