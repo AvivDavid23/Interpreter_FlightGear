@@ -39,9 +39,8 @@ void DataWriterClient::createClient(int port, string address) {
     serv_addr.sin_port = htons(port);
 
     /* Now connect to the server */
-    if (connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
-        perror("ERROR connecting");
-        exit(1);
+    while (connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
+       // keep trying...
     }
 
     while (true) {

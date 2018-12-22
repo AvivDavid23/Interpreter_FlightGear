@@ -12,6 +12,7 @@
 
 /**
  * Initialization of private static vars of the project:
+ * (these singletons dont have a cpp file so i do it here)
  */
 BindingTable *BindingTable::s_instance = 0; // singleton
 SymbolTable *SymbolTable::s_instance = 0; // singleton
