@@ -17,6 +17,7 @@ void DefineVarCommand::execute(const vector<string> &line) {
         } else {
             globalMutex.lock();
             BindingTable::instance()->setValue(key, val);
+            BindingTable::instance()->setValue(val, key);
             globalMutex.unlock();
         }
     } else {

@@ -5,7 +5,7 @@
 #include <iostream>
 #include "DataWriterClient.h"
 
-std::string DataWriterClient::message; // message for simulator
+std::string DataWriterClient::message = ""; // message for simulator
 void DataWriterClient::setMessage(const string &message1) {
     globalMutex.lock();
     message = message1;
@@ -47,7 +47,6 @@ void DataWriterClient::createClient(int port, string address) {
     while (true) {
         if(!message.empty()) {
             globalMutex.lock();
-            cout << message + "\n";
             /* Send message to the server */
             n = write(sockfd, message.c_str(), message.length());
             message = "";

@@ -10,18 +10,12 @@ double ExpressionsParser::calculateFirstNum(const string& exp, unsigned long &in
     if (exp[index] != '(') {
         return (exp[index] - '0');
     }
-    //double val = 0;
-    //bool neg = false;
     string val = "";
     ++index;
     while (exp[index] != ')') {
        val+=exp[index];
        index++;
         }
-        //val *= 10;
-        //val += exp[index] - '0';
-        //++index;
-    //}
     if(val.find('.')== string::npos)
         return (double) atoi(val.c_str());
     val.erase(val.find_last_not_of('0')+1,string::npos);
@@ -243,12 +237,16 @@ string ExpressionsParser::varsExtrication(const string &exp) {
             newExp += *pExp;
             ++pExp;
         } else {
-            while (!(*pExp == '(' || *pExp == ')' || isOperator(*pExp))) {
+            while (!(*pExp == '(' || *pExp == ')' || isOperator(*pExp)) && *pExp) {
                 var += *pExp;
                 ++pExp;
             }
             globalMutex.lock();
-            newExp += to_string(SymbolTable::instance()->getValue(var));
+            var = to_string(SymbolTable::instance()->getValue(var));
+            var.erase ( var.find_last_not_of('0') + 1, std::string::npos ); // erase trailing zeros
+            if(var.length() == 2) var = var.substr(0, 1);
+            newExp += var;
+            globalMutex.unlock();
             var = "";
         }
     }
