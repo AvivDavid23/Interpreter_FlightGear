@@ -10,21 +10,24 @@ double ExpressionsParser::calculateFirstNum(const string& exp, unsigned long &in
     if (exp[index] != '(') {
         return (exp[index] - '0');
     }
-    double val = 0;
-    bool neg = false;
+    //double val = 0;
+    //bool neg = false;
+    string val = "";
     ++index;
     while (exp[index] != ')') {
-        if (exp[index] == '-'){
-            neg = true;
-            ++index;
-            continue;
+       val+=exp[index];
+       index++;
         }
-        val *= 10;
-        val += exp[index] - '0';
-        ++index;
-    }
-    if(neg) return val*(-1);
-    return val;
+        //val *= 10;
+        //val += exp[index] - '0';
+        //++index;
+    //}
+    if(val.find('.')== string::npos)
+        return (double) atoi(val.c_str());
+    val.erase(val.find_last_not_of('0')+1,string::npos);
+    double number = atof(val.c_str());
+
+    return number;
 }
 /**
  * @param c char.
@@ -134,7 +137,7 @@ Expression *ExpressionsParser::postToExp(const string& exp) {
 
 bool ExpressionsParser::inputCheck(const string& str) {
     for (auto item : str)
-        if (!isdigit(item) && !isOperator(item) && item != ' ' && item != '(' && item != ')') return false;
+        if (!isdigit(item) && !isOperator(item) && item != ' ' && item != '(' && item != ')' && item!='.') return false;
     return true;
 }
 /**
@@ -162,10 +165,14 @@ double ExpressionsParser::shuntingYardAlg(const string& expression) {
     queue2.push('(');
     queue<char> queue1;
     for (int i = 0; i < expression.length(); ++i) {
+        if(expression[i] == '.') {
+            queue2.push(expression[i]);
+            continue;
+        }
         if (isdigit(expression[i])) {
             queue2.push(expression[i]);
             // if the number is bigger the  2
-            if (i < expression.length() && !isdigit(expression[i + 1])) {
+            if (i < expression.length() && ((!isdigit(expression[i + 1])) && expression[i+1] != '.')) {
                 queue2.push(')');
                 if (queue2.size() > 3) {
                     while (!queue2.empty()) {
@@ -233,11 +240,11 @@ string ExpressionsParser::varsExtrication(const string &exp) {
     string var;
     while (*pExp) {
         if (*pExp == '(' || *pExp == ')' || isdigit(*pExp) || isOperator(*pExp) || *pExp == ' ') {
-            newExp += pExp;
+            newExp += *pExp;
             ++pExp;
         } else {
             while (!(*pExp == '(' || *pExp == ')' || isOperator(*pExp))) {
-                var += pExp;
+                var += *pExp;
                 ++pExp;
             }
             globalMutex.lock();
