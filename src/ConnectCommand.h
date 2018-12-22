@@ -8,7 +8,6 @@
 /**
  * Connect Command class
  */
-// TODO: finish class
 class ConnectCommand : public Command {
     unsigned int &index;
 public:

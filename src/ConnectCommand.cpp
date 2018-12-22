@@ -6,7 +6,7 @@ ConnectCommand::ConnectCommand(unsigned int &index) : index(index) {}
 
 void ConnectCommand::execute(const vector<string> &line) {
     int port;
-    string adr;
+    std::string adr;
     try {
         adr = line[index + 1];
         port = (int) ExpressionsParser::shuntingYardAlg(line[index + 2]);

@@ -10,10 +10,11 @@
 #include <netinet/in.h>
 #include <string.h>
 #include <sys/socket.h>
+#include <iostream>
 #include "DataReaderServer.h"
 #include "mutex"
 
-void DataReaderServer::updatePathsTable(char *buffer) {
+void DataReaderServer::updatePathsTable(const char *buffer) {
     for (int i = 0; i < PARAMETERS_SIZE; ++i) {
         std::string tmp;
         while (*buffer != ',' && *buffer != '\n') {
@@ -84,22 +85,15 @@ void DataReaderServer::openServer(int port, int hz) {
         perror("ERROR on accept");
         exit(1);
     }
+    char buffer[BUFFER_SIZE];
     while (true) {
-        /* If connection is established then start communicating */
-        char buffer[512];
-        bzero(buffer, 512);
-        n = read(newsockfd, buffer, 512);
-
+        bzero(buffer,BUFFER_SIZE);
+        n = read(newsockfd, buffer, BUFFER_SIZE);
         if (n < 0) {
             perror("ERROR reading from socket");
             exit(1);
         }
         updatePathsTable(buffer);
         updateSymbolTable();
-        if (n < 0) {
-            perror("ERROR writing to socket");
-            exit(1);
-        }
-
     }
 }

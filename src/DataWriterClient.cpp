@@ -1,27 +1,17 @@
 //
-// Created by aviv on 12/16/18.
+// Created by aviv on 12/22/18.
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-
-#include <netdb.h>
-#include <sys/socket.h>
-#include <unistd.h>
-#include <netinet/in.h>
-
-#include <string.h>
 #include "DataWriterClient.h"
-#include "SymbolTable.h"
 
 
-void DataWriterClient::setMessage(const std::string &message1) {
+void DataWriterClient::setMessage(const string &message1) {
     globalMutex.lock();
     message = message1;
     globalMutex.unlock();
 }
 
-void DataWriterClient::createClient(int port, std::string address) {
+void DataWriterClient::createClient(int port, string address) {
     message = "";
     int sockfd, n;
     struct sockaddr_in serv_addr;
