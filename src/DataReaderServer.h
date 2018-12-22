@@ -9,7 +9,7 @@
 #include "BindingTable.h"
 
 #define PARAMETERS_SIZE 23
-#define BUFFER_SIZE 512
+#define BUFFER_SIZE 1024
 static std::vector<std::string> pathsVec{"/instrumentation/airspeed-indicator/indicated-speed-kt",
                                          "/instrumentation/altimeter/indicated-altitude-ft",
                                          "/instrumentation/altimeter/pressure-alt-ft",
@@ -33,19 +33,25 @@ static std::vector<std::string> pathsVec{"/instrumentation/airspeed-indicator/in
                                          "/controls/flight/flaps",
                                          "/controls/engines/engine/throttle",
                                          "/engines/engine/rpm"};
-
 class DataReaderServer {
 
     /**
      * Updates the Paths table
      * @param vector vector
      */
-    static void updatePathsTable(const char *buffer);
+    static void updatePathsTable(std::vector<std::string> vec);
 
     /**
      * Updates symbol table
      */
     static void updateSymbolTable();
+
+    /**
+     * split by ,
+     * @param buffer buffer
+     * @return vector of values
+     */
+    static std::vector<std::string> splitByComma(const char *buffer);
 
 public:
     /**

@@ -16,13 +16,15 @@
 
 #include <string.h>
 #include "SymbolTable.h"
+
 using namespace std;
 /**
  * A client that connects to the server of the simulation
  */
-static std::string message;
+
 
 class DataWriterClient {
+    static std::string message;
 public:
 
     static void setMessage(const string &message1);
@@ -30,6 +32,5 @@ public:
     static void createClient(int port, string address);
 
 };
-
 
 #endif //SECONDYEARPROJECT_BIU_DATAWRITERCLIENT_H

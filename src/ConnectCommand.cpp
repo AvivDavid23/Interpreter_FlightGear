@@ -1,7 +1,7 @@
 
 #include "ConnectCommand.h"
 #include "thread"
-
+#include "DataReaderServer.h"
 ConnectCommand::ConnectCommand(unsigned int &index) : index(index) {}
 
 void ConnectCommand::execute(const vector<string> &line) {

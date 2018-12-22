@@ -2,6 +2,7 @@
 // Created by aviv on 12/22/18.
 //
 
+#include <iostream>
 #include "DataWriterClient.h"
 
 
@@ -46,6 +47,7 @@ void DataWriterClient::createClient(int port, string address) {
     while (true) {
         if(!message.empty()) {
             globalMutex.lock();
+            cout << message + "\n";
             /* Send message to the server */
             n = write(sockfd, message.c_str(), message.length());
             message = "";
