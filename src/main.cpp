@@ -16,7 +16,6 @@
 BindingTable *BindingTable::s_instance = 0; // singleton
 SymbolTable *SymbolTable::s_instance = 0; // singleton
 PathsTable *PathsTable::s_instance = 0; // singleton
-std::string DataWriterClient::message = ""; // message for simulator
 
 int main() {
     DataReaderServer::openServer(5400, 10);

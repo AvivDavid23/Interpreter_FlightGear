@@ -5,7 +5,7 @@
 #include <iostream>
 #include "DataWriterClient.h"
 
-
+std::string DataWriterClient::message; // message for simulator
 void DataWriterClient::setMessage(const string &message1) {
     globalMutex.lock();
     message = message1;

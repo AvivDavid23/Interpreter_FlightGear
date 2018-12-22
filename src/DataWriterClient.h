@@ -32,5 +32,4 @@ public:
     static void createClient(int port, string address);
 
 };
-
 #endif //SECONDYEARPROJECT_BIU_DATAWRITERCLIENT_H
