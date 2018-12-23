@@ -23,6 +23,11 @@ WhileCommand::WhileCommand(unsigned int &index, std::map<string, Expression *> &
 void WhileCommand::createCommandList(const vector<string> &words, unsigned int &index) {
     while (words[index] != "}") {
         if(words[index] == "{") index++;
+        else if (words[index] == "var") {
+            commandList.push_back(map["var"]);
+            if (words[index + 3] == "bind") index += 5;
+            else index += 4;
+        }
         else if (this->map.find(words[index]) == map.end()) {
             commandList.push_back(map["assign"]);
             index += 3;
@@ -30,6 +35,5 @@ void WhileCommand::createCommandList(const vector<string> &words, unsigned int &
             commandList.push_back(map[words[index]]);
             index += 2;
         }
-
     }
 }
