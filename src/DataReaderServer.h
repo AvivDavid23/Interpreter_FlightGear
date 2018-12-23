@@ -9,7 +9,7 @@
 #include "BindingTable.h"
 
 #define PARAMETERS_SIZE 23
-#define BUFFER_SIZE 2048
+#define BUFFER_SIZE 1024
 static std::vector<std::string> pathsVec{"/instrumentation/airspeed-indicator/indicated-speed-kt",
                                          "/instrumentation/altimeter/indicated-altitude-ft",
                                          "/instrumentation/altimeter/pressure-alt-ft",
@@ -54,6 +54,9 @@ class DataReaderServer {
      * @return vector of values
      */
     static std::vector<std::string> splitByComma(const char *buffer);
+
+    static unsigned int numberOfNewLine(const char *buffer);
+
 
 public:
     /**

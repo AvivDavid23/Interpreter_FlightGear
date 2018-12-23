@@ -7,6 +7,7 @@
 #include "ExpressionsParser.h"
 #include "SymbolTable.h"
 #include "BindingTable.h"
+#include "PathsTable.h"
 /**
  * A class which defines variables from the script
  */

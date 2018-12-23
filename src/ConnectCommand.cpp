@@ -10,7 +10,7 @@ void ConnectCommand::execute(const vector<string> &line) {
     try {
         adr = line[index + 1];
         port = (int) ExpressionsParser::shuntingYardAlg(line[index + 2]);
-        index += 2;
+        index += 3;
     } catch (...) {
         cerr << "Syntax/Parameter Error!" << endl;
         exit(1);

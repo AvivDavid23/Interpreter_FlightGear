@@ -13,7 +13,19 @@
 #include <iostream>
 #include "DataReaderServer.h"
 #include "mutex"
+
 bool DataReaderServer::open = false;
+
+unsigned int DataReaderServer::numberOfNewLine(const char *buffer) {
+    const char *pt = buffer;
+    unsigned int x = 0;
+    while (*pt) {
+        if (*pt == '\n')++x;
+        ++pt;
+    }
+    return x;
+}
+
 std::vector<std::string> DataReaderServer::splitByComma(const char *buffer) {
     std::vector<std::string> vec;
     std::string tmp;
@@ -30,11 +42,11 @@ std::vector<std::string> DataReaderServer::splitByComma(const char *buffer) {
 }
 
 void DataReaderServer::updatePathsTable(std::vector<std::string> vec) {
+    globalMutex.lock();
     for (int i = 0; i < PARAMETERS_SIZE; ++i) {
-        globalMutex.lock();
         PathsTable::instance()->setValue(pathsVec[i], atof(vec[i].c_str()));
-        globalMutex.unlock();
     }
+    globalMutex.unlock();
 }
 
 void DataReaderServer::updateSymbolTable() {
@@ -60,9 +72,9 @@ void DataReaderServer::openServer(int port, int hz) {
     /* First call to socket() function */
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
-    if (sockfd < 0) {
-        perror("ERROR opening socket");
-        exit(1);
+    while (sockfd < 0) {
+        sockfd = socket(AF_INET, SOCK_STREAM, 0);
+       //try...
     }
 
     /* Initialize socket structure */
@@ -96,46 +108,18 @@ void DataReaderServer::openServer(int port, int hz) {
     char buffer[BUFFER_SIZE];
     std::string values;
     std::string leftovers;
-    char* pointer;
     bzero(buffer, BUFFER_SIZE);
     while (true) {
         // to know where to put data:
-        unsigned long start = leftovers.length() ? values.length() : 0;
-        n = read(newsockfd, buffer + start, BUFFER_SIZE - start);
-        std::cout << buffer +'\n';
-        // points to the buffer
-        pointer = buffer;
-        values = "";
-        if (n < 0) {
-            perror("ERROR reading from socket");
-            exit(1);
+        n = read(newsockfd, buffer, BUFFER_SIZE);
+        char* pt = buffer;
+        if (numberOfNewLine(pt)  >= 2){
+            while (*pt != '\n') ++pt;
+            ++pt;
         }
-        // creating values:
-        while (*pointer != '\n'){
-            values += *pointer;
-            ++pointer;
-        }
-        ++pointer;
-        values += '\n';
-        // update:
-        updatePathsTable(splitByComma(values.c_str()));
+        updatePathsTable(splitByComma(pt));
         updateSymbolTable();
-        leftovers = "";
-        // if we have unread chars:
-        if (*pointer) {
-            // add to leftovers:
-            for (int i = 0; i < BUFFER_SIZE - values.length(); ++i) {
-                leftovers += *pointer;
-                ++pointer;
-            }
-            bzero(buffer, BUFFER_SIZE);
-            // add to buffer:
-            for (int j = 0; j < BUFFER_SIZE - values.length(); ++j) {
-                buffer[j] = leftovers[j];
-            }
-        } else {
-            bzero(buffer, BUFFER_SIZE);
-        }
+        bzero(buffer, BUFFER_SIZE);
         if (n < 0) {
             perror("ERROR writing to socket");
             exit(1);

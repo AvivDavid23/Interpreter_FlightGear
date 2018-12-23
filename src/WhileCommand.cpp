@@ -25,7 +25,7 @@ void WhileCommand::createCommandList(const vector<string> &words, unsigned int &
         if(words[index] == "{") index++;
         else if (words[index] == "var") {
             commandList.push_back(map["var"]);
-            if (words[index + 3] == "bind") index += 5;
+            if (words[index + 3] == " bind") index += 5;
             else index += 4;
         }
         else if (this->map.find(words[index]) == map.end()) {

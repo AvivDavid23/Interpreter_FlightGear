@@ -11,6 +11,7 @@ void OpenServerCommand::execute(const vector<string> &words) {
     try {
         port = (int) ExpressionsParser::shuntingYardAlg(words[index + 1]);
         hz = (int) ExpressionsParser::shuntingYardAlg((words[index + 2]));
+        index += 3;
     } catch (...) {
         cerr << "Syntax/Parameter Error!" << endl;
         exit(1);

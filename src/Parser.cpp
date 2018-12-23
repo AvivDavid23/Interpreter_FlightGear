@@ -32,10 +32,10 @@ void Parser::commandParse(const vector<string> &words) {
                 index ++;
                 continue;
             }
-            // check if there is a variable in syMbolTable
+            // check if there is a variable in symbolTable
             if(SymbolTable::instance()->atTable(words[index]))
-                    // if there is, go to DefineVar.
-                    expression = commandsTable.at("var");
+                    // if there is, go to Assign.
+                    expression = commandsTable.at("assign");
                 // if there is no expression like this, throw error.
             if (expression == nullptr) throw runtime_error(string("no legal expression"));
         }
