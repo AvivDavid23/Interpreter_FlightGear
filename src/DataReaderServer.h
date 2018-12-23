@@ -9,7 +9,7 @@
 #include "BindingTable.h"
 
 #define PARAMETERS_SIZE 23
-#define BUFFER_SIZE 1024
+#define BUFFER_SIZE 2048
 static std::vector<std::string> pathsVec{"/instrumentation/airspeed-indicator/indicated-speed-kt",
                                          "/instrumentation/altimeter/indicated-altitude-ft",
                                          "/instrumentation/altimeter/pressure-alt-ft",
@@ -34,6 +34,8 @@ static std::vector<std::string> pathsVec{"/instrumentation/airspeed-indicator/in
                                          "/controls/engines/engine/throttle",
                                          "/engines/engine/rpm"};
 class DataReaderServer {
+
+    static bool open;
 
     /**
      * Updates the Paths table
@@ -60,6 +62,11 @@ public:
      * @param hz hz
      */
     static void openServer(int port, int hz);
+
+    /**
+     * @return true if server is open, else false
+     */
+    inline static bool isOpen(){ return open;}
 };
 
 

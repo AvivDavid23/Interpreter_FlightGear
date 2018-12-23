@@ -13,7 +13,7 @@
 #include <iostream>
 #include "DataReaderServer.h"
 #include "mutex"
-
+bool DataReaderServer::open = false;
 std::vector<std::string> DataReaderServer::splitByComma(const char *buffer) {
     std::vector<std::string> vec;
     std::string tmp;
@@ -92,6 +92,7 @@ void DataReaderServer::openServer(int port, int hz) {
         perror("ERROR on accept");
         exit(1);
     }
+    open = true;
     char buffer[BUFFER_SIZE];
     std::string values;
     std::string leftovers;
@@ -101,6 +102,7 @@ void DataReaderServer::openServer(int port, int hz) {
         // to know where to put data:
         unsigned long start = leftovers.length() ? values.length() : 0;
         n = read(newsockfd, buffer + start, BUFFER_SIZE - start);
+        std::cout << buffer +'\n';
         // points to the buffer
         pointer = buffer;
         values = "";
@@ -131,7 +133,7 @@ void DataReaderServer::openServer(int port, int hz) {
             for (int j = 0; j < BUFFER_SIZE - values.length(); ++j) {
                 buffer[j] = leftovers[j];
             }
-        } else{
+        } else {
             bzero(buffer, BUFFER_SIZE);
         }
         if (n < 0) {
