@@ -23,12 +23,12 @@ Parser::~Parser() {
  */
 void Parser::commandParse(const vector<string> &words) {
     string item;
-    while (item != words.back()) {
+    while (index < words.size()) {
         item= words[index];
         Expression *expression = commandsTable[(words[index])]; // key- worlds, value - command.
         // if there is no expression in the commandsTable
         if(expression== nullptr) {
-            if(words[index] == "(" || words[index] == ")") {
+            if(words[index] == "{" || words[index] == "}") {
                 index ++;
                 continue;
             }
@@ -46,12 +46,14 @@ void Parser::commandParse(const vector<string> &words) {
  * @param lines the array of words.
  * in this function, we create a map between the string and the expression we want to calculate.
  */
-void Parser:: createFunction(vector<string>lines){
+void Parser:: createFunction(const vector<string> &lines){
     // create commands table:
     commandsTable["openDataServer"] = new CommandExpression(new OpenServerCommand(index),lines);
     commandsTable["connect"] = new CommandExpression(new ConnectCommand(index),lines);
     commandsTable["var"] = new CommandExpression(new DefineVarCommand(index),lines);
-    commandsTable["while"] = new CommandExpression(new WhileCommand(index),lines);
-    commandsTable["if"] = new CommandExpression(new IfCommand(index), lines);
     commandsTable["print"] = new CommandExpression(new PrintCommand(index),lines);
+    commandsTable["sleep"] = new CommandExpression(new SleepCommand(index),lines);
+    commandsTable["assign"] = new CommandExpression(new AssignCommand(index),lines);
+    commandsTable["while"] = new CommandExpression(new WhileCommand(index, commandsTable), lines);
+    commandsTable["if"] = new CommandExpression(new IfCommand(index), lines);
 }

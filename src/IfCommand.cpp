@@ -12,11 +12,7 @@
  */
 void IfCommand::execute(const vector<string> &words) {
     //Parser parser;
-    ConditionParser conditionParser(index);
-    if (conditionParser.execute(words)) {
-        index++;
-    }
-    else {
+    if (!conditionParser.execute(words)) {
         while(words[index] != "}") index++;
         index++ ;
     }
@@ -24,5 +20,5 @@ void IfCommand::execute(const vector<string> &words) {
 /**
  * @param index cons'.
  */
-IfCommand::IfCommand(unsigned int &index) : index(index){}
+IfCommand::IfCommand(unsigned int &index) : index(index),conditionParser(this->index){}
 

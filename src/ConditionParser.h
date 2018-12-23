@@ -10,13 +10,14 @@
 
 
 class ConditionParser {
-    unsigned int index;
+    unsigned int &index;
 public:
     explicit ConditionParser(unsigned int &i);
 
     bool execute(const vector<string> &line);
 
     bool checkOperator(const string &charOPerator);
+
 
 };
 

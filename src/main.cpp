@@ -8,6 +8,7 @@
 #include "list"
 #include "Lexer.h"
 #include "ConnectCommand.h"
+#include "Parser.h"
 #include "OpenServerCommand.h"
 
 /**
@@ -18,7 +19,13 @@ BindingTable *BindingTable::s_instance = 0; // singleton
 SymbolTable *SymbolTable::s_instance = 0; // singleton
 PathsTable *PathsTable::s_instance = 0; // singleton
 
-int main() {
-    DataReaderServer::openServer(5400, 10);
+int main(int argc,char **argv) {
+    Lexer lexer;
+    vector<string> words= lexer.active(argv[1]);
+    Parser parser;
+   parser.createFunction(words);
+    parser.commandParse(words);
+    //DataWriterClient::setMessage("set /controls/flight/rudder 1\r\n");
+    //DataWriterClient::createClient(5402,"127.0.0.1");
     return 0;
 }

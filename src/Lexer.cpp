@@ -1,6 +1,3 @@
-//
-// Created by dvir on 12/17/18.
-//
 
 
 #include <iostream>
@@ -11,7 +8,7 @@
 * @param fileName name of the file
 * @return the lines vector
 */
-vector<string> Lexer::active(const string &fileName) {
+        vector<string> Lexer::active(const string &fileName) {
     vector<string> vector;
     string tmp;
     fstream file;
@@ -42,9 +39,22 @@ vector<string> Lexer::fromStringToExp(vector<string> commands) {
             while (std::getline(ss, s, '=')) {
                 std::stringstream sd(s);
                 // split by space.
-                while (std::getline(sd, s, ' ')) {
-                    words.push_back(s);
+                if(!check) {
+                    while (std::getline(sd, s, ' ')) {
+                        if(!s.empty() && s.at(0) == '\t')
+                            s = s.substr(1,s.size()-1);
+                        words.push_back(s);
+                    }
+
                 }
+                else{
+                    string sb= s.substr(0,5);
+                    if(s.substr(0,5) == " bind") {
+                        words.push_back(s.substr(0,5));
+                        words.push_back(s.substr(6,s.length()-1));
+                    }
+                    else words.push_back(s);
+                    }
                 if (!check) {
                     check = true;
                     // if there is no '=' in the vector of words, put it.
@@ -57,8 +67,10 @@ vector<string> Lexer::fromStringToExp(vector<string> commands) {
             string help;
             // split by space.
             while (std::getline(ss, s, ' ')) {
+                if(!s.empty() && s.at(0) == '\t')
+                    s = s.substr(1,s.size()-1);
                 // if help isn't empty and s isn't empty and s is a number and the last index of help is also a number
-                if(!s.empty() && isdigit(s.at(0)) && !help.empty() && isdigit(help.at(help.size()-1))) {
+                if(!s.empty() && isdigit(s.at(0)) && !help.empty()) {
                     // push the help
                     words.push_back(help);
                     // empty the string help.
@@ -66,15 +78,15 @@ vector<string> Lexer::fromStringToExp(vector<string> commands) {
                     // push the string.
                     words.push_back(s);
                 }
-                // if s is not a space, and it's number and we didn't reach the  final of the line
-                else if(!s.empty() && isdigit(s.at(0)) && !ss.eof()) {
-                     help += s;
-                    }
-                // if help isn't empty and it isn't operator , just concatenating the string to help.
+                    // if s is not a space, and it's number and we didn't reach the  final of the line
+                //else if(!s.empty() && isdigit(s.at(0)) && !ss.eof()) {
+                    //help += s;
+                //}
+                    // if help isn't empty and it isn't operator , just concatenating the string to help.
                 else if(!help.empty() && isOperator(s))
                     help+=s;
                 else
-                words.push_back(s);
+                    if(help.empty()) words.push_back(s);
             }
         }
     }

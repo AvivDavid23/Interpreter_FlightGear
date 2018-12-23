@@ -22,6 +22,7 @@ bool ConditionParser::execute(const vector<string> &line) {
     ++index;
     // create the right expression until the end of the condition.
      rightExpression += line[index];
+     index=index+2;
     rightExpression = ExpressionsParser::varsExtrication(rightExpression);
     if (line[count] == ">") {
         return (ExpressionsParser::shuntingYardAlg(leftExpression) > ExpressionsParser::shuntingYardAlg(rightExpression));
@@ -53,8 +54,5 @@ bool ConditionParser::checkOperator(const string &charOperator) {
 /**
  * @param i index of the array of words.return
  */
-ConditionParser::ConditionParser(unsigned int &i) {
-this->index= i ;
-}
-
+ConditionParser::ConditionParser(unsigned int &i): index(i) {}
 

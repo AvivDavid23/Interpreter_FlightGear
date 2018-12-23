@@ -12,6 +12,8 @@
 #include "WhileCommand.h"
 #include "PrintCommand.h"
 #include "SymbolTable.h"
+#include "SleepCommand.h"
+#include "AssignCommand.h"
 
 /**
  * A class which used to parse every line in the script and execute it
@@ -21,7 +23,7 @@ private:
     unsigned int index;
     map<string, Expression *> commandsTable;
 public:
-     void createFunction(vector<string> lines);
+     void createFunction(const vector<string> &lines);
 
     Parser();
 
