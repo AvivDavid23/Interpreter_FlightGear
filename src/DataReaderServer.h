@@ -37,6 +37,8 @@ class DataReaderServer {
 
     static bool open;
 
+    static int sockFd;
+
     /**
      * Updates the Paths table
      * @param vector vector
@@ -70,6 +72,8 @@ public:
      * @return true if server is open, else false
      */
     inline static bool isOpen(){ return open;}
+
+    inline static int getSocketFD(){ return sockFd;}
 };
 
 

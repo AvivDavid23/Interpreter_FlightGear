@@ -5,6 +5,8 @@
 #include <iostream>
 #include "DataWriterClient.h"
 std::string DataWriterClient::message = ""; // message for simulator
+int DataWriterClient::sockFd = 0;
+
 void DataWriterClient::setMessage(const string &message1) {
     globalMutex.lock();
     message = message1;
@@ -19,7 +21,7 @@ void DataWriterClient::createClient(int port, string address) {
 
     /* Create a socket point */
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
-
+    sockFd = sockfd;
     if (sockfd < 0) {
         perror("ERROR opening socket");
         exit(1);

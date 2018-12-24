@@ -15,16 +15,7 @@
 #include "mutex"
 
 bool DataReaderServer::open = false;
-
-unsigned int DataReaderServer::numberOfNewLine(const char *buffer) {
-    const char *pt = buffer;
-    unsigned int x = 0;
-    while (*pt) {
-        if (*pt == '\n')++x;
-        ++pt;
-    }
-    return x;
-}
+int DataReaderServer::sockFd = 0;
 
 std::vector<std::string> DataReaderServer::splitByComma(const char *buffer) {
     std::vector<std::string> vec;
@@ -104,7 +95,7 @@ void DataReaderServer::openServer(int port, int hz) {
 
     /* Accept actual connection from the client */
     newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *) &clilen);
-
+    sockFd = newsockfd;
     if (newsockfd < 0) {
         perror("ERROR on accept");
         exit(1);
@@ -116,18 +107,37 @@ void DataReaderServer::openServer(int port, int hz) {
     bzero(buffer, BUFFER_SIZE);
     while (true) {
         // to know where to put data:
-        n = read(newsockfd, buffer, BUFFER_SIZE);
-        char* pt = buffer;
-        if (numberOfNewLine(pt)  >= 2){
-            while (*pt != '\n') ++pt;
-            ++pt;
-        }
-        updatePathsTable(splitByComma(pt));
-        updateSymbolTable();
-        bzero(buffer, BUFFER_SIZE);
+        int start = leftovers.length() ? leftovers.length() - 1 : 0;
+        n = read(newsockfd, buffer + start, BUFFER_SIZE - start);
         if (n < 0) {
             perror("ERROR writing to socket");
             exit(1);
+        }
+        values = "";
+        char* pt = buffer;
+        while (*pt != '\n'){
+            values += *pt;
+            ++pt;
+        }
+        ++pt;
+        values += '\n';
+        updatePathsTable(splitByComma(values.c_str()));
+        updateSymbolTable();
+        leftovers = "";
+        // if there are leftovers:
+        if(*pt) {
+            // add leftovers:
+            while (*pt){
+                leftovers += *pt;
+                ++pt;
+            }
+            bzero(buffer, BUFFER_SIZE);
+            // add leftovers to start;
+            for (int i = 0; i < leftovers.length(); ++i) {
+                buffer[i] = leftovers[i];
+            }
+        }else {
+            bzero(buffer, BUFFER_SIZE);
         }
     }
 }

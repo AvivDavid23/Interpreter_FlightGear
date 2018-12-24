@@ -18,6 +18,7 @@
 #include "SymbolTable.h"
 
 using namespace std;
+
 /**
  * A client that connects to the server of the simulation
  */
@@ -25,11 +26,15 @@ using namespace std;
 
 class DataWriterClient {
     static std::string message;
+    static int sockFd;
 public:
 
     static void setMessage(const string &message1);
 
     static void createClient(int port, string address);
 
+    inline static int getSocketFD() { return sockFd; }
+
 };
+
 #endif //SECONDYEARPROJECT_BIU_DATAWRITERCLIENT_H
