@@ -1,4 +1,5 @@
 
+#include <algorithm>
 #include "ExpressionsParser.h"
 
 /**
@@ -163,7 +164,7 @@ double ExpressionsParser::shuntingYardAlg(const string& expression) {
             queue2.push(expression[i]);
             continue;
         }
-        if (isdigit(expression[i])) {
+            if (isdigit(expression[i])) {
             queue2.push(expression[i]);
             // if the number is bigger the  2
             if (i < expression.length() && ((!isdigit(expression[i + 1])) && expression[i+1] != '.')) {
@@ -193,17 +194,22 @@ double ExpressionsParser::shuntingYardAlg(const string& expression) {
                 }
                 stack1.pop();
             } else { // char is an operator:
-                while (!stack1.empty() && precedences[stack1.top()] > precedences[expression[i]] &&
+                while (!stack1.empty() && precedences[stack1.top()] >= precedences[expression[i]] &&
                        expression[i] != ' ') {
                     queue1.push(stack1.top());
                     stack1.pop();
                 }
-                if (expression[i] != ' ')
-                    if(expression[i] == '-' && isdigit(expression[i+1]) && (stack1.empty() || stack1.top() == '(')) {
-                        queue2.push(expression[i]);
-                    }
-                    else
-                        stack1.push(expression[i]);
+                        if(expression[i] == '-' && (i==0)) {
+                            queue1.push('0');
+                            stack1.push(expression[i]);
+                        }
+                        else if(expression[i] == '-' && (!isdigit(expression[i-1]))) {
+                            queue1.push('0');
+                            stack1.push(expression[i]);
+                        }
+
+                        else if(expression[i]!= ' ')
+                            stack1.push(expression[i]);
             }
         }
     }
