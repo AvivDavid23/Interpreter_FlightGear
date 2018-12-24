@@ -6,10 +6,12 @@
 
 void WhileCommand::execute(const vector<string> &words) {
     unsigned int firstIndex= index;
-    while(conditionParser.execute(words) ) {
+    unsigned int startprogram;
+    while(conditionParser.execute(words)) {
+        startprogram = index;
         if(firsttime) {
            createCommandList(words, index);
-           index= firstIndex;
+          index= startprogram;
            firsttime = false;
         }
         for(auto const & command:commandList) command->calculate();
@@ -31,7 +33,12 @@ void WhileCommand::createCommandList(const vector<string> &words, unsigned int &
         else if (this->map.find(words[index]) == map.end()) {
             commandList.push_back(map["assign"]);
             index += 3;
-        } else {
+        } else if (words[index] == "if") {
+            commandList.push_back(map["if"]);
+            while(words[index]!= "}") index++;
+            index++;
+        }
+        else if  (this->map.find(words[index]) != map.end()) {
             commandList.push_back(map[words[index]]);
             index += 2;
         }

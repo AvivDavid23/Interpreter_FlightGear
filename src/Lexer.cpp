@@ -3,7 +3,6 @@
 #include <iostream>
 #include <sstream>
 #include "Lexer.h"
-
 /**
 * Runs on the file script, creates vector which each value has a string which represent a line
 * @param fileName name of the file
@@ -16,13 +15,12 @@ vector<string> Lexer::active(const string &fileName) {
     if (!file.is_open()) {
         file.open(fileName, fstream::in | fstream::app);
     }
-    while (getline(file, tmp)) {
+    while (getline(file,tmp)) {
         vector.push_back(tmp);
     }
     file.close();
     return fromStringToExp(vector);
 }
-
 /**
  * @param the lines in the file.
  * @return vector of words in the right order
@@ -41,19 +39,21 @@ vector<string> Lexer::fromStringToExp(vector<string> commands) {
             while (std::getline(ss, s, '=')) {
                 std::stringstream sd(s);
                 // split by space.
-                if (!check) {
+                if(!check) {
                     while (std::getline(sd, s, ' ')) {
-                        if (!s.empty() && s.at(0) == '\t')
-                            s = s.substr(1, s.size() - 1);
+                        if(!s.empty() && s.at(0) == '\t')
+                            s = s.substr(1,s.size()-1);
                         words.push_back(s);
                     }
 
-                } else {
-                    string sb = s.substr(0, 5);
-                    if (s.substr(0, 5) == " bind") {
-                        words.push_back(s.substr(0, 5));
-                        words.push_back(s.substr(6, s.length() - 1));
-                    } else words.push_back(s);
+                }
+                else{
+                    string sb= s.substr(0,5);
+                    if(s.substr(0,5) == " bind") {
+                        words.push_back(s.substr(0,5));
+                        words.push_back(s.substr(6,s.length()-1));
+                    }
+                    else words.push_back(s);
                 }
                 if (!check) {
                     check = true;
@@ -67,10 +67,10 @@ vector<string> Lexer::fromStringToExp(vector<string> commands) {
             string help;
             // split by space.
             while (std::getline(ss, s, ' ')) {
-                if (!s.empty() && s.at(0) == '\t')
-                    s = s.substr(1, s.size() - 1);
+                if(!s.empty() && s.at(0) == '\t')
+                    s = s.substr(1,s.size()-1);
                 // if help isn't empty and s isn't empty and s is a number and the last index of help is also a number
-                if (!s.empty() && isdigit(s.at(0)) && !help.empty()) {
+                if(!s.empty() && isdigit(s.at(0)) && !help.empty()) {
                     // push the help
                     words.push_back(help);
                     // empty the string help.
@@ -83,25 +83,25 @@ vector<string> Lexer::fromStringToExp(vector<string> commands) {
                     //help += s;
                     //}
                     // if help isn't empty and it isn't operator , just concatenating the string to help.
-                else if (!help.empty() && isOperator(s))
-                    help += s;
-                else if (help.empty()) words.push_back(s);
+                else if(!help.empty() && isOperator(s))
+                    help+=s;
+                else
+                if(help.empty()) words.push_back(s);
             }
         }
     }
     vector<string> final;
     for (auto const &item:words) {
-        if (item == "") continue;
+        if(item == "") continue;
         final.push_back(item);
     }
     // return the vector of string.
     return final;
 }
-
 /**
  * @param c the expression.
  * @return return 1 if is operator, 0 otherwise.
  */
-bool Lexer::isOperator(string &c) {
-    return (c == "+" || c == "-" || c == "*" || c == "=" || c == "/");
+bool Lexer::isOperator(string & c) {
+    return(c == "+" || c == "-" || c == "*" || c == "=" || c == "/"  );
 }
