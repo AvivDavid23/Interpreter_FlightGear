@@ -14,7 +14,6 @@ void DataWriterClient::setMessage(const string &message1) {
 }
 
 void DataWriterClient::createClient(int port, string address) {
-    message = "";
     int sockfd, n;
     struct sockaddr_in serv_addr;
     struct hostent *server;

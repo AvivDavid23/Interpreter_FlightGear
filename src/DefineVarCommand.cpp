@@ -9,16 +9,16 @@ void DefineVarCommand::execute(const vector<string> &line) {
     if (line[index] == " bind") {
         ++index;
         string val = line[index];
-        if (val[0] == '/') { // start of a path
+        if (val[1] == '/') { // start of a path
             globalMutex.lock();
             // set value in the table
-            if (PathsTable::instance()->atTable(val.substr(1, val.length() - 2))){
+            val = val.substr(1, val.length() - 2);
+            if (PathsTable::instance()->atTable(val)){
                 // if the path is in paths table
-                BindingTable::instance()->setValue(key, val.substr(1, val.length() - 2));
-                SymbolTable::instance()->setValue(key,
-                                                  PathsTable::instance()->getValue(val.substr(1, val.length() - 2)));
+                BindingTable::instance()->setValue(key, val);
+                SymbolTable::instance()->setValue(key,PathsTable::instance()->getValue(val));
             } else {
-                BindingTable::instance()->setValue(key, val.substr(1, val.length() - 2));
+                BindingTable::instance()->setValue(key, val);
                 SymbolTable::instance()->setValue(key,0);
             }
             globalMutex.unlock();

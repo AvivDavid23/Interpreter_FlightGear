@@ -1,7 +1,6 @@
-
-
 #include <iostream>
 #include <sstream>
+#include <algorithm>
 #include "Lexer.h"
 /**
 * Runs on the file script, creates vector which each value has a string which represent a line
@@ -41,8 +40,10 @@ vector<string> Lexer::fromStringToExp(vector<string> commands) {
                 // split by space.
                 if(!check) {
                     while (std::getline(sd, s, ' ')) {
-                        if(!s.empty() && s.at(0) == '\t')
-                            s = s.substr(1,s.size()-1);
+                        if(!s.empty() && s.at(0) == '\t') {
+                            s.erase(std::remove(s.begin(),s.end(), '\t'), s.end());
+                        }
+                        cout << s[0]<<endl;
                         words.push_back(s);
                     }
 
@@ -67,8 +68,9 @@ vector<string> Lexer::fromStringToExp(vector<string> commands) {
             string help;
             // split by space.
             while (std::getline(ss, s, ' ')) {
-                if(!s.empty() && s.at(0) == '\t')
-                    s = s.substr(1,s.size()-1);
+                if(!s.empty() && s.at(0) == '\t') {
+                    s.erase(std::remove(s.begin(),s.end(), '\t'), s.end());
+                }
                 // if help isn't empty and s isn't empty and s is a number and the last index of help is also a number
                 if(!s.empty() && isdigit(s.at(0)) && !help.empty()) {
                     // push the help

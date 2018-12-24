@@ -44,8 +44,8 @@ void DataReaderServer::updateSymbolTable() {
     globalMutex.lock();
     for (auto iter = SymbolTable::instance()->getFirst(); iter != SymbolTable::instance()->getEnd(); ++iter) {
         // means the var is binned to a var
-        globalMutex.lock();
-        if (*BindingTable::instance()->getValue(iter->first).c_str() != '/') {
+        if (BindingTable::instance()->atTable(iter->first) &&
+                    *BindingTable::instance()->getValue(iter->first).c_str() != '/') {
             SymbolTable::instance()->setValue(iter->first, SymbolTable::instance()->getValue(BindingTable::instance()->
                     getValue(iter->first)));
         } else {
