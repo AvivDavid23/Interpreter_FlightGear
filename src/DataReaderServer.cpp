@@ -50,6 +50,7 @@ void DataReaderServer::updatePathsTable(std::vector<std::string> vec) {
 }
 
 void DataReaderServer::updateSymbolTable() {
+    globalMutex.lock();
     for (auto iter = SymbolTable::instance()->getFirst(); iter != SymbolTable::instance()->getEnd(); ++iter) {
         // means the var is binned to a var
         globalMutex.lock();
@@ -57,11 +58,15 @@ void DataReaderServer::updateSymbolTable() {
             SymbolTable::instance()->setValue(iter->first, SymbolTable::instance()->getValue(BindingTable::instance()->
                     getValue(iter->first)));
         } else {
-            SymbolTable::instance()->setValue(iter->first, PathsTable::instance()->getValue(BindingTable::instance()->
-                    getValue(iter->first)));
+            if (PathsTable::instance()->atTable(BindingTable::instance()->
+                    getValue(iter->first))) {
+                SymbolTable::instance()->setValue(iter->first,
+                                                  PathsTable::instance()->getValue(BindingTable::instance()->
+                                                          getValue(iter->first)));
+            }
         }
-        globalMutex.unlock();
     }
+    globalMutex.unlock();
 }
 
 void DataReaderServer::openServer(int port, int hz) {
