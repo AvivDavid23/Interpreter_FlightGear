@@ -65,8 +65,9 @@ Expression *ExpressionsParser::postToExp(const string& exp) {
             ++index;
             ++time;
             // take two expressions and create one with them:
-        } else if (expStack.size() >= 2 && ((numStack.empty() || ((time - get<1>(expStack.top()) == 1)
-                                                                  && (time - get<1>(numStack.top()) > 2))))) {
+        } else if ((expStack.size() > 2 || (expStack.size()==2 && numStack.empty())) &&
+        ((numStack.empty() || ((time - get<1>(expStack.top()) == 1) &&
+        (time - get<1>(numStack.top()) > 2))))) {
             Expression *ex2 = get<0>(expStack.top());
             expStack.pop();
             Expression *ex1 = get<0>(expStack.top());

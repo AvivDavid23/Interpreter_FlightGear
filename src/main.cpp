@@ -20,10 +20,10 @@ SymbolTable *SymbolTable::s_instance = 0; // singleton
 PathsTable *PathsTable::s_instance = 0; // singleton
 
 int main(int argc, char **argv) {
-    Lexer lexer;
-    vector<string> words = lexer.active(argv[1]);
-    Parser parser;
-    parser.createFunction(words);
-    parser.commandParse(words);
+//    Lexer lexer;
+//    vector<string> words = lexer.active(argv[1]);
+//    Parser parser;
+//    parser.createFunction(words);
+//    parser.commandParse(words);
     return 0;
 }

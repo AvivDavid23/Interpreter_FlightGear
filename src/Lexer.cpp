@@ -43,7 +43,6 @@ vector<string> Lexer::fromStringToExp(vector<string> commands) {
                         if(!s.empty() && s.at(0) == '\t') {
                             s.erase(std::remove(s.begin(),s.end(), '\t'), s.end());
                         }
-                        cout << s[0]<<endl;
                         words.push_back(s);
                     }
 
