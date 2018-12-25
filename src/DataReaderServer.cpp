@@ -43,11 +43,10 @@ void DataReaderServer::updatePathsTable(std::vector<std::string> vec) {
 void DataReaderServer::updateSymbolTable() {
     globalMutex.lock();
     for (auto iter = SymbolTable::instance()->getFirst(); iter != SymbolTable::instance()->getEnd(); ++iter) {
-        {
-            if (PathsTable::instance()->atTable(BindingTable::instance()->getValue(iter->first))) {
-                SymbolTable::instance()->setValue(iter->first,
-                                                  PathsTable::instance()->getValue(BindingTable::instance()->
-                                                          getValue(iter->first)));
+        if (BindingTable::instance()->atTable(iter->first)) {
+            std::string bind = BindingTable::instance()->getValue(iter->first);
+            if (PathsTable::instance()->atTable(bind)) {
+                SymbolTable::instance()->setValue(iter->first,PathsTable::instance()->getValue(bind));
             }
         }
     }

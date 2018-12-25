@@ -39,6 +39,10 @@ public:
     inline std::string getValue(const std::string &key) {
         return bindTable[key];
     }
+
+    inline bool atTable(const std::string &key){
+        return bindTable.find(key) != bindTable.end();
+    }
 };
 
 
