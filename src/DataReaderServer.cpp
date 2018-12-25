@@ -94,7 +94,6 @@ void DataReaderServer::openServer(int port, int hz) {
         perror("ERROR on accept");
         exit(1);
     }
-    open = true;
     char buffer[BUFFER_SIZE];
     std::string values;
     std::string leftovers;
@@ -102,13 +101,11 @@ void DataReaderServer::openServer(int port, int hz) {
     while (true) {
         // to know where to put data:
         int start = leftovers.length() ? leftovers.length() - 1 : 0;
-        globalMutex.lock();
-        n = read(newsockfd, buffer + start, BUFFER_SIZE - start);
-        globalMutex.unlock();
-        if (n < 0) {
+        while (read(newsockfd, buffer + start, BUFFER_SIZE - start) < 0) {
             perror("ERROR writing to socket");
             exit(1);
         }
+        open = true;
         values = "";
         char *pt = buffer;
         while (*pt != '\n') {
@@ -117,7 +114,6 @@ void DataReaderServer::openServer(int port, int hz) {
         }
         ++pt;
         values += '\n';
-
         updatePathsTable(splitByComma(values.c_str()));
         updateSymbolTable();
         leftovers = "";

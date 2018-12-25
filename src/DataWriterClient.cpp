@@ -54,6 +54,10 @@ void DataWriterClient::createClient(int port, string address) {
                 perror("ERROR writing to socket");
                 exit(1);
             }
+            char buff[222];
+            read(sockfd, buff, 222);
+            std::cout << buff << '\n';
+            bzero(buff, 222);
         }
     }
 }

@@ -31,7 +31,7 @@ static std::vector<std::string> pathsVec{"/instrumentation/airspeed-indicator/in
                                          "/controls/flight/elevator",
                                          "/controls/flight/rudder",
                                          "/controls/flight/flaps",
-                                             "/controls/engines/current-engine/throttle",
+                                         "/controls/engines/current-engine/throttle",
                                          "/engines/engine/rpm"};
 class DataReaderServer {
 
@@ -56,8 +56,6 @@ class DataReaderServer {
      * @return vector of values
      */
     static std::vector<std::string> splitByComma(const char *buffer);
-
-    static unsigned int numberOfNewLine(const char *buffer);
 
 
 public:

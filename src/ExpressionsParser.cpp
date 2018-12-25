@@ -1,4 +1,3 @@
-
 #include <algorithm>
 #include "ExpressionsParser.h"
 
@@ -14,9 +13,9 @@ double ExpressionsParser::calculateFirstNum(const string& exp, unsigned long &in
     string val = "";
     ++index;
     while (exp[index] != ')') {
-       val+=exp[index];
-       index++;
-        }
+        val+=exp[index];
+        index++;
+    }
     if(val.find('.')== string::npos)
         return (double) atoi(val.c_str());
     val.erase(val.find_last_not_of('0')+1,string::npos);
@@ -66,8 +65,8 @@ Expression *ExpressionsParser::postToExp(const string& exp) {
             ++time;
             // take two expressions and create one with them:
         } else if ((expStack.size() > 2 || (expStack.size()==2 && numStack.empty())) &&
-        ((numStack.empty() || ((time - get<1>(expStack.top()) == 1) &&
-        (time - get<1>(numStack.top()) > 2))))) {
+                   ((numStack.empty() || ((time - get<1>(expStack.top()) == 1) &&
+                                          (time - get<1>(numStack.top()) > 2))))) {
             Expression *ex2 = get<0>(expStack.top());
             expStack.pop();
             Expression *ex1 = get<0>(expStack.top());
@@ -165,7 +164,7 @@ double ExpressionsParser::shuntingYardAlg(const string& expression) {
             queue2.push(expression[i]);
             continue;
         }
-            if (isdigit(expression[i])) {
+        if (isdigit(expression[i])) {
             queue2.push(expression[i]);
             // if the number is bigger the  2
             if (i < expression.length() && ((!isdigit(expression[i + 1])) && expression[i+1] != '.')) {
@@ -200,17 +199,17 @@ double ExpressionsParser::shuntingYardAlg(const string& expression) {
                     queue1.push(stack1.top());
                     stack1.pop();
                 }
-                        if(expression[i] == '-' && (i==0)) {
-                            queue1.push('0');
-                            stack1.push(expression[i]);
-                        }
-                        else if(expression[i] == '-' && (!isdigit(expression[i-1]))) {
-                            queue1.push('0');
-                            stack1.push(expression[i]);
-                        }
+                if(expression[i] == '-' && (i==0)) {
+                    queue1.push('0');
+                    stack1.push(expression[i]);
+                }
+                else if(expression[i] == '-' && (!isdigit(expression[i-1]))) {
+                    queue1.push('0');
+                    stack1.push(expression[i]);
+                }
 
-                        else if(expression[i]!= ' ')
-                            stack1.push(expression[i]);
+                else if(expression[i]!= ' ')
+                    stack1.push(expression[i]);
             }
         }
     }
@@ -244,14 +243,14 @@ string ExpressionsParser::varsExtrication(const string &exp) {
             newExp += *pExp;
             ++pExp;
         } else {
-            while (!(*pExp == '(' || *pExp == ')' || isOperator(*pExp)) && *pExp) {
+            while (!(*pExp == '(' || *pExp == ')' || isOperator(*pExp) || *pExp == ' ') && *pExp) {
                 var += *pExp;
                 ++pExp;
             }
             globalMutex.lock();
             var = to_string(SymbolTable::instance()->getValue(var));
             var.erase ( var.find_last_not_of('0') + 1, std::string::npos ); // erase trailing zeros
-            if(var.length() == 2) var = var.substr(0, 1);
+            if(var.find('.') == var.length() - 1) var = var.substr(0, var.length() - 1);
             newExp += var;
             globalMutex.unlock();
             var = "";
@@ -274,9 +273,8 @@ bool ExpressionsParser::checkNeg(const string &basic_string) {
         if(*c == '-' && !once) once = true;
         else
             // if there is more things in the string, return false.
-            if(isOperator(*c) && once) return false;
-                c++;
+        if(isOperator(*c) && once) return false;
+        c++;
     }
     return true;
 }
-

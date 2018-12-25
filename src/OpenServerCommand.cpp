@@ -17,5 +17,8 @@ void OpenServerCommand::execute(const vector<string> &words) {
         exit(1);
     }
     thread t(&DataReaderServer::openServer, port, hz);
+    while (!DataReaderServer::isOpen()){
+        // wait...
+    }
     t.detach();
 }
