@@ -43,12 +43,7 @@ void DataReaderServer::updatePathsTable(std::vector<std::string> vec) {
 void DataReaderServer::updateSymbolTable() {
     globalMutex.lock();
     for (auto iter = SymbolTable::instance()->getFirst(); iter != SymbolTable::instance()->getEnd(); ++iter) {
-        // means the var is binned to a var
-        if (BindingTable::instance()->atTable(iter->first) &&
-                    *BindingTable::instance()->getValue(iter->first).c_str() != '/') {
-            SymbolTable::instance()->setValue(iter->first, SymbolTable::instance()->getValue(BindingTable::instance()->
-                    getValue(iter->first)));
-        } else {
+        {
             if (PathsTable::instance()->atTable(BindingTable::instance()->
                     getValue(iter->first))) {
                 SymbolTable::instance()->setValue(iter->first,
@@ -70,7 +65,7 @@ void DataReaderServer::openServer(int port, int hz) {
 
     while (sockfd < 0) {
         sockfd = socket(AF_INET, SOCK_STREAM, 0);
-       //try...
+        //try...
     }
 
     /* Initialize socket structure */
@@ -114,8 +109,8 @@ void DataReaderServer::openServer(int port, int hz) {
             exit(1);
         }
         values = "";
-        char* pt = buffer;
-        while (*pt != '\n'){
+        char *pt = buffer;
+        while (*pt != '\n') {
             values += *pt;
             ++pt;
         }
@@ -125,9 +120,9 @@ void DataReaderServer::openServer(int port, int hz) {
         updateSymbolTable();
         leftovers = "";
         // if there are leftovers:
-        if(*pt) {
+        if (*pt) {
             // add leftovers:
-            while (*pt){
+            while (*pt) {
                 leftovers += *pt;
                 ++pt;
             }
@@ -136,7 +131,7 @@ void DataReaderServer::openServer(int port, int hz) {
             for (int i = 0; i < leftovers.length(); ++i) {
                 buffer[i] = leftovers[i];
             }
-        }else {
+        } else {
             bzero(buffer, BUFFER_SIZE);
         }
     }

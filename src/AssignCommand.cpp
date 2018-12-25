@@ -11,9 +11,14 @@ void AssignCommand::execute(const vector<string> &line) {
     double val = ExpressionsParser::shuntingYardAlg(ExpressionsParser::varsExtrication(line[index]));
     globalMutex.lock();
     SymbolTable::instance()->setValue(key,val);
-    const string msg = "set " + BindingTable::instance()->getValue(key) +
-            " " + to_string(SymbolTable::instance()->getValue(key)) + "\r\n";
-    globalMutex.unlock();
-    DataWriterClient::setMessage(msg);
+    if (BindingTable::instance()->getValue(key)[1] == '/'){
+        const string msg = "set " + BindingTable::instance()->getValue(key) +
+                           " " + to_string(SymbolTable::instance()->getValue(key)) + "\r\n";
+        globalMutex.unlock();
+        DataWriterClient::setMessage(msg);
+    } else {
+        SymbolTable::instance()->setValue(BindingTable::instance()->getValue(key), val);
+        globalMutex.unlock();
+    }
     ++index;
 }
