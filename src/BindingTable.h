@@ -16,7 +16,9 @@ class BindingTable {
     static BindingTable *s_instance;
 public:
     static inline BindingTable *instance() {
-        if (!s_instance) s_instance = new BindingTable();
+        if (!s_instance){
+            s_instance = new BindingTable();
+        }
         return s_instance;
     }
 
@@ -36,14 +38,6 @@ public:
      */
     inline std::string getValue(const std::string &key) {
         return bindTable[key];
-    }
-
-    /**
-     * @param key key
-     * @return true if table[key] exists, else false
-     */
-    inline bool atTable(const std::string &key) {
-        return bindTable.find(key) != bindTable.end();
     }
 };
 

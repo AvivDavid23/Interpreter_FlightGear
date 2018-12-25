@@ -34,6 +34,7 @@ void Parser::commandParse(const vector<string> &words) {
             }
             // check if there is a variable in symbolTable
             if(SymbolTable::instance()->atTable(words[index]))
+                commandsTable.erase(words[index]);
                     // if there is, go to Assign.
                     expression = commandsTable.at("assign");
                 // if there is no expression like this, throw error.

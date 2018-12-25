@@ -251,6 +251,8 @@ string ExpressionsParser::varsExtrication(const string &exp) {
             var = to_string(SymbolTable::instance()->getValue(var));
             var.erase ( var.find_last_not_of('0') + 1, std::string::npos ); // erase trailing zeros
             if(var.find('.') == var.length() - 1) var = var.substr(0, var.length() - 1);
+            if (newExp.length() > 0 && newExp[newExp.length() - 1] == '-' && var[0] == '-')
+                var = var.substr(1, var.length() - 1);
             newExp += var;
             globalMutex.unlock();
             var = "";
