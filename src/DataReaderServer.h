@@ -31,7 +31,7 @@ static std::vector<std::string> pathsVec{"/instrumentation/airspeed-indicator/in
                                          "/controls/flight/elevator",
                                          "/controls/flight/rudder",
                                          "/controls/flight/flaps",
-                                         "/controls/engines/current-engine/throttle",
+                                             "/controls/engines/current-engine/throttle",
                                          "/engines/engine/rpm"};
 class DataReaderServer {
 
@@ -69,7 +69,7 @@ public:
     static void openServer(int port, int hz);
 
     /**
-     * @return true if server is open, else false
+         * @return true if server is open, else false
      */
     inline static bool isOpen(){ return open;}
 

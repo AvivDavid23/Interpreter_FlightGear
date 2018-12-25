@@ -31,6 +31,7 @@ public:
      */
     inline void setValue(const std::string &key, double val) {
         symTable[key] = val;
+        int x =3;
     }
 
     /**

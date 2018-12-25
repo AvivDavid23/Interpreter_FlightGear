@@ -61,8 +61,11 @@ vector<string> Lexer::fromStringToExp(vector<string> commands) {
                     words.push_back("=");
                 }
             }
-            // if there is no '=' in line
-        } else {
+            // if there is no '=' in line but there is ,
+        } //else if(item.find('=') != std::string::npos) {
+            //std::stringstream ss;
+        //}
+        else {
             std::stringstream ss(item);
             string help;
             // split by space.

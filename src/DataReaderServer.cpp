@@ -102,7 +102,9 @@ void DataReaderServer::openServer(int port, int hz) {
     while (true) {
         // to know where to put data:
         int start = leftovers.length() ? leftovers.length() - 1 : 0;
+        globalMutex.lock();
         n = read(newsockfd, buffer + start, BUFFER_SIZE - start);
+        globalMutex.unlock();
         if (n < 0) {
             perror("ERROR writing to socket");
             exit(1);
@@ -115,6 +117,7 @@ void DataReaderServer::openServer(int port, int hz) {
         }
         ++pt;
         values += '\n';
+
         updatePathsTable(splitByComma(values.c_str()));
         updateSymbolTable();
         leftovers = "";
