@@ -1,7 +1,7 @@
 openDataServer 5400 10
 connect 127.0.0.1 5402
 var breaks = bind "/controls/flight/speedbrake"
-var throttle = bind "/controls/engines/current-engine/throttle"
+var throttle = bind "/controls/engines/engine/throttle"
 var heading = bind "/instrumentation/heading-indicator/offset-deg"
 var airspeed = bind "/instrumentation/airspeed-indicator/indicated-speed-kt"
 var roll = bind "/instrumentation/attitude-indicator/indicated-roll-deg"
@@ -10,13 +10,6 @@ var rudder = bind "/controls/flight/rudder"
 var aileron = bind "/controls/flight/aileron"
 var elevator = bind "/controls/flight/elevator"
 var alt = bind "/instrumentation/altimeter/indicated-altitude-ft"
-var rpm = bind "/engines/engine/rpm"
-print "Waiting for engine to start...."
-while rpm <= 1000 {
-    sleep 10000
-}
-print "Engine started, wait a few more:"
-sleep 5000
 breaks = 0
 throttle = 1
 var h0 = heading
