@@ -15,6 +15,8 @@ public:
     void execute(const vector<string> &words);
 
     IfCommand(unsigned int &index);
+
+    virtual ~IfCommand();
 };
 
 

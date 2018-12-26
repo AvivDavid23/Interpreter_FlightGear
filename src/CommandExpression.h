@@ -15,7 +15,11 @@ public:
 
     virtual double calculate();
 
+    virtual ~CommandExpression();
+
+
 };
+
 
 
 #endif //PROJECT_COMMANDEXPRESSION_H

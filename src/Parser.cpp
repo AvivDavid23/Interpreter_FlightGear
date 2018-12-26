@@ -13,7 +13,7 @@ Parser::Parser() : index(0) {}
  */
 Parser::~Parser() {
     for (auto const &item:commandsTable) {
-        free(item.second);
+        delete item.second;
     }
 }
 

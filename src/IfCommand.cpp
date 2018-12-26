@@ -22,3 +22,5 @@ void IfCommand::execute(const vector<string> &words) {
  */
 IfCommand::IfCommand(unsigned int &index) : index(index),conditionParser(this->index){}
 
+IfCommand::~IfCommand() {
+}

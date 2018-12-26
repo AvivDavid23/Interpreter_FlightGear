@@ -12,6 +12,10 @@ double CommandExpression::calculate() {
 
 }
 
+CommandExpression::~CommandExpression() {
+delete this->command;
+}
+
 /**
  * @param command the command
  * @param words the array of orders.
