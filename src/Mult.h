@@ -11,6 +11,8 @@ public:
     Mult(Expression *left, Expression *right);
 
     double calculate();
+
+    virtual ~Mult();
 };
 
 

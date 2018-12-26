@@ -14,6 +14,8 @@ public:
     Plus(Expression *left, Expression *right);
 
     double calculate();
+
+    virtual ~Plus();
 };
 
 

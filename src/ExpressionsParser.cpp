@@ -228,7 +228,10 @@ double ExpressionsParser::shuntingYardAlg(const string& expression) {
     /**
      * From here, calculate the value of the expression:
      */
-    return postToExp(newExp)->calculate();
+   Expression * expression1 = postToExp(newExp);
+    double var =  expression1->calculate();
+    delete expression1;
+        return var;
 }
 /**
  * @param exp string

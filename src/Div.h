@@ -11,6 +11,8 @@ public:
     Div(Expression *left, Expression *right);
 
     double calculate();
+
+    virtual ~Div();
 };
 
 

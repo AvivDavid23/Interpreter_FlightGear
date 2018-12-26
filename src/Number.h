@@ -1,4 +1,5 @@
 
+
 #ifndef PROJECT_NUMBER_H
 #define PROJECT_NUMBER_H
 
@@ -14,6 +15,8 @@ public:
     Number(double value);
 
     double calculate();
+
+    virtual ~Number();
 
 };
 

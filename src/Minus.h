@@ -17,6 +17,9 @@ public:
     Minus(Expression *left, Expression *right);
 
     double calculate();
+
+    virtual ~Minus();
+
 };
 
 
