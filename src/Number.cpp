@@ -1,4 +1,5 @@
 
+#include <iostream>
 #include "Number.h"
 
 Number::Number(double value)  {
@@ -8,5 +9,4 @@ Number::Number(double value)  {
 double Number::calculate() { return value; }
 
 Number::~Number() {
-delete(this);
 }
