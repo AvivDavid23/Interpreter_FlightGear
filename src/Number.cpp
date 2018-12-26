@@ -5,8 +5,9 @@
 Number::Number(double value)  {
     this->value =value;
 }
-
+/**
+ * @return the value
+ */
 double Number::calculate() { return value; }
 
-Number::~Number() {
-}
+Number::~Number() {}

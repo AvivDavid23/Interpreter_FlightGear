@@ -15,8 +15,7 @@ protected:
 public:
     inline BinaryExpression(Expression *left, Expression *right) : left(left), right(right) {}
      virtual ~BinaryExpression() {
-        delete right;
-        delete left;
+      free(this);
     }
 };
 

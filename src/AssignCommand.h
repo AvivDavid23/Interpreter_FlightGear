@@ -15,7 +15,7 @@ class AssignCommand : public Command{
 public:
     AssignCommand(unsigned int &index);
 
-    void execute(const vector<string> &line);
+    void execute(const vector<string> &words);
 };
 
 

@@ -3,18 +3,26 @@
 //
 
 #include "AssignCommand.h"
+/**
+ * @param index in our line
+ */
 AssignCommand::AssignCommand(unsigned int &index) : index(index){}
-
-void AssignCommand::execute(const vector<string> &line) {
-    string key = line[index];
+/**
+ * @param words the words
+ */
+void AssignCommand::execute(const vector<string> &words) {
+    string key = words[index];
         index += 2; // skip key and '='
-    double val = ExpressionsParser::shuntingYardAlg(ExpressionsParser::varsExtrication(line[index]));
+        // calculate the words[index]
+    double val = ExpressionsParser::shuntingYardAlg(ExpressionsParser::varsExtrication(words[index]));
     globalMutex.lock();
+    // set the value in our table
     SymbolTable::instance()->setValue(key,val);
     if (BindingTable::instance()->getValue(key)[0] == '/'){
         const string msg = "set " + BindingTable::instance()->getValue(key) +
                            " " + to_string(val) + "\r\n";
         globalMutex.unlock();
+        // set the message
         DataWriterClient::setMessage(msg);
     } else {
         SymbolTable::instance()->setValue(BindingTable::instance()->getValue(key), val);
