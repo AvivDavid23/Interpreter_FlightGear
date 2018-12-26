@@ -25,11 +25,10 @@ using namespace std;
 
 
 class DataWriterClient {
-    static std::string message;
     static int sockFd;
 public:
 
-    static void setMessage(const string &message1);
+    static void writeMessage(const string &message1);
 
     static void createClient(int port, string address);
 

@@ -4,17 +4,23 @@
 
 #include <iostream>
 #include "DataWriterClient.h"
-std::string DataWriterClient::message = ""; // message for simulator
+#include "Command.h"
+
 int DataWriterClient::sockFd = 0;
 
-void DataWriterClient::setMessage(const string &message1) {
+void DataWriterClient::writeMessage(const string &message1) {
     globalMutex.lock();
-    message = message1;
+    /* Send message to the server */
+    int n = write(getSocketFD(), message1.c_str(), message1.length());
     globalMutex.unlock();
+    if (n < 0) {
+        perror("ERROR writing to socket");
+        exit(1);
+    }
 }
 
 void DataWriterClient::createClient(int port, string address) {
-    int sockfd, n;
+    int sockfd;
     struct sockaddr_in serv_addr;
     struct hostent *server;
 
@@ -42,22 +48,5 @@ void DataWriterClient::createClient(int port, string address) {
     while (connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
        // keep trying...
     }
-
-    while (true) {
-        if(!message.empty()) {
-            globalMutex.lock();
-            /* Send message to the server */
-            n = write(sockfd, message.c_str(), message.length());
-            message = "";
-            globalMutex.unlock();
-            if (n < 0) {
-                perror("ERROR writing to socket");
-                exit(1);
-            }
-            char buff[250];
-            n = read(sockfd, buff, 250);
-            std::cout << buff + '\n';
-            bzero(buff, 250);
-        }
-    }
+    // connected!
 }

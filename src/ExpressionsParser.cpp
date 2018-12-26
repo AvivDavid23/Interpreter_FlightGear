@@ -1,5 +1,6 @@
 #include <algorithm>
 #include "ExpressionsParser.h"
+#include "Command.h"
 
 /**
  * @param exp

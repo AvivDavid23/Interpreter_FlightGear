@@ -15,7 +15,6 @@ void ConnectCommand::execute(const vector<string> &line) {
         cerr << "Syntax/Parameter Error!" << endl;
         exit(1);
     }
-    thread t(&DataWriterClient::createClient, port, adr);
-    t.detach();
+    DataWriterClient::createClient(port, adr);
 }
 

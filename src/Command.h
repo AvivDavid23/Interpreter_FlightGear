@@ -4,7 +4,10 @@
 #include <vector>
 #include "list"
 #include <string>
+#include <mutex>
 #include "ExpressionsParser.h"
+static std::mutex globalMutex;
+
 /**
  * Command Interface.
  */

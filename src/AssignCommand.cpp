@@ -22,8 +22,8 @@ void AssignCommand::execute(const vector<string> &words) {
         const string msg = "set " + BindingTable::instance()->getValue(key) +
                            " " + to_string(val) + "\r\n";
         globalMutex.unlock();
-        // set the message
-        DataWriterClient::setMessage(msg);
+        // write the message
+        DataWriterClient::writeMessage(msg);
     } else {
         SymbolTable::instance()->setValue(BindingTable::instance()->getValue(key), val);
         globalMutex.unlock();

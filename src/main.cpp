@@ -24,7 +24,6 @@ PathsTable *PathsTable::s_instance = 0; // singleton
  * @return
  */
 int main(int argc, char **argv) {
-// cout<< ExpressionsParser::shuntingYardAlg("5-3");
     Lexer lexer;
     vector<string> words = lexer.active(argv[1]);
     Parser parser;
