@@ -10,6 +10,13 @@ var rudder = bind "/controls/flight/rudder"
 var aileron = bind "/controls/flight/aileron"
 var elevator = bind "/controls/flight/elevator"
 var alt = bind "/instrumentation/altimeter/indicated-altitude-ft"
+var rpm = bind "/engines/engine/rpm"
+print "Waiting for engine to start...."
+while rpm <= 1000 {
+    sleep 10000
+}
+print "Engine started, wait a few more:"
+sleep 5000
 breaks = 0
 throttle = 1
 var h0 = heading
