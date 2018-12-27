@@ -17,7 +17,11 @@
 
 bool DataReaderServer::open = false;
 int DataReaderServer::sockFd = 0;
-
+/**
+ *
+ * @param buffer
+ * @return the buffer but splited by space .
+ */
 std::vector<std::string> DataReaderServer::splitByComma(const char *buffer) {
     std::vector<std::string> vec;
     std::string tmp;
@@ -32,7 +36,9 @@ std::vector<std::string> DataReaderServer::splitByComma(const char *buffer) {
     }
     return vec;
 }
-
+/**
+ * @param vec the paths of the simulator.
+ */
 void DataReaderServer::updatePathsTable(std::vector<std::string> vec) {
     globalMutex.lock();
     for (int i = 0; i < PARAMETERS_SIZE; ++i) {
@@ -40,7 +46,9 @@ void DataReaderServer::updatePathsTable(std::vector<std::string> vec) {
     }
     globalMutex.unlock();
 }
-
+/**
+ * update the symbolTable
+ */
 void DataReaderServer::updateSymbolTable() {
     globalMutex.lock();
     for (auto iter = SymbolTable::instance()->getFirst(); iter != SymbolTable::instance()->getEnd(); ++iter) {
@@ -53,7 +61,11 @@ void DataReaderServer::updateSymbolTable() {
     }
     globalMutex.unlock();
 }
-
+/**
+ *
+ * @param port of the sever
+ * @param hz write hz time in second.
+ */
 void DataReaderServer::openServer(int port, int hz) {
     int sockfd, newsockfd, clilen;
     struct sockaddr_in serv_addr, cli_addr;

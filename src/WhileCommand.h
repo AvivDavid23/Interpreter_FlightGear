@@ -21,16 +21,15 @@ class WhileCommand : public Command {
     unsigned int &index;
 public:
     WhileCommand(unsigned int &index, std::map<string, Expression *> &map1);
-
-    /**
-     * Sets the command list for the loop
-     * @param lines vector of line that we get from the lexer
-     * @param currentIndex current index to start reading
-     */
-    void setList(vector<string>& lines);
-
+/**
+ * @param words execute the while loop.
+ */
     void execute(const vector<string> &words);
-
+/**
+ * @param words the words.
+ * @param i the index
+ * create the commands list.
+ */
     void createCommandList(const vector<string> &words, unsigned int &i);
 };
 

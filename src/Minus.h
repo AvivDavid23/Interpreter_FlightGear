@@ -15,7 +15,9 @@ class Minus : public BinaryExpression {
 public:
 
     Minus(Expression *left, Expression *right);
-
+/**
+ * @return the calculate between the expression.
+ */
     double calculate();
 
     virtual ~Minus();

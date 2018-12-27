@@ -12,7 +12,9 @@ class Plus : public BinaryExpression {
 public:
 
     Plus(Expression *left, Expression *right);
-
+/**
+ * @return the calculate between the expression.
+ */
     double calculate();
 
     virtual ~Plus();

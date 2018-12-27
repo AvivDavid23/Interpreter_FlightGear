@@ -15,6 +15,7 @@ void PrintCommand::execute(const vector<string> &line) {
     }
     output += line[index];
     ++index;
+    // instructions of what need to print.
     !SymbolTable::instance()->atTable(output) ? cout << output.substr(1, output.length() - 2) :
     cout << SymbolTable::instance()->getValue((output));
     output = "";

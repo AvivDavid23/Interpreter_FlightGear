@@ -3,9 +3,9 @@
 #include "Command.h"
 
 /**
- * @param exp
- * @param index
- * @return
+ * @param exp in post fix
+ * @param index of the string
+ * @return the cal' of the exp.
  */
 double ExpressionsParser::calculateFirstNum(const string& exp, unsigned long &index) {
     if (exp[index] != '(') {
@@ -231,7 +231,7 @@ double ExpressionsParser::shuntingYardAlg(const string& expression) {
      */
    Expression * expression1 = postToExp(newExp);
     double var =  expression1->calculate();
-     delete expression1 ;   
+     delete expression1 ;
         return var;
 }
 /**

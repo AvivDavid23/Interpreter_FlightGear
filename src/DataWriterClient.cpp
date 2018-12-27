@@ -7,7 +7,9 @@
 #include "Command.h"
 
 int DataWriterClient::sockFd = 0;
-
+/**
+ * @param message1 the message from the simulator
+ */
 void DataWriterClient::writeMessage(const string &message1) {
     globalMutex.lock();
     /* Send message to the server */
@@ -18,7 +20,10 @@ void DataWriterClient::writeMessage(const string &message1) {
         exit(1);
     }
 }
-
+/**
+ * @param port we create
+ * @param address the ip address.
+ */
 void DataWriterClient::createClient(int port, string address) {
     int sockfd;
     struct sockaddr_in serv_addr;

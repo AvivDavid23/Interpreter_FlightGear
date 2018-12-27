@@ -13,7 +13,7 @@ class ConnectCommand : public Command {
 public:
     ConnectCommand(unsigned int &index);
 
-    void execute(const vector<string> &line);
+    void execute(const vector<string> &words);
 };
 
 
