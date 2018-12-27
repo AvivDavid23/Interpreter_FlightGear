@@ -13,9 +13,8 @@ protected:
     Expression *left;
 
 public:
-    inline BinaryExpression(Expression *left, Expression *right) : left(left), right(right) {}
+     BinaryExpression(Expression *left, Expression *right);
      virtual ~BinaryExpression() {
-
     }
 };
 

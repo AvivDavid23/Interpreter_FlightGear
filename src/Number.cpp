@@ -10,4 +10,5 @@ Number::Number(double value)  {
  */
 double Number::calculate() { return value; }
 
-Number::~Number() {}
+Number::~Number() {
+}

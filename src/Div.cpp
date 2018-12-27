@@ -7,6 +7,6 @@ double Div::calculate() {
     return left->calculate() / right->calculate() ;}
 
 Div::~Div() {
-    delete right;
     delete left;
+    delete right;
 }
