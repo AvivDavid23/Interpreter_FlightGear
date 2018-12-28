@@ -13,7 +13,7 @@
 #include <iostream>
 #include "DataReaderServer.h"
 #include "mutex"
-#include "Command.h"
+#include "../Commands/Command.h"
 
 bool DataReaderServer::open = false;
 int DataReaderServer::sockFd = 0;

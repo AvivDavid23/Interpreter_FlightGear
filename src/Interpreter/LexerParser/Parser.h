@@ -3,17 +3,17 @@
 #define PROJECT_PARSER_H
 
 #include <sstream>
-#include "Expression.h"
-#include "CommandExpression.h"
-#include "OpenServerCommand.h"
-#include "ConnectCommand.h"
-#include "DefineVarCommand.h"
-#include "IfCommand.h"
-#include "WhileCommand.h"
-#include "PrintCommand.h"
-#include "SymbolTable.h"
-#include "SleepCommand.h"
-#include "AssignCommand.h"
+#include "../Expressions/Expression.h"
+#include "../Commands/CommandExpression.h"
+#include "../Commands/OpenServerCommand.h"
+#include "../Commands/ConnectCommand.h"
+#include "../Commands/DefineVarCommand.h"
+#include "../Commands/IfCommand.h"
+#include "../Commands/WhileCommand.h"
+#include "../Commands/PrintCommand.h"
+#include "../Tables/SymbolTable.h"
+#include "../Commands/SleepCommand.h"
+#include "../Commands/AssignCommand.h"
 
 /**
  * A class which used to parse every line in the script and execute it

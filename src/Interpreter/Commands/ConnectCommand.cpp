@@ -1,7 +1,7 @@
 
 #include "ConnectCommand.h"
 #include "thread"
-#include "DataReaderServer.h"
+#include "../ServerClient/DataReaderServer.h"
 ConnectCommand::ConnectCommand(unsigned int &index) : index(index) {}
 /**
  * @param words in the file.

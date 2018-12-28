@@ -1,7 +1,7 @@
 #include <iostream>
 #include "OpenServerCommand.h"
 #include <thread>
-#include "ExpressionsParser.h"
+#include "../Expressions/ExpressionsParser.h"
 
 
 OpenServerCommand::OpenServerCommand(unsigned int &index) : index(index){}

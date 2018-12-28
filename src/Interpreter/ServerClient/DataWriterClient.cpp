@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "DataWriterClient.h"
-#include "Command.h"
+#include "../Commands/Command.h"
 
 int DataWriterClient::sockFd = 0;
 /**

@@ -4,9 +4,9 @@
 #include "thread"
 #include "map"
 #include "vector"
-#include "PathsTable.h"
-#include "SymbolTable.h"
-#include "BindingTable.h"
+#include "../Tables/PathsTable.h"
+#include "../Tables/SymbolTable.h"
+#include "../Tables/BindingTable.h"
 
 #define PARAMETERS_SIZE 23
 #define BUFFER_SIZE 1024

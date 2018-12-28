@@ -8,7 +8,7 @@
 #include <fstream>
 #include <vector>
 #include <map>
-#include "SymbolTable.h"
+#include "../Tables/SymbolTable.h"
 using namespace std;
 class Lexer {
 public:

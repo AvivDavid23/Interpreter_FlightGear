@@ -1,15 +1,15 @@
 
 #include <iostream>
 #include <strings.h>
-#include "BindingTable.h"
-#include "SymbolTable.h"
-#include "PathsTable.h"
-#include "ExpressionsParser.h"
+#include "Interpreter/Tables/BindingTable.h"
+#include "Interpreter/Tables/SymbolTable.h"
+#include "Interpreter/Tables/PathsTable.h"
+#include "Interpreter/Expressions/ExpressionsParser.h"
 #include "list"
-#include "Lexer.h"
-#include "ConnectCommand.h"
-#include "Parser.h"
-#include "OpenServerCommand.h"
+#include "Interpreter/LexerParser/Lexer.h"
+#include "Interpreter/Commands/ConnectCommand.h"
+#include "Interpreter/LexerParser/Parser.h"
+#include "Interpreter/Commands/OpenServerCommand.h"
 
 /**
  * Initialization of private static vars of the project:

@@ -12,7 +12,7 @@
 #include "Div.h"
 #include "Number.h"
 #include "tuple"
-#include "SymbolTable.h"
+#include "../Tables/SymbolTable.h"
 
 using namespace std;
 

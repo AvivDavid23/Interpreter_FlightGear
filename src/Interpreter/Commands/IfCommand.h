@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "ConditionParser.h"
-#include "Parser.h"
+#include "../LexerParser/Parser.h"
 /**
  * A command which runs if a condition is satisfied
  */

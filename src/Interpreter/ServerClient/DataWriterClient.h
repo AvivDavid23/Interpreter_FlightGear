@@ -15,7 +15,7 @@
 #include <netinet/in.h>
 
 #include <string.h>
-#include "SymbolTable.h"
+#include "../Tables/SymbolTable.h"
 
 using namespace std;
 

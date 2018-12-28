@@ -2,7 +2,7 @@
 #ifndef PROJECT_COMMANDEXPRESSION_H
 #define PROJECT_COMMANDEXPRESSION_H
 
-#include "Expression.h"
+#include "../Expressions/Expression.h"
 #include "Command.h"
 
 class CommandExpression : public Expression {

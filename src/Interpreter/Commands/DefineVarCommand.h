@@ -4,10 +4,10 @@
 
 #include "Command.h"
 #include "map"
-#include "ExpressionsParser.h"
-#include "SymbolTable.h"
-#include "BindingTable.h"
-#include "PathsTable.h"
+#include "../Expressions/ExpressionsParser.h"
+#include "../Tables/SymbolTable.h"
+#include "../Tables/BindingTable.h"
+#include "../Tables/PathsTable.h"
 /**
  * A class which defines variables from the script
  */

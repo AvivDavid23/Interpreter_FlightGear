@@ -4,7 +4,7 @@
 #include <string>
 #include "Command.h"
 #include "map"
-#include "DataReaderServer.h"
+#include "../ServerClient/DataReaderServer.h"
 /**
  * A class which opens a thread which opens a server that listens to a specific given port
  */

@@ -6,9 +6,9 @@
 #define SECONDYEARPROJECT_BIU_ASSIGNCOMMAND_H
 
 #include "Command.h"
-#include "ExpressionsParser.h"
-#include "BindingTable.h"
-#include "DataWriterClient.h"
+#include "../Expressions/Expression.h"
+#include "../Tables/BindingTable.h"
+#include "../ServerClient/DataWriterClient.h"
 
 class AssignCommand : public Command{
     unsigned int &index;

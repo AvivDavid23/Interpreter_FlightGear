@@ -1,6 +1,6 @@
 #include <algorithm>
 #include "ExpressionsParser.h"
-#include "Command.h"
+#include "../Commands/Command.h"
 
 /**
  * @param exp in post fix
