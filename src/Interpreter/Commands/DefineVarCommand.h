@@ -11,7 +11,6 @@
 /**
  * A class which defines variables from the script
  */
-// TODO: finish class
 class DefineVarCommand : public Command {
     unsigned int &index;
 public:

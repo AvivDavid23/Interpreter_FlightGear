@@ -12,7 +12,6 @@
 /**
  * A command which runs while a condition is satisfied
  */
-// TODO: finish class
 class WhileCommand : public Command {
     list<Expression*> commandList;
     bool firsttime;
