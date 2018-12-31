@@ -4,6 +4,10 @@
 
 #ifndef SECONDYEARPROJECT_BIU_CACHEMANAGER_H
 #define SECONDYEARPROJECT_BIU_CACHEMANAGER_H
+
+#include "Problem.h"
+#include "Solution.h"
+
 /**
  * an Interface, which can save and load solutions to problems we already solved(on disk, database, etc...)
  */

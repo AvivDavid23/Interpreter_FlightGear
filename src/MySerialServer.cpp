@@ -4,10 +4,10 @@
 
 #include "MySerialServer.h"
 
-void MySerialServer::open(int port, ClientHandler clientHandler) {
+void server_side::MySerialServer::open(int port, ClientHandler* clientHandler) {
 
 }
 
-void MySerialServer::close() {
+void server_side::MySerialServer::close() {
 
 }

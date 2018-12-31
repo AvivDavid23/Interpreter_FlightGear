@@ -10,14 +10,8 @@
 #include "Interpreter/Commands/ConnectCommand.h"
 #include "Interpreter/LexerParser/Parser.h"
 #include "Interpreter/Commands/OpenServerCommand.h"
+#include "MySerialServer.h"
 
-/**
- * Initialization of private static vars of the project:
- * (these singletons dont have a cpp file so i do it here)
- */
-BindingTable *BindingTable::s_instance = 0; // singleton
-SymbolTable *SymbolTable::s_instance = 0; // singleton
-PathsTable *PathsTable::s_instance = 0; // singleton
 /**
  * @param argc 2 in our case
  * @param argv[1] have the name of the file.
