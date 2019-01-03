@@ -12,13 +12,13 @@
 /**
  * A type of Client Handler
  */
- namespace server_side {
-     class MyTestClientHandler : public ClientHandler {
-         Solver *solver;
-         cache::CacheManager *chcheManager;
-     public:
-         void handleClient(std::istream inputStream, std::ostream outputStream);
-     };
- }
+namespace server_side {
+    class MyTestClientHandler : public ClientHandler {
+        Solver *solver;
+        cache::CacheManager *chcheManager;
+    public:
+        void handleClient(std::istream inputStream, std::ostream outputStream);
+    };
+}
 
 #endif //SECONDYEARPROJECT_BIU_MYTESTCLIENTHANDLER_H
