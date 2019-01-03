@@ -4,10 +4,15 @@
 
 #ifndef SECONDYEARPROJECT_BIU_PROBLEM_H
 #define SECONDYEARPROJECT_BIU_PROBLEM_H
-/**
- * Problem Interface
- */
- class Problem{
 
- };
+/**
+ * Problem class
+ */
+ namespace server_side {
+     namespace problem {
+         class Problem {
+
+         };
+     }
+ }
 #endif //SECONDYEARPROJECT_BIU_PROBLEM_H

@@ -5,20 +5,30 @@
 #ifndef SECONDYEARPROJECT_BIU_STATE_H
 #define SECONDYEARPROJECT_BIU_STATE_H
 
-template<class T>
-class State {
-    T state;
-    double cost;
-    State<T> cameFrom;
-public:
-    State(T state);
+namespace server_side {
+    namespace problem {
+        template<class T>
+        class State {
+            T state;
+            double cost;
+            State<T> cameFrom;
+        public:
+            State(T state);
 
-    void setCost(double cost);
+            ~State();
 
-    void setCameFrom(State<T> cameFrom);
+            void setCost(double cost) const;
 
-    bool operator==(State<T> other);
-};
+            void setCameFrom(State<T> cameFrom);
+
+            bool operator==(const State<T>& other) const;
+
+            bool operator >(const State<T>& other) const;
+
+            bool operator <(const State<T>& other) const;
+        };
+    }
+}
 
 
 #endif //SECONDYEARPROJECT_BIU_STATE_H

@@ -11,14 +11,18 @@
 /**
  * Solver Interface
  */
-class Solver {
-public:
-    /**
-     * @param problem
-     * @return solution the the problem
-     */
-    virtual Solution solve(Problem problem) = 0;
+namespace server_side {
+    namespace algorithm {
+        class Solver {
+        public:
+            /**
+             * @param problem
+             * @return solution the the problem
+             */
+            virtual problem::Solution solve(problem::Problem problem) = 0;
 
-};
+        };
 
+    }
+}
 #endif //SECONDYEARPROJECT_BIU_SOLVER_H

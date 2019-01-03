@@ -4,14 +4,14 @@
 
 #include "FileCacheManager.h"
 
-bool server_side::cache::FileCacheManager::containsSolution(Problem problem) {
+bool server_side::cache::FileCacheManager::containsSolution(server_side::problem::Problem problem) {
 
 }
 
-Solution server_side::cache::FileCacheManager::getSolution(Problem problem) {
+server_side::problem::Solution server_side::cache::FileCacheManager::getSolution(server_side::problem::Problem problem) {
 
 }
 
-void server_side::cache::FileCacheManager::saveSolution(Problem problem) {
+void server_side::cache::FileCacheManager::saveSolution(server_side::problem::Problem problem) {
 
 }

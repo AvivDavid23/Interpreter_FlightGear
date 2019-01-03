@@ -19,19 +19,19 @@ namespace server_side {
              * @param problem
              * @return true if the cache manager has a solution to the problem, else false
              */
-            virtual bool containsSolution(Problem problem) = 0;
+            virtual bool containsSolution(problem::Problem problem) = 0;
 
             /**
              * @param problem
              * @return solution the the problem
              */
-            virtual Solution getSolution(Problem problem) = 0;
+            virtual problem::Solution getSolution(problem::Problem problem) = 0;
 
             /**
              * Save solution the problem
              * @param problem
              */
-            virtual void saveSolution(Problem problem) = 0;
+            virtual void saveSolution(problem::Problem problem) = 0;
         };
     }
 }

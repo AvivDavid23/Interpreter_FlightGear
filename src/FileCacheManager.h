@@ -16,12 +16,11 @@ namespace server_side {
     namespace cache {
         class FileCacheManager : public CacheManager {
         public:
-            bool containsSolution(Problem problem);
+            bool containsSolution(problem::Problem problem);
 
+            problem::Solution getSolution(problem::Problem problem);
 
-            Solution getSolution(Problem problem);
-
-            void saveSolution(Problem problem);
+            void saveSolution(problem::Problem problem);
         };
     }
 }

@@ -5,9 +5,13 @@
 #ifndef SECONDYEARPROJECT_BIU_SOLUTION_H
 #define SECONDYEARPROJECT_BIU_SOLUTION_H
 /**
- * Solution Interface
+ * Solution class
  */
- class Solution{
+namespace server_side {
+    namespace problem {
+        class Solution {
 
- };
+        };
+    }
+}
 #endif //SECONDYEARPROJECT_BIU_SOLUTION_H

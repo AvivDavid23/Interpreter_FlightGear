@@ -14,8 +14,8 @@
  */
 namespace server_side {
     class MyTestClientHandler : public ClientHandler {
-        Solver *solver;
-        cache::CacheManager *chcheManager;
+        algorithm::Solver *solver;
+        cache::CacheManager *cacheManager;
     public:
         void handleClient(std::istream inputStream, std::ostream outputStream);
     };

@@ -5,21 +5,33 @@
 #include "State.h"
 
 template<class T>
-State<T>::State(T state) {
+server_side::problem::State<T>::State(T state) {
     this->state = state;
+}
+template<class T>
+server_side::problem::State<T>::~State() {
+    delete cameFrom;
 }
 
 template<class T>
-void State<T>::setCost(double cost) {
+void server_side::problem::State<T>::setCost(double cost) const {
     this->cost = cost;
 }
 
 template <class T>
-void State<T>::setCameFrom(State<T> cameFrom) {
+void server_side::problem::State<T>::setCameFrom(State<T> cameFrom) {
     this->cameFrom = cameFrom;
 }
 
 template <class T>
-bool State<T>::operator==(State<T> other) {
+bool server_side::problem::State<T>::operator==(const State<T>& other) const {
     return (this->cameFrom == other.cameFrom) && (this->cost == other.cost) && (this->state == other.state);
+}
+template <class T>
+bool server_side::problem::State<T>::operator<(const State<T>& other) const {
+    return this->cost < other.cost;
+}
+template <class T>
+bool server_side::problem::State<T>::operator>(const State<T>& other) const {
+    return this->cost > other.cost;
 }
