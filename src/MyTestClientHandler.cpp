@@ -4,6 +4,6 @@
 
 #include "MyTestClientHandler.h"
 
-void MyTestClientHandler::handleClient(std::istream inputStream, std::ostream outputStream) {
+void server_side::MyTestClientHandler::handleClient(std::istream inputStream, std::ostream outputStream) {
 
 }

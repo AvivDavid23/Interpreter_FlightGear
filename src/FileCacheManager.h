@@ -12,15 +12,18 @@
 /**
  * A cache manager that save solutions in a file
  */
-class FileCacheManager : public CacheManager {
-public:
-    bool containsSolution(Problem problem);
+namespace server_side {
+    namespace cache {
+        class FileCacheManager : public CacheManager {
+        public:
+            bool containsSolution(Problem problem);
 
 
-    Solution getSolution(Problem problem);
+            Solution getSolution(Problem problem);
 
-    void saveSolution(Problem problem);
-};
-
+            void saveSolution(Problem problem);
+        };
+    }
+}
 
 #endif //SECONDYEARPROJECT_BIU_FILECACHEMANAGER_H
