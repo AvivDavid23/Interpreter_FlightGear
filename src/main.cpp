@@ -8,6 +8,6 @@
  * @return
  */
 int main(int argc, char **argv) {
-    BestFirstSearch<int> bestFirstSearch;
+    BestFirstSearch<Point> bestFirstSearch;
     return 0;
 }

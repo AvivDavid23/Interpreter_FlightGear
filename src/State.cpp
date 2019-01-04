@@ -20,7 +20,7 @@ void server_side::problem::State<T>::setCost(double cost) const {
 
 template <class T>
 void server_side::problem::State<T>::setCameFrom(State<T> cameFrom) {
-    this->cameFrom = &cameFrom;
+    this->cameFrom = cameFrom;
 }
 
 template <class T>
