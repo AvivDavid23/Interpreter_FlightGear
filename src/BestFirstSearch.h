@@ -15,11 +15,11 @@ namespace server_side {
         private:
             priority_queue<problem::State<T>, problem::State<T>, greater<State<T>>> priorityQueue;
         public:
-            int openListSize();
+            int openListSize() override;
 
-            problem::State<T> popOpenList();
+            problem::State<T> popOpenList() override;
 
-            problem::Solution solve(problem::ISearchable<T> *searchable);
+            problem::Solution solve(problem::ISearchable<T> *searchable) override;
 
         };
     }

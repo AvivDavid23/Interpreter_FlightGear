@@ -15,6 +15,7 @@ namespace server_side {
     namespace problem {
         template<class T>
         class ISearchable {
+        public:
             virtual State<T> getInitialState() = 0;
 
             virtual bool isGoalState(State<T> state) = 0;

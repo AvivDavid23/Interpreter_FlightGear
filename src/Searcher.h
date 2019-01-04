@@ -25,11 +25,11 @@ namespace server_side {
 
             inline int getEvaluatedNodes(){ return nodesEvaluated;}
 
-            virtual problem::Solution solve(problem::ISearchable<T> *searchable) = 0;
+            virtual problem::Solution solve(problem::ISearchable<T> *searchable);
 
-            virtual problem::State<T> popOpenList() = 0;
+            virtual problem::State<T> popOpenList();
 
-            virtual int openListSize() = 0;
+            virtual int openListSize();
         };
     }
 }
