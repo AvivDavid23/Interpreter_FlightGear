@@ -4,14 +4,13 @@
 
 #ifndef SECONDYEARPROJECT_BIU_STATE_H
 #define SECONDYEARPROJECT_BIU_STATE_H
-
 namespace server_side {
     namespace problem {
         template<class T>
         class State {
             T state;
-            double cost;
-            State<T> cameFrom;
+            double cost = 0;
+            State<T>* cameFrom = nullptr;
         public:
             State(T state);
 
@@ -26,6 +25,10 @@ namespace server_side {
             bool operator >(const State<T>& other) const;
 
             bool operator <(const State<T>& other) const;
+
+            T getState() const;
+
+            double getCost() const;
         };
     }
 }
