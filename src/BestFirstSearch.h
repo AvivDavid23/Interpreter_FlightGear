@@ -15,8 +15,6 @@ namespace server_side {
         private:
             priority_queue<problem::State<T>, problem::State<T>, greater<State<T>>> priorityQueue;
         public:
-            inline BestFirstSearch() {}
-
             int openListSize();
 
             problem::State<T> popOpenList();

@@ -12,7 +12,7 @@ namespace server_side {
  * A type of Server, which take care of clients one by one
  */
     class MySerialServer : public server_side::Server {
-
+    public:
         /**
          * Opens the server and waits for clients
          * @param port
