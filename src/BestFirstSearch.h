@@ -11,7 +11,7 @@
 namespace server_side {
     namespace algorithm {
         template<class T>
-        class BestFirstSearch : public Searcher<problem::State<T>> {
+        class BestFirstSearch : public Searcher<T> {
         private:
             priority_queue<problem::State<T>, vector<problem::State<T>>, greater<problem::State<T>>> priorityQueue;
         public:

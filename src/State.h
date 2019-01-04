@@ -10,7 +10,7 @@ namespace server_side {
         class State {
             T state;
             double cost = 0;
-            State<T>* cameFrom = nullptr;
+            State<T> *cameFrom = nullptr;
         public:
             State(T state);
 
@@ -20,11 +20,11 @@ namespace server_side {
 
             void setCameFrom(State<T> cameFrom);
 
-            bool operator==(const State<T>& other) const;
+            bool operator==(const State<T> &other) const;
 
-            bool operator >(const State<T>& other) const;
+            bool operator>(const State<T> &other) const;
 
-            bool operator <(const State<T>& other) const;
+            bool operator<(const State<T> &other) const;
 
             T getState() const;
 
