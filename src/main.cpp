@@ -8,6 +8,6 @@
  * @return
  */
 int main(int argc, char **argv) {
-    BestFirstSearch<MatrixMaze<3>> bestFirstSearch;
+    BestFirstSearch<int> bestFirstSearch;
     return 0;
 }

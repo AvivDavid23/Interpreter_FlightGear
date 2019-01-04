@@ -17,7 +17,7 @@ State<T> BestFirstSearch<T>::popOpenList() {
 }
 
 template<class T>
-Solution BestFirstSearch<T>::solve(ISearchable<T> *searchable) {
+Solution BestFirstSearch<T>::search(ISearchable<T> *searchable) {
     priorityQueue.push(searchable->getInitialState());
     std::set<State<T>> open;
     std::set<State<T>> closed;

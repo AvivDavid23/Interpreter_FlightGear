@@ -13,13 +13,15 @@ namespace server_side {
         template<class T>
         class BestFirstSearch : public Searcher<problem::State<T>> {
         private:
-            priority_queue<problem::State<T>, problem::State<T>, greater<State<T>>> priorityQueue;
+            priority_queue<problem::State<T>, vector<problem::State<T>>, greater<problem::State<T>>> priorityQueue;
         public:
-            int openListSize() override;
+            inline BestFirstSearch() {}
 
-            problem::State<T> popOpenList() override;
+            int openListSize();
 
-            problem::Solution solve(problem::ISearchable<T> *searchable) override;
+            problem::State<T> popOpenList();
+
+            problem::Solution search(problem::ISearchable<T> *searchable);
 
         };
     }

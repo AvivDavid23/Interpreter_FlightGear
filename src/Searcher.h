@@ -17,19 +17,17 @@ using namespace server_side::problem;
 namespace server_side {
     namespace algorithm {
         template<class T>
-        class Searcher : public algorithm::ISearcher<T>{
+        class Searcher : public algorithm::ISearcher<T> {
         protected:
             int nodesEvaluated;
         public:
             inline Searcher() : nodesEvaluated(0) {}
 
-            inline int getEvaluatedNodes(){ return nodesEvaluated;}
+            virtual int openListSize() = 0;
 
-            virtual problem::Solution solve(problem::ISearchable<T> *searchable);
+            virtual problem::State<T> popOpenList() = 0;
 
-            virtual problem::State<T> popOpenList();
-
-            virtual int openListSize();
+            inline int getEvaluatedNodes() { return nodesEvaluated; }
         };
     }
 }
