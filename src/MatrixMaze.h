@@ -26,6 +26,8 @@ public:
 
     inline bool operator<(const Point &other) const { return !(this->i == other.i && this->j == other.j); }
 
+    inline bool operator>(const Point &other) const { return !(this->i == other.i && this->j == other.j); }
+
     inline unsigned int getI() { return i; }
 
     inline unsigned int getJ() { return j; }

@@ -19,33 +19,29 @@ State<T> BestFirstSearch<T>::popOpenList() {
 template<class T>
 Solution BestFirstSearch<T>::search(ISearchable<T> *searchable) {
     priorityQueue.push(searchable->getInitialState());
-    std::set<State<T>> open;
-    open.insert(searchable->getInitialState());
     std::set<State<T>> closed;
     while (openListSize() > 0) {
         State<T> n = popOpenList();
-        open.erase(n);
         closed.insert(n);
         if (n == searchable->isGoalState()) {
             // TODO: backtrace
         }
         vector<State<T>> neighbors = searchable->getAllPossibleStates();
         for (State<T> const &item : neighbors) {
-            if (open.find(item) == open.end() && closed.find(item) == closed.end()) {
+            if (priorityQueue.atQueue(item) && closed.find(item) == closed.end()) {
                 item.setCameFrom(n);
                 priorityQueue.push(item);
-                open.push(item);
             } else {
                 State<T> tmp;
                 if (closed.find(item) != closed.end()) {
                     continue;
                 } else {
-                    tmp = *open.find(item);
+                    tmp = priorityQueue.remove(item);
                 }
-                if (tmp < item) {
-                    priorityQueue.insert(tmp);
-                    open.erase(item);
-                    open.insert(tmp);
+                if (tmp > item) {
+                    priorityQueue.push(tmp);
+                } else{
+                    priorityQueue.push(item);
                 }
             }
         }
