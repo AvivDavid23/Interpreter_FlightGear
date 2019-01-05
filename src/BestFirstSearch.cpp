@@ -15,28 +15,39 @@ State<T> BestFirstSearch<T>::popOpenList() {
     priorityQueue.pop();
     return state;
 }
-
+//TODO:: FINISH THIS ALG
 template<class T>
 Solution BestFirstSearch<T>::search(ISearchable<T> *searchable) {
     priorityQueue.push(searchable->getInitialState());
     std::set<State<T>> open;
+    open.insert(searchable->getInitialState());
     std::set<State<T>> closed;
-    while(openListSize() > 0) {
+    while (openListSize() > 0) {
         State<T> n = popOpenList();
-        open.insert(n);
+        open.erase(n);
         closed.insert(n);
-        if (n == searchable->isGoalState()){
+        if (n == searchable->isGoalState()) {
             // TODO: backtrace
         }
         vector<State<T>> neighbors = searchable->getAllPossibleStates();
-        for (State<T> const& item : neighbors) {
-            if(open.find(item) == open.end() && closed.find(item) == closed.end()){
+        for (State<T> const &item : neighbors) {
+            if (open.find(item) == open.end() && closed.find(item) == closed.end()) {
                 item.setCameFrom(n);
                 priorityQueue.push(item);
                 open.push(item);
-            } /*else if(//TODO: Check if new path is cheaper){
-
-            }*/
+            } else {
+                State<T> tmp;
+                if (closed.find(item) != closed.end()) {
+                    continue;
+                } else {
+                    tmp = *open.find(item);
+                }
+                if (tmp < item) {
+                    priorityQueue.insert(tmp);
+                    open.erase(item);
+                    open.insert(tmp);
+                }
+            }
         }
     }
 }

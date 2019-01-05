@@ -35,6 +35,10 @@ template <class T>
 bool server_side::problem::State<T>::operator>(const State<T>& other) const {
     return this->cost > other.cost;
 }
+template <class T>
+bool server_side::problem::State<T>::operator!=(const State<T>& other) const {
+    return !(this->cameFrom == other.cameFrom) || !(this->state == other.state);
+}
 
 template<class T>
 T server_side::problem::State<T>::getState() const {
@@ -44,4 +48,9 @@ T server_side::problem::State<T>::getState() const {
 template<class T>
 double server_side::problem::State<T>::getCost() const {
     return cost;
+}
+
+template<class T>
+server_side::problem::State<T> &server_side::problem::State<T>::getCameFrom() const {
+    return cameFrom;
 }

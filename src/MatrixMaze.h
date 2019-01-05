@@ -10,21 +10,28 @@
 #include <random>
 #include <climits>
 #include <stdlib.h>
+
 using namespace server_side::problem;
+
 /**
  * Searchable that uses a NxN matrix, and each State is a 'Point' in the matrix
  */
-class Point{
+class Point {
     unsigned int i;
     unsigned int j;
 public:
-    inline Point(unsigned int i , unsigned int j) : i(i), j(j){}
-    inline bool operator==(const Point& other){ return this->i == other.i && this->j == other.j;}
-    inline unsigned int getI(){ return i;}
-    inline unsigned int getJ(){ return j;}
+    inline Point(unsigned int i, unsigned int j) : i(i), j(j) {}
+
+    inline bool operator==(const Point &other) const { return this->i == other.i && this->j == other.j; }
+
+    inline bool operator<(const Point &other) const { return !(this->i == other.i && this->j == other.j); }
+
+    inline unsigned int getI() { return i; }
+
+    inline unsigned int getJ() { return j; }
 };
-namespace server_side{
-    namespace problem{
+namespace server_side {
+    namespace problem {
         template<unsigned int N>
         class MatrixMaze : public server_side::problem::ISearchable<Point> {
         private:
@@ -32,7 +39,7 @@ namespace server_side{
         public:
             MatrixMaze();
 
-            State <Point> getInitialState();
+            State<Point> getInitialState();
 
             bool isGoalState(State<Point> state);
 

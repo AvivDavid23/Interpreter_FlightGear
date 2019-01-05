@@ -21,7 +21,7 @@ MatrixMaze<N>::MatrixMaze() {
 
 template<unsigned int N>
 State<Point> MatrixMaze<N>::getInitialState() {
-    return State<Point>(Point(0, 0));
+    return State<Point>(Point(0, 0)).setCost(matrix[0][0]);
 }
 
 template<unsigned int N>
@@ -42,26 +42,30 @@ std::vector<State<Point>> MatrixMaze<N>::getAllPossibleStates(State<Point> state
     StateP left(Point(i, j - 1));
     StateP right(Point(i, j + 1));
     if (j != 0) {
-        left.setCost(fmin(matrix[i][j - 1], fatherCost + matrix[i][j - 1]));
-        if (left.getCost() != UINT_MAX) {
+        left.setCost(fatherCost + matrix[i][j - 1]);
+        if (matrix[i][j - 1] != UINT_MAX && state.getCameFrom() != left) {
+            left.setCameFrom(state);
             statesVec.emplace_back(left);
         }
     }
     if (j != N - 1) {
-        right.setCost(fmin(matrix[i][j + 1], fatherCost + matrix[i][j + 1]));
-        if (right.getCost() != UINT_MAX) {
+        right.setCost(fatherCost + matrix[i][j + 1]);
+        if (matrix[i][j + 1] != UINT_MAX && state.getCameFrom() != right) {
+            right.setCameFrom(state);
             statesVec.emplace_back(right);
         }
     }
     if (i != N - 1) {
-        down.setCost(fmin(matrix[i + 1][j], fatherCost + matrix[i + 1][j]));
-        if (down.getCost() != UINT_MAX) {
+        down.setCost(fatherCost + matrix[i + 1][j]);
+        if (matrix[i + 1][j] != UINT_MAX && state.getCameFrom() != down) {
+            down.setCameFrom(state);
             statesVec.emplace_back(down);
         }
     }
     if (i != 0) {
-        up.setCost(fmin(matrix[i - 1][j], fatherCost + matrix[i - 1][j]));
-        if (up.getCost() != UINT_MAX) {
+        up.setCost(fatherCost + matrix[i - 1][j]);
+        if (matrix[i - 1][j] != UINT_MAX && state.getCameFrom() != up) {
+            up.setCameFrom(state);
             statesVec.emplace_back(up);
         }
     }

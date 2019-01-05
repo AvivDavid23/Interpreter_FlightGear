@@ -1,13 +1,7 @@
 
-#include "MatrixMaze.h"
-#include "BestFirstSearch.h"
+#include "State.h"
 
-/**
- * @param argc 2 in our case
- * @param argv[1] have the name of the file.
- * @return
- */
 int main(int argc, char **argv) {
-    BestFirstSearch<Point> bestFirstSearch;
+    server_side::problem::State<int> s(2); // undefined reference...
     return 0;
 }
