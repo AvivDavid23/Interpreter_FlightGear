@@ -1,7 +1,10 @@
 
 #include "State.h"
-
+#include "MatrixMaze.h"
+#include "BestFirstSearch.h"
 int main(int argc, char **argv) {
-    server_side::problem::State<int> s(2); // undefined reference...
+    MatrixMaze<2> matrixMaze;
+    BestFirstSearch<Point> bestFirstSearch;
+    bestFirstSearch.search(&matrixMaze);
     return 0;
 }

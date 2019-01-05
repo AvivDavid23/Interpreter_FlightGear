@@ -11,29 +11,52 @@ namespace server_side {
         class State {
             T state;
             double cost = 0;
-            State<T> &cameFrom;
+            State<T> *cameFrom = nullptr;
         public:
-            State(T state);
+            State() {}
 
-            ~State();
+            State(T state) : state(state), cost(0) {}
 
-            void setCost(double cost) const;
+            ~State() {
+                //if (cameFrom != nullptr) delete cameFrom;
+            }
 
-            void setCameFrom(State<T> cameFrom);
+            void setCost(double cost){
+                this->cost = cost;
+            }
 
-            bool operator==(const State<T> &other) const;
+            void setCameFrom(State<T>* cameFrom){
+                this->cameFrom = cameFrom;
+            }
 
-            State<T> &getCameFrom() const;
+            bool operator==(const State<T> &other) const{
+                if (this == nullptr || &other == nullptr) return false;
+                return (*this->cameFrom == *other.cameFrom) && (this->state == other.state);
+            }
 
-            bool operator>(const State<T> &other) const;
+            State<T> *getCameFrom() const{
+                return cameFrom;
+            }
 
-            bool operator<(const State<T> &other) const;
+            bool operator>(const State<T> &other) const{
+                return this->cost > other.cost;
+            }
 
-            bool operator!=(const State<T> &other) const;
+            bool operator<(const State<T> &other) const{
+                return this->cost < other.cost;
+            }
 
-            T getState() const;
+            bool operator!=(const State<T> &other) const{
+                return !(*this == other);
+            }
 
-            double getCost() const;
+            T getState() const{
+                return state;
+            }
+
+            double getCost() const{
+                return cost;
+            }
         };
     }
 }
