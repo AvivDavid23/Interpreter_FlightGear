@@ -13,21 +13,21 @@
 
 
 /**
- * Searchable that uses a NxN matrix, and each State is a 'Point' in the matrix
+ * Searchable that uses a NxN matrix, and each State is a Position in the matrix
  */
-class Point {
+class Position {
     unsigned int i;
     unsigned int j;
 public:
-    inline Point() : i(0), j(0) {}
+    inline Position() : i(0), j(0) {}
 
-    inline Point(unsigned int i, unsigned int j) : i(i), j(j) {}
+    inline Position(unsigned int i, unsigned int j) : i(i), j(j) {}
 
-    inline bool operator==(const Point &other) const { return this->i == other.i && this->j == other.j; }
+    inline bool operator==(const Position &other) const {return this->i == other.i && this->j == other.j;}
 
-    inline bool operator<(const Point &other) const { return !(this->i == other.i && this->j == other.j); }
+    inline bool operator<(const Position &other) const { return !(this->i == other.i && this->j == other.j); }
 
-    inline bool operator>(const Point &other) const { return !(this->i == other.i && this->j == other.j); }
+    inline bool operator>(const Position &other) const { return !(this->i == other.i && this->j == other.j); }
 
     inline unsigned int getI() { return i; }
 
@@ -35,11 +35,17 @@ public:
 };
 
 template<unsigned int N>
-class MatrixMaze : public ISearchable<Point> {
+class MatrixMaze : public ISearchable<Position> {
+    using StateP = State<Position>;
 private:
     unsigned int matrix[N][N];
 public:
     MatrixMaze() {
+        matrix[0][0] = 0;
+        matrix[0][1] = 2;
+        matrix[1][0] = 3;
+        matrix[1][1] = 5;
+        return ;
         for (int i = 0; i < N; ++i) {
             for (int j = 0; j < N; ++j) {
                 std::mt19937 rng;
@@ -52,28 +58,26 @@ public:
         }
     }
 
-    State<Point> getInitialState() {
-        State<Point> state(Point(0, 0));
+    State<Position> getInitialState() {
+        State<Position> state(Position(0, 0));
         state.setCost(matrix[0][0]);
         return state;
     }
 
-    bool isGoalState(State<Point> state) {
-        return state.getState() == Point(N - 1, N - 1);
+    bool isGoalState(State<Position> state) {
+        return state == StateP(Position(N - 1, N - 1));
     }
 
-    std::vector<State<Point>> getAllPossibleStates(State<Point> state) {
+    std::vector<State<Position>> getAllPossibleStates(State<Position> state) {
         // TODO :: check pointers and destructor!
-        using StateP = State<Point>;
         std::vector<StateP> statesVec;
-        Point currentPoint = state.getState();
         auto fatherCost = state.getCost();
-        auto i = currentPoint.getI();
-        auto j = currentPoint.getJ();
-        StateP up(Point(i - 1, j));
-        StateP down(Point(i + 1, j));
-        StateP left(Point(i, j - 1));
-        StateP right(Point(i, j + 1));
+        auto i = state.getState().getI();
+        auto j = state.getState().getJ();
+        StateP up(Position(i - 1, j));
+        StateP down(Position(i + 1, j));
+        StateP left(Position(i, j - 1));
+        StateP right(Position(i, j + 1));
         if (j != 0) {
             left.setCost(fatherCost + matrix[i][j - 1]);
             if (matrix[i][j - 1] != UINT_MAX && *state.getCameFrom() != left) {

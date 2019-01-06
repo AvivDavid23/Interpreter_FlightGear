@@ -6,6 +6,7 @@
 #define SECONDYEARPROJECT_BIU_STATE_H
 
 
+
 template<class T>
 class State {
     T state;
@@ -14,7 +15,7 @@ class State {
 public:
     State() {}
 
-    State(T state) : state(state), cost(0) {}
+    State(T state) : state(state) {}
 
     ~State() {
         //if (cameFrom != nullptr) delete cameFrom;
