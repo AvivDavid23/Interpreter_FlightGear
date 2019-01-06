@@ -1,23 +1,10 @@
 
-#include <iostream>
-#include "BindingTable.h"
-#include "SymbolTable.h"
-#include "PathsTable.h"
-#include "ExpressionsParser.h"
-#include "list"
-#include "Lexer.h"
-#include "Parser.h"
-
-BindingTable *BindingTable::s_instance = 0;
-SymbolTable *SymbolTable::s_instance = 0;
-PathsTable *PathsTable::s_instance = 0;
-
-int main() {
-  std::cout << ExpressionsParser::shuntingYardAlg("3 * 10.2");
-    Lexer lexer;
-    vector<string> words = lexer.active("file.txt");
-    Parser parser;
-    parser.createFunction(words);
-    //parser.commandParse(words);
+#include "State.h"
+#include "MatrixMaze.h"
+#include "BestFirstSearch.h"
+int main(int argc, char **argv) {
+    MatrixMaze<2> matrixMaze;
+    BestFirstSearch<Position> bestFirstSearch;
+    bestFirstSearch.search(&matrixMaze);
     return 0;
 }
