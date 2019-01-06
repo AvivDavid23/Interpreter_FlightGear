@@ -7,15 +7,14 @@
 
 #include "ISearchable.h"
 #include "Solution.h"
+
 /**
  * Searcher interface
  */
-namespace server_side {
-    namespace algorithm {
-        template<class T>
-        class ISearcher {
-            virtual problem::Solution search(problem::ISearchable<T> *searchable) = 0;
-        };
-    }
-}
+
+template<class T>
+class ISearcher {
+    virtual server_side::problem::Solution search(ISearchable<T> *searchable) = 0;
+};
+
 #endif //SECONDYEARPROJECT_BIU_ISEARCHER_H

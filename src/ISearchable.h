@@ -11,20 +11,17 @@
 /**
  * Searchable interface
  */
-namespace server_side {
-    namespace problem {
-        template<class T>
-        class ISearchable {
-        public:
-            virtual State<T> getInitialState() = 0;
 
-            virtual bool isGoalState(State<T> state) = 0;
+template<class T>
+class ISearchable {
+public:
+    virtual State<T> getInitialState() = 0;
 
-            virtual std::vector<State<T>> getAllPossibleStates(State<T> state) = 0;
+    virtual bool isGoalState(State<T> state) = 0;
 
-        };
-    }
-}
+    virtual std::vector<State<T>> getAllPossibleStates(State<T> state) = 0;
+
+};
 
 
 #endif //SECONDYEARPROJECT_BIU_ISEARCHABLE_H
