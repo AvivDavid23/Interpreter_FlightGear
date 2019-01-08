@@ -58,20 +58,19 @@ public:
             }
             std::vector<State<T>> neighbors = searchable->getAllPossibleStates(n);
             for (State<T> &item : neighbors) {
-                if (!priorityQueue.atQueue(item) && closed.find(item) == closed.end()) {
+                if (!priorityQueue.atQueue(item) && std::find(closed.begin(), closed.end(), item) == closed.end()) {
                     priorityQueue.push(item);
                 } else {
-                    State<T> tmp;
                     if (closed.find(item) != closed.end()) {
                         continue;
-                    } else {
-                        tmp = priorityQueue.remove(item);
                     }
+                    State<T> tmp = priorityQueue.remove(item);
                     if (item < tmp) {
-                        priorityQueue.push(item);
-                    } else {
-                        priorityQueue.push(tmp);
+                        tmp.setCameFrom(item.getCameFrom());
+                        tmp.setCost(item.getCost());
                     }
+                    priorityQueue.push(tmp);
+
                 }
             }
         }

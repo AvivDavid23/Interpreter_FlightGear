@@ -17,6 +17,15 @@ public:
 
     State(T state) : state(state) {}
 
+    State(const State<T>& other){
+        state = other.state;
+        cost = other.cost;
+        if (other.cameFrom != nullptr){
+            cameFrom = new State<T>();
+            *cameFrom = *other.cameFrom;
+        }
+    }
+
     ~State() {
         //if (cameFrom != nullptr) delete cameFrom;
     }
