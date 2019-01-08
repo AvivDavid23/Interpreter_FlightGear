@@ -30,7 +30,8 @@ namespace server_side {
 
             void saveSolution(Problem *problem,Solution *solution){
                 if(!file->is_open()) file->open(FILE);
-                file << problem.tostring() << "" << solution.tostring();
+                file <<solution.tostring();
+                this->works[problem] = solution;
             }
         };
     }
