@@ -1,10 +1,4 @@
-
-#include "State.h"
-#include "MatrixMaze.h"
-#include "BestFirstSearch.h"
+#include "Main.h"
 int main(int argc, char **argv) {
-    MatrixMaze<2> matrixMaze;
-    BestFirstSearch<Position> bestFirstSearch;
-    bestFirstSearch.search(&matrixMaze);
-    return 0;
+    boot::Main::main(argc,argv);
 }

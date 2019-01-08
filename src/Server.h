@@ -9,6 +9,7 @@
 
 namespace server_side {
     // Server Interface
+    template <class Problem,class  Solution>
     class Server {
     public:
         /**
