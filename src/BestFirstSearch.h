@@ -17,15 +17,20 @@ public:
     const T &remove(const T &value) {
         auto it = std::find(this->c.begin(), this->c.end(), value);
         if (it != this->c.end()) {
+            auto itt = it;
             this->c.erase(it);
             std::make_heap(this->c.begin(), this->c.end(), this->comp);
-            return *it;
+            return *itt;
         }
     }
 
     bool atQueue(const T &value) {
         auto it = std::find(this->c.begin(), this->c.end(), value);
         return it != this->c.end();
+    }
+
+    inline void heapify(){
+        std::make_heap(this->c.begin(), this->c.end(), this->comp);
     }
 };
 
@@ -57,11 +62,16 @@ public:
                 // TODO: backtrace
             }
             std::vector<State<T>> neighbors = searchable->getAllPossibleStates(n);
+            if (neighbors.empty()){
+                // TODO: Return no solution
+                exit(1);
+            }
             for (State<T> &item : neighbors) {
                 if (!priorityQueue.atQueue(item) && std::find(closed.begin(), closed.end(), item) == closed.end()) {
                     priorityQueue.push(item);
+                    this->priorityQueue.heapify();
                 } else {
-                    if (closed.find(item) != closed.end()) {
+                    if (std::find(closed.begin(), closed.end(), item) == closed.end()) {
                         continue;
                     }
                     State<T> tmp = priorityQueue.remove(item);
@@ -70,6 +80,7 @@ public:
                         tmp.setCost(item.getCost());
                     }
                     priorityQueue.push(tmp);
+                    this->priorityQueue.heapify();
 
                 }
             }

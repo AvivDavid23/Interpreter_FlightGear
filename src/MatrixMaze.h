@@ -42,18 +42,18 @@ private:
 public:
     MatrixMaze() {
         matrix[0][0] = 1;
-        matrix[0][1] = 23;
-        matrix[0][2] = 1;
-        matrix[1][0] = 0;
-        matrix[1][1] = 30;
+        matrix[0][1] = 0;
+        matrix[0][2] = 3;
+        matrix[1][0] = 2;
+        matrix[1][1] = 0;
         matrix[1][2] = 2;
         matrix[2][0] = 2;
         matrix[2][1] = 5;
         matrix[2][2] = 7;
 
 
-                  /*{{1, 23, 3},
-                  { 0, 30, 2 },
+                  /*{{1, 0, 3},
+                  { 2, 0, 2 },
                   { 2, 5, 7 }};*/
         return;
         for (int i = 0; i < N; ++i) {
@@ -116,8 +116,8 @@ public:
                 statesVec.emplace_back(up);
             }
         }
-                /*{{1, 23, 3},
-                { 0, 30, 2 },
+                /*{{1, 0, 3},
+                { 2, 0, 2 },
                 { 2, 5, 7 }};*/
         return statesVec;
     }
