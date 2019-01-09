@@ -14,13 +14,13 @@
 template<typename T>
 class custom_priority_queue : public std::priority_queue<T, std::vector<T>, greater<T>> {
 public:
-    const T &remove(const T &value) {
+    T remove(const T &value) {
         auto it = std::find(this->c.begin(), this->c.end(), value);
         if (it != this->c.end()) {
-            auto itt = it;
+            T st = *it;
             this->c.erase(it);
             std::make_heap(this->c.begin(), this->c.end(), this->comp);
-            return *itt;
+            return st;
         }
     }
 
@@ -62,19 +62,19 @@ public:
                 // TODO: backtrace
             }
             std::vector<State<T>> neighbors = searchable->getAllPossibleStates(n);
-            if (neighbors.empty()){
+            if (neighbors.empty() && this->priorityQueue.empty()){
                 // TODO: Return no solution
                 exit(1);
             }
             for (State<T> &item : neighbors) {
-                if (!priorityQueue.atQueue(item) && std::find(closed.begin(), closed.end(), item) == closed.end()) {
+                bool inOpen = priorityQueue.atQueue(item);
+                bool inClosed = std::find(closed.begin(), closed.end(), item) != closed.end();
+                if (!inOpen && !inClosed) {
                     priorityQueue.push(item);
                     this->priorityQueue.heapify();
                 } else {
-                    if (std::find(closed.begin(), closed.end(), item) == closed.end()) {
-                        continue;
-                    }
-                    State<T> tmp = priorityQueue.remove(item);
+                    if (inClosed) continue;
+                     State<T> tmp = priorityQueue.remove(item);
                     if (item < tmp) {
                         tmp.setCameFrom(item.getCameFrom());
                         tmp.setCost(item.getCost());

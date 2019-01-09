@@ -25,10 +25,6 @@ public:
 
     inline bool operator==(const Position &other) const { return this->i == other.i && this->j == other.j; }
 
-    inline bool operator<(const Position &other) const { return !(this->i == other.i && this->j == other.j); }
-
-    inline bool operator>(const Position &other) const { return !(this->i == other.i && this->j == other.j); }
-
     inline unsigned int getI() { return i; }
 
     inline unsigned int getJ() { return j; }
@@ -38,7 +34,7 @@ template<unsigned int N>
 class MatrixMaze : public ISearchable<Position> {
     using StateP = State<Position>;
 private:
-    unsigned int matrix[N][N];
+    int matrix[N][N];
 public:
     MatrixMaze() {
         matrix[0][0] = 1;
@@ -60,9 +56,9 @@ public:
             for (int j = 0; j < N; ++j) {
                 std::mt19937 rng;
                 rng.seed(std::random_device()());
-                std::uniform_int_distribution<std::mt19937::result_type> dist6(0, 150);
+                std::uniform_int_distribution<std::mt19937::result_type> dist6(0, 20);
                 auto randNum = (unsigned int) dist6(rng);
-                if (randNum >= 140) randNum = UINT_MAX;
+                if (randNum >= 15) randNum = -1;
                 matrix[i][j] = randNum;
             }
         }
@@ -90,28 +86,28 @@ public:
         StateP right(Position(i, j + 1));
         if (j != 0) {
             left.setCost(fatherCost + matrix[i][j - 1]);
-            if (matrix[i][j - 1] != UINT_MAX && *state.getCameFrom() != left) {
+            if (matrix[i][j - 1] != -1 && *state.getCameFrom() != left) {
                 left.setCameFrom(&state);
                 statesVec.emplace_back(left);
             }
         }
         if (j != N - 1) {
             right.setCost(fatherCost + matrix[i][j + 1]);
-            if (matrix[i][j + 1] != UINT_MAX && *state.getCameFrom() != right) {
+            if (matrix[i][j + 1] != -1 && *state.getCameFrom() != right) {
                 right.setCameFrom(&state);
                 statesVec.emplace_back(right);
             }
         }
         if (i != N - 1) {
             down.setCost(fatherCost + matrix[i + 1][j]);
-            if (matrix[i + 1][j] != UINT_MAX && *state.getCameFrom() != down) {
+            if (matrix[i + 1][j] != -1 && *state.getCameFrom() != down) {
                 down.setCameFrom(&state);
                 statesVec.emplace_back(down);
             }
         }
         if (i != 0) {
             up.setCost(fatherCost + matrix[i - 1][j]);
-            if (matrix[i - 1][j] != UINT_MAX && *state.getCameFrom() != up) {
+            if (matrix[i - 1][j] != -1 && *state.getCameFrom() != up) {
                 up.setCameFrom(&state);
                 statesVec.emplace_back(up);
             }
