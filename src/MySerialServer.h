@@ -13,7 +13,7 @@
 #include <netdb.h>
 #include <unistd.h>
 #include <netinet/in.h>
-
+#include <iostream>
 #include <string.h>
 #include <sys/socket.h>
 #include <thread>
@@ -86,10 +86,15 @@ namespace server_side {
             /* Accept actual connection from the client */
             // the massage.
             newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *) &clilen);
-            if (newsockfd < 0) {
-                perror("ERROR on accept");
-                exit(1);
-            }
+                if (newsockfd < 0)	{
+                    if (errno == EWOULDBLOCK)	{
+                      cout << "timeout!" << endl;
+                        exit(2);
+                    }	else	{
+                        perror("other error");
+                        exit(3);
+                    }
+                }
             openCustumer = true;
             string output,input;
             int start = leftovers.length() ? leftovers.length() - 1 : 0;
@@ -97,7 +102,7 @@ namespace server_side {
             read(newsockfd, buffer + start, BUFFER_SIZE - start);
             input = string(buffer);
             // set output
-            output = write(this->portID,"1",1);
+//            output = write(this->portID,"1",1);
             istringstream realInput(input);
             stringstream output1(output);
 //     clientHandler->handleClient(realInput,output1);

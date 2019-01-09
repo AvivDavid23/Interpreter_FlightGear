@@ -18,7 +18,7 @@ namespace server_side {
              * @param problem
              * @return solution the the problem
              */
-            virtual Solution solve(Problem problem) = 0;
+            virtual Solution solve(Problem &problem) = 0;
 
         };
 

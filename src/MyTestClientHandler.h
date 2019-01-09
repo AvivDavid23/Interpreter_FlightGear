@@ -12,29 +12,28 @@
 #include "StringReverser.h"
 #include "FileCacheManager.h"
 #include "genClient.h"
-#define   LINES 256
 /**
  * A type of Client Handler
  */
- template <class Problem,class Solution>
 class MyTestClientHandler : public genClient<std::string ,std::string> {
 public:
-        void handleClient(std::istream inputStream, std::ostream outputStream) {
-            char sent[LINES];
-            inputStream.getline(sent, LINES);
-            while (sent != "end") {
-                if (this->cacheManager->containsSolution(inputStream))
-                    this->cacheManager->getSolution(inputStream);
+        void handleClient(std::istream &inputStream, std::ostream &outputStream) {
+            string line,answer;
+            getline(inputStream,line);
+            string sent(line);
+            while (sent != "end" ||!sent.empty()) {
+                if (this->cachemanager->containsSolution(&sent))
+                    this->cachemanager->getSolution(&sent);
                 else
-                    outputStream = this->solver->solve(inputStream);
-                this->cacheManager->saveSolution(sent, outputStream);
-                inputStream.getline(sent, LINES);
+                    answer= this->solver->solve(sent);
+                this->cachemanager->saveSolution(&sent, &answer);
+                std::getline(std::cin,sent);
             }
         }
 
     MyTestClientHandler() {
         this->solver = new StringReverser();
-        this->cacheManager = server_side::cache::FileCacheManager<std::string,std::string>();
+        this->cachemanager = new server_side::cache::FileCacheManager<string,string>();
     }
 };
 

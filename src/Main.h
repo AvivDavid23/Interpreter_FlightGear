@@ -8,12 +8,13 @@
 #include "MySerialServer.h"
 #include "Solver.h"
 #include "MyTestClientHandler.h"
-
+#include "istream"
 namespace boot{
     class Main {
     public:
         static int main(int argc, char **argv){
-
+                ClientHandler *clientHandler = new MyTestClientHandler();
+                clientHandler->handleClient(cin,cout);
         }
         };
 }

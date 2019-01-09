@@ -7,6 +7,8 @@
 
 #include "CacheManager.h"
 #include <fstream>
+#include "algorithm"
+#include <unordered_map>
 #define FILE "saveSolution.txt"
 
 /**
@@ -16,22 +18,25 @@ namespace server_side {
     namespace cache {
         template <class Problem,class Solution>
         class FileCacheManager : public CacheManager<Problem,Solution> {
-            std::fstream *file;
+            std::fstream file;
+            unordered_map<Problem*,Solution*> problems;
         public:
-            FileCacheManager() {
-            };
+            FileCacheManager() {};
             bool containsSolution(Problem *problem){
-                return (this->works.find(*problem) != this->works());
+                auto got = problems.find (problem);
+                return !(got ==problems.end());
+
+
             }
 
-            Solution getSolution(Problem *problem){
-                return this->works[*problem];
+            Solution* getSolution(Problem* problem){
+               return this->problems[problem];
             }
 
-            void saveSolution(Problem *problem,Solution *solution){
-                if(!file->is_open()) file->open(FILE);
-                file <<solution.tostring();
-                this->works[problem] = solution;
+            void saveSolution(Problem* problem,Solution* solution){
+                    file.open(FILE,std::fstream::in | std::fstream::out | std::fstream::app);
+//                file <<solution.tostring();
+                this->problems[problem] = solution;
             }
         };
     }

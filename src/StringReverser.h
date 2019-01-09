@@ -11,7 +11,7 @@
 
 class StringReverser: public server_side::Solver<std::string,std::string>{
 public:
-    virtual std::string solve(std:: string problem) {
+    virtual std::string solve( string & problem) {
          std::reverse(problem.begin(),problem.end());
         return problem;
     }
