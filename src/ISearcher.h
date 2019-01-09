@@ -14,6 +14,7 @@
 
 template<class T>
 class ISearcher {
+    // search for a solution to the Searchable object
     virtual server_side::problem::Solution search(ISearchable<T> *searchable) = 0;
 };
 

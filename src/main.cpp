@@ -1,10 +1,12 @@
 
 #include "State.h"
 #include "MatrixMaze.h"
-#include "BestFirstSearch.h"
+#include "DFS.h"
+#include "BFS.h"
 int main(int argc, char **argv) {
     MatrixMaze<3> matrixMaze;
-    BestFirstSearch<Position> bestFirstSearch;
-    bestFirstSearch.search(&matrixMaze);
+    cout << matrixMaze.to_string();
+    BestFirstSearch<Position> bfs;
+    bfs.search(&matrixMaze);
     return 0;
 }

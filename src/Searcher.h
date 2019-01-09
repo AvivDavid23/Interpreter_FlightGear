@@ -4,13 +4,13 @@
 
 #ifndef SECONDYEARPROJECT_BIU_SEARCHER_H
 #define SECONDYEARPROJECT_BIU_SEARCHER_H
-/**
- * Searcher abstract class
- */
+
 #include "Solution.h"
 #include "ISearchable.h"
 #include "ISearcher.h"
-
+/**
+ * Abstract searcher which saves the number of nodes evaluated for the main searcher(BFS, DFS, A*...)
+ */
 using namespace std;
 
 template<class T>
@@ -24,6 +24,7 @@ public:
 
     virtual State<T> popOpenList() = 0;
 
+    // get number of nodes evaluated by the algorithm
     inline int getEvaluatedNodes() { return nodesEvaluated; }
 };
 

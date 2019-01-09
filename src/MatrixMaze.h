@@ -5,15 +5,15 @@
 #ifndef SECONDYEARPROJECT_BIU_MATRIXMAZE_H
 #define SECONDYEARPROJECT_BIU_MATRIXMAZE_H
 
+#include "Utils.h"
 #include "ISearchable.h"
 #include "State.h"
 #include <random>
 #include <climits>
 #include <stdlib.h>
 
-
 /**
- * Searchable that uses a NxN matrix, and each State is a Position in the matrix
+ * simple Position class
  */
 class Position {
     unsigned int i;
@@ -25,43 +25,61 @@ public:
 
     inline bool operator==(const Position &other) const { return this->i == other.i && this->j == other.j; }
 
+    inline bool operator<(const Position &other) const { return !(*this == other); }
+
     inline unsigned int getI() { return i; }
 
     inline unsigned int getJ() { return j; }
 };
-
+/**
+ * Searchable that uses a NxN matrix, and each State is a Position in the matrix
+ */
 template<unsigned int N>
 class MatrixMaze : public ISearchable<Position> {
     using StateP = State<Position>;
 private:
     int matrix[N][N];
+    Position start;
+    Position goal;
 public:
+    // TODO: After benchmarks, change constructor to deal with user input and create matrix
     MatrixMaze() {
-        matrix[0][0] = 1;
-        matrix[0][1] = 0;
-        matrix[0][2] = 3;
-        matrix[1][0] = 2;
-        matrix[1][1] = 0;
-        matrix[1][2] = 2;
-        matrix[2][0] = 2;
-        matrix[2][1] = 5;
-        matrix[2][2] = 7;
-
-
-                  /*{{1, 0, 3},
-                  { 2, 0, 2 },
-                  { 2, 5, 7 }};*/
-        return;
         for (int i = 0; i < N; ++i) {
             for (int j = 0; j < N; ++j) {
                 std::mt19937 rng;
                 rng.seed(std::random_device()());
                 std::uniform_int_distribution<std::mt19937::result_type> dist6(0, 20);
-                auto randNum = (unsigned int) dist6(rng);
-                if (randNum >= 15) randNum = -1;
+                auto randNum = (int) dist6(rng);
+                if (randNum >= 18) randNum = -1;
                 matrix[i][j] = randNum;
             }
         }
+    }
+
+    void setStart(std::string &input) {
+        unsigned int x, y;
+        std::vector<std::string> vec = Utils::splitByChar(input, ',');
+        x = (unsigned int) std::stoi(vec[0]);
+        y = (unsigned int) std::stoi(vec[1]);
+        start = Position(x, y);
+    }
+
+    void setGoal(std::string &input) {
+        unsigned int x, y;
+        std::vector<std::string> vec = Utils::splitByChar(input, ',');
+        x = (unsigned int) std::stoi(vec[0]);
+        y = (unsigned int) std::stoi(vec[1]);
+        goal = Position(x, y);
+    }
+
+    std::list<Position> getAllNodes() {
+        std::list<Position> positions;
+        for (unsigned int i = 0; i < N - 1; ++i) {
+            for (unsigned int j = 0; j < N - 1; ++j) {
+                positions.emplace_back(Position(i, j));
+            }
+        }
+        return positions;
     }
 
     State<Position> getInitialState() {
@@ -75,15 +93,20 @@ public:
     }
 
     std::vector<State<Position>> getAllPossibleStates(State<Position> state) {
-        // TODO :: check pointers and destructor!
         std::vector<StateP> statesVec;
         auto fatherCost = state.getCost();
         auto i = state.getState().getI();
         auto j = state.getState().getJ();
+        // all directions. note that not all are accessible
         StateP up(Position(i - 1, j));
         StateP down(Position(i + 1, j));
         StateP left(Position(i, j - 1));
         StateP right(Position(i, j + 1));
+        /**
+         * check if we can access each one
+         * if we can, first update new price
+         * then, if the path is 'blocked' or we came from that direction, pass, else set parent and push into vector
+         */
         if (j != 0) {
             left.setCost(fatherCost + matrix[i][j - 1]);
             if (matrix[i][j - 1] != -1 && *state.getCameFrom() != left) {
@@ -112,12 +135,20 @@ public:
                 statesVec.emplace_back(up);
             }
         }
-                /*{{1, 0, 3},
-                { 2, 0, 2 },
-                { 2, 5, 7 }};*/
         return statesVec;
     }
-};
 
+    std::string to_string() {
+        std::string output;
+        for (int i = 0; i < N; ++i) {
+            for (int j = 0; j < N; ++j) {
+                output += std::to_string(matrix[i][j]);
+                if (j < N - 1) output += ',';
+            }
+            output += '\n';
+        }
+        return output;
+    }
+};
 
 #endif //SECONDYEARPROJECT_BIU_MATRIXMAZE_H

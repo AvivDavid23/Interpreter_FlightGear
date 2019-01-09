@@ -29,7 +29,7 @@ public:
         return it != this->c.end();
     }
 
-    inline void heapify(){
+    inline void heapify() {
         std::make_heap(this->c.begin(), this->c.end(), this->comp);
     }
 };
@@ -51,34 +51,44 @@ public:
     }
 
     server_side::problem::Solution search(ISearchable<T> *searchable) {
+        // initialize queue with first state
         priorityQueue.push(searchable->getInitialState());
+        // set for nodes that we finished to deal with
         std::set<State<T>> closed;
+        // while we have untreated nodes
         while (openListSize() > 0) {
+            // pop the min of all odes
             State<T> n = popOpenList();
             closed.insert(n);
+            // goal state -> finish
             if (searchable->isGoalState(n)) {
                 std::cout << "done!!!\n";
                 exit(1);
                 // TODO: backtrace
             }
+            // all the nodes we can visit from n
             std::vector<State<T>> neighbors = searchable->getAllPossibleStates(n);
-            if (neighbors.empty() && this->priorityQueue.empty()){
-                // TODO: Return no solution
+            // no solution
+            if (neighbors.empty() && this->priorityQueue.empty()) {
                 exit(1);
             }
             for (State<T> &item : neighbors) {
                 bool inOpen = priorityQueue.atQueue(item);
                 bool inClosed = std::find(closed.begin(), closed.end(), item) != closed.end();
+                // add to out queue
                 if (!inOpen && !inClosed) {
                     priorityQueue.push(item);
                     this->priorityQueue.heapify();
                 } else {
+                    // if item in close, skip
                     if (inClosed) continue;
-                     State<T> tmp = priorityQueue.remove(item);
+                    State<T> tmp = priorityQueue.remove(item);
+                    // if item is better, means better path, update tmp
                     if (item < tmp) {
                         tmp.setCameFrom(item.getCameFrom());
                         tmp.setCost(item.getCost());
                     }
+                    // reenter temp to queue
                     priorityQueue.push(tmp);
                     this->priorityQueue.heapify();
 
