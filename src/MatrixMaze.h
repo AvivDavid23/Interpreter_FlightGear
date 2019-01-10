@@ -48,9 +48,9 @@ public:
             for (int j = 0; j < N; ++j) {
                 std::mt19937 rng;
                 rng.seed(std::random_device()());
-                std::uniform_int_distribution<std::mt19937::result_type> dist6(0, 20);
+                std::uniform_int_distribution<std::mt19937::result_type> dist6(0, 11);
                 auto randNum = (int) dist6(rng);
-                if (randNum >= 18) randNum = -1;
+                if (randNum == 11) randNum = -1;
                 matrix[i][j] = randNum;
             }
         }
@@ -142,6 +142,7 @@ public:
         std::string output;
         for (int i = 0; i < N; ++i) {
             for (int j = 0; j < N; ++j) {
+                if(matrix[i][j] < 10 && matrix[i][j] > -1) output += ' ';
                 output += std::to_string(matrix[i][j]);
                 if (j < N - 1) output += ',';
             }
