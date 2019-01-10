@@ -24,8 +24,9 @@ public:
             while (sent != "end" ||!sent.empty()) {
                 if (this->cachemanager->containsSolution(&sent))
                     this->cachemanager->getSolution(&sent);
-                else
-                    answer= this->solver->solve(sent);
+                else {
+                    answer = this->solver->solve(sent);
+                }
                 this->cachemanager->saveSolution(&sent, &answer);
                 std::getline(std::cin,sent);
             }

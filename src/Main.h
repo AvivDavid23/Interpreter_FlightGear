@@ -9,11 +9,15 @@
 #include "Solver.h"
 #include "MyTestClientHandler.h"
 #include "istream"
+#include "Server.h"
 namespace boot{
     class Main {
     public:
         static int main(int argc, char **argv){
-                ClientHandler *clientHandler = new MyTestClientHandler();
+            server_side::Server<string,string> *server;
+            ClientHandler *clientHandler = new MyTestClientHandler();
+            server =  new server_side::MySerialServer<string,string>();
+            server->open(atoi(argv[1]),clientHandler);
                 clientHandler->handleClient(cin,cout);
         }
         };

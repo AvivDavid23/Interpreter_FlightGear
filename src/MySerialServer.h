@@ -26,12 +26,11 @@ namespace server_side {
  * A type of Server, which take care of clients one by one
  */
  template <class Problem,class Solution>
-    class MySerialServer : server_side::Server<Problem,Solution> {
+    class MySerialServer : public server_side::Server<Problem,Solution> {
         bool openCustumer = false;
         int portID;
     public:
-        MySerialServer<Problem,Solution>(int port)
-                {this->portID = port;}
+        MySerialServer<Problem,Solution>(){};
         /**
          * Opens the server and waits for clients
          * @param port
@@ -103,9 +102,9 @@ namespace server_side {
             input = string(buffer);
             // set output
 //            output = write(this->portID,"1",1);
-            istringstream realInput(input);
-            stringstream output1(output);
-//     clientHandler->handleClient(realInput,output1);
+//            istringstream realInput(input);
+//            stringstream output1(output);
+     clientHandler->handleClient(cin,cout);
                 }
         }
         void start(int port,ClientHandler* clientHandler) {

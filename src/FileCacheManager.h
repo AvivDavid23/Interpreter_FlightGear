@@ -35,8 +35,9 @@ namespace server_side {
 
             void saveSolution(Problem* problem,Solution* solution){
                     file.open(FILE,std::fstream::in | std::fstream::out | std::fstream::app);
-//                file <<solution.tostring();
-                this->problems[problem] = solution;
+                    file <<solution << "\n";
+                    file.flush();
+                    this->problems[problem] = solution;
             }
         };
     }
