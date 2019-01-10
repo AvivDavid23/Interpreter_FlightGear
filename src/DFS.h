@@ -29,7 +29,7 @@ public:
         return state;
     }
 
-    std::string search(ISearchable<T> *searchable) {
+    std::string search(ISearchable<T, std::string> *searchable) {
         bool goalReached = false;
         std::map<T, bool> visited;
         // initialize all nodes to not visited
@@ -50,11 +50,9 @@ public:
             }
         }
         if (goalReached) {
-            // TODO : backtrace
-            exit(1);
+            return searchable->backtrace(node);
         } else {
-            // TODO : NO SOLUTION
-            exit(1);
+            return "No Solution! \n";
         }
 
     }

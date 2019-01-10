@@ -43,14 +43,13 @@ public:
     int openListSize() { return (int) this->priorityQueue.size(); }
 
     State<T> popOpenList() {
-        //TODO :: Check top()
         ++this->nodesEvaluated;
         State<T> state = priorityQueue.top();
         priorityQueue.pop();
         return state;
     }
 
-    std::string search(ISearchable<T> *searchable) {
+    std::string search(ISearchable<T, std::string> *searchable) {
         // initialize queue with first state
         priorityQueue.push(searchable->getInitialState());
         // set for nodes that we finished to deal with
@@ -62,15 +61,13 @@ public:
             closed.insert(n);
             // goal state -> finish
             if (searchable->isGoalState(n)) {
-                std::cout << "done!!!\n";
-                exit(1);
-                // TODO: backtrace
+                return searchable->backtrace(n);
             }
             // all the nodes we can visit from n
             std::vector<State<T>> neighbors = searchable->getAllPossibleStates(n);
             // no solution
             if (neighbors.empty() && this->priorityQueue.empty()) {
-                exit(1);
+                return "No Solution! \n";
             }
             for (State<T> &item : neighbors) {
                 bool inOpen = priorityQueue.atQueue(item);

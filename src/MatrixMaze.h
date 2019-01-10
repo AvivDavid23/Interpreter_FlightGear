@@ -8,34 +8,18 @@
 #include "Utils.h"
 #include "ISearchable.h"
 #include "State.h"
+#include "Position.h"
 #include <random>
 #include <climits>
 #include <stdlib.h>
+#include "algorithm"
 
-/**
- * simple Position class
- */
-class Position {
-    unsigned int i;
-    unsigned int j;
-public:
-    inline Position() : i(0), j(0) {}
 
-    inline Position(unsigned int i, unsigned int j) : i(i), j(j) {}
-
-    inline bool operator==(const Position &other) const { return this->i == other.i && this->j == other.j; }
-
-    inline bool operator<(const Position &other) const { return !(*this == other); }
-
-    inline unsigned int getI() { return i; }
-
-    inline unsigned int getJ() { return j; }
-};
 /**
  * Searchable that uses a NxN matrix, and each State is a Position in the matrix
  */
 template<unsigned int N>
-class MatrixMaze : public ISearchable<Position> {
+class MatrixMaze : public ISearchable<Position, std::string> {
     using StateP = State<Position>;
 private:
     int matrix[N][N];
@@ -142,7 +126,7 @@ public:
         std::string output;
         for (int i = 0; i < N; ++i) {
             for (int j = 0; j < N; ++j) {
-                if(matrix[i][j] < 10 && matrix[i][j] > -1) output += ' ';
+                if (matrix[i][j] < 10 && matrix[i][j] > -1) output += ' ';
                 output += std::to_string(matrix[i][j]);
                 if (j < N - 1) output += ',';
             }
@@ -150,6 +134,31 @@ public:
         }
         return output;
     }
+
+    std::string backtrace(const State<Position> &goal) {
+        State<Position> tmp = goal;
+        std::vector<std::string> vec;
+        std::string path;
+        while (tmp.getCameFrom() != nullptr) {
+            Position myPosition = tmp.getState();
+            Position fatherPosition = tmp.getCameFrom()->getState();
+            if (myPosition.aboveMe(fatherPosition))  vec.emplace_back("DOWN,");
+            else if (myPosition.belowMe(fatherPosition)) vec.emplace_back("UP,");
+            else if (myPosition.leftToMe(fatherPosition)) vec.emplace_back("RIGHT,");
+            else vec.emplace_back("LEFT,");
+            tmp = *tmp.getCameFrom();
+        }
+        long i = vec.size() - 1;
+        while (i >= 0){
+            path += vec[i];
+            --i;
+        }
+        // remove last ','
+        path = path.substr(0, path.length() - 1);
+        return path;
+
+    }
 };
+
 
 #endif //SECONDYEARPROJECT_BIU_MATRIXMAZE_H

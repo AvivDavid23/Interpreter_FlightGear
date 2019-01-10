@@ -4,9 +4,9 @@
 #include "DFS.h"
 #include "BFS.h"
 int main(int argc, char **argv) {
-    MatrixMaze<15> matrixMaze;
+    MatrixMaze<4> matrixMaze;
     cout << matrixMaze.to_string();
     BestFirstSearch<Position> bfs;
-    bfs.search(&matrixMaze);
+    cout << bfs.search(&matrixMaze);
     return 0;
 }

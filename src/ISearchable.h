@@ -13,7 +13,7 @@
  * Searchable interface
  */
 
-template<class T>
+template<class T, class Solution>
 class ISearchable {
 public:
     // get start point
@@ -27,6 +27,9 @@ public:
 
     // get all the 'nodes' of the problem
     virtual std::list<T> getAllNodes() = 0;
+
+    // backtrace from goal to start, returns solution
+    virtual Solution backtrace(const State<T>& goal) = 0;
 
 };
 
