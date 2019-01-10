@@ -6,7 +6,7 @@
 int main(int argc, char **argv) {
     MatrixMaze<15> matrixMaze;
     cout << matrixMaze.to_string();
-    BFS<Position> bfs;
+    BestFirstSearch<Position> bfs;
     bfs.search(&matrixMaze);
     return 0;
 }

@@ -6,16 +6,15 @@
 #define SECONDYEARPROJECT_BIU_ISEARCHER_H
 
 #include "ISearchable.h"
-#include "Solution.h"
 
 /**
  * Searcher interface
  */
 
-template<class T>
+template<class T, class Solution>
 class ISearcher {
     // search for a solution to the Searchable object
-    virtual server_side::problem::Solution search(ISearchable<T> *searchable) = 0;
+    virtual Solution search(ISearchable<T> *searchable) = 0;
 };
 
 #endif //SECONDYEARPROJECT_BIU_ISEARCHER_H

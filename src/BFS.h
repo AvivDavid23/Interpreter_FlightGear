@@ -11,7 +11,7 @@
 #include "Searcher.h"
 
 template<class T>
-class BFS : public Searcher<T> {
+class BFS : public Searcher<T, std::string> {
     queue<State<T>> stateQueue;
 public:
     inline BFS() {}
@@ -25,7 +25,7 @@ public:
         return state;
     }
 
-    server_side::problem::Solution search(ISearchable<T> *searchable) {
+    std::string search(ISearchable<T> *searchable) {
         bool goalReached = false;
         std::map<T, bool> visited;
         // initialize all nodes to not visited

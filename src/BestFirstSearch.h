@@ -35,7 +35,7 @@ public:
 };
 
 template<class T>
-class BestFirstSearch : public Searcher<T> {
+class BestFirstSearch : public Searcher<T, std::string> {
     custom_priority_queue<State<T>> priorityQueue;
 public:
     inline BestFirstSearch() {}
@@ -50,7 +50,7 @@ public:
         return state;
     }
 
-    server_side::problem::Solution search(ISearchable<T> *searchable) {
+    std::string search(ISearchable<T> *searchable) {
         // initialize queue with first state
         priorityQueue.push(searchable->getInitialState());
         // set for nodes that we finished to deal with

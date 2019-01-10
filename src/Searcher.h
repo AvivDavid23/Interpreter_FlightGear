@@ -5,7 +5,6 @@
 #ifndef SECONDYEARPROJECT_BIU_SEARCHER_H
 #define SECONDYEARPROJECT_BIU_SEARCHER_H
 
-#include "Solution.h"
 #include "ISearchable.h"
 #include "ISearcher.h"
 /**
@@ -13,8 +12,8 @@
  */
 using namespace std;
 
-template<class T>
-class Searcher : public ISearcher<T> {
+template<class T, class Solution>
+class Searcher : public ISearcher<T, Solution> {
 protected:
     int nodesEvaluated;
 public:
