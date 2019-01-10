@@ -7,15 +7,16 @@
 
 #include "istream"
 #include "ostream"
+#include "Solver.h"
+#include "CacheManager.h"
 // Client Handler Interface
-namespace server_side {
-    class ClientHandler {
-        /**
-         * Handles the client
-         * @param inputStream input stream which contains the clients's message
-         * @param outputStream output stream which we will write our answer in
-         */
-        virtual void handleClient(std::istream inputStream, std::ostream outputStream) = 0;
-    };
-}
+class ClientHandler {
+public:
+    /**
+     * Handles the client
+     * @param inputStream input stream which contains the clients's message
+     * @param outputStream output stream which we will write our answer in
+     */
+    virtual void handleClient(std:: istream &inputStream, std::ostream& outputStream) = 0;
+};
 #endif //SECONDYEARPROJECT_BIU_CLIENTHANDLER_H
