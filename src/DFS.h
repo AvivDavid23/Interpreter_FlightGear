@@ -13,7 +13,10 @@
 #include "set"
 #include "BestFirstSearch.h"
 
-
+/**
+ * DFS algorithm
+ * @tparam T type
+ */
 template<class T>
 class DFS : public Searcher<T, std::string> {
     stack<State<T>> stateStack;

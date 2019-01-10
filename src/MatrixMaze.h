@@ -34,7 +34,7 @@ public:
                 rng.seed(std::random_device()());
                 std::uniform_int_distribution<std::mt19937::result_type> dist6(0, 11);
                 auto randNum = (int) dist6(rng);
-                if (randNum == 11) randNum = -1;
+                if (randNum == 11 && (i != 0 && j != 0) && (i != N - 1 && j != N - 1)) randNum = -1;
                 matrix[i][j] = randNum;
             }
         }
@@ -42,7 +42,7 @@ public:
 
     void setStart(std::string &input) {
         unsigned int x, y;
-        std::vector<std::string> vec = Utils::splitByChar(input, ',');
+        std::vector<std::string> vec = Utils::split(input, ',');
         x = (unsigned int) std::stoi(vec[0]);
         y = (unsigned int) std::stoi(vec[1]);
         start = Position(x, y);
@@ -50,7 +50,7 @@ public:
 
     void setGoal(std::string &input) {
         unsigned int x, y;
-        std::vector<std::string> vec = Utils::splitByChar(input, ',');
+        std::vector<std::string> vec = Utils::split(input, ',');
         x = (unsigned int) std::stoi(vec[0]);
         y = (unsigned int) std::stoi(vec[1]);
         goal = Position(x, y);
@@ -58,8 +58,8 @@ public:
 
     std::list<Position> getAllNodes() {
         std::list<Position> positions;
-        for (unsigned int i = 0; i < N - 1; ++i) {
-            for (unsigned int j = 0; j < N - 1; ++j) {
+        for (unsigned int i = 0; i < N ; ++i) {
+            for (unsigned int j = 0; j < N; ++j) {
                 positions.emplace_back(Position(i, j));
             }
         }
@@ -67,13 +67,11 @@ public:
     }
 
     State<Position> getInitialState() {
-        StateP state(Position(0, 0));
-        state.setCost(matrix[0][0]);
-        return state;
+        return State<Position>(start);
     }
 
     bool isGoalState(State<Position> state) {
-        return state == StateP(Position(N - 1, N - 1));
+        return state.getState() == goal;
     }
 
     std::vector<State<Position>> getAllPossibleStates(State<Position> state) {
@@ -83,9 +81,13 @@ public:
         auto j = state.getState().getJ();
         // all directions. note that not all are accessible
         StateP up(Position(i - 1, j));
+        up.getState().setManhattanDist(Position(N - 1, N - 1));
         StateP down(Position(i + 1, j));
+        down.getState().setManhattanDist(Position(N - 1, N - 1));
         StateP left(Position(i, j - 1));
+        left.getState().setManhattanDist(Position(N - 1, N - 1));
         StateP right(Position(i, j + 1));
+        right.getState().setManhattanDist(Position(N - 1, N - 1));
         /**
          * check if we can access each one
          * if we can, first update new price
@@ -142,14 +144,14 @@ public:
         while (tmp.getCameFrom() != nullptr) {
             Position myPosition = tmp.getState();
             Position fatherPosition = tmp.getCameFrom()->getState();
-            if (myPosition.aboveMe(fatherPosition))  vec.emplace_back("DOWN,");
+            if (myPosition.aboveMe(fatherPosition)) vec.emplace_back("DOWN,");
             else if (myPosition.belowMe(fatherPosition)) vec.emplace_back("UP,");
             else if (myPosition.leftToMe(fatherPosition)) vec.emplace_back("RIGHT,");
             else vec.emplace_back("LEFT,");
             tmp = *tmp.getCameFrom();
         }
         long i = vec.size() - 1;
-        while (i >= 0){
+        while (i >= 0) {
             path += vec[i];
             --i;
         }

@@ -9,7 +9,10 @@
 #include <map>
 #include "State.h"
 #include "Searcher.h"
-
+/**
+ * BFS algorithm
+ * @tparam T type
+ */
 template<class T>
 class BFS : public Searcher<T, std::string> {
     queue<State<T>> stateQueue;
@@ -29,7 +32,7 @@ public:
         bool goalReached = false;
         std::map<T, bool> visited;
         // initialize all nodes to not visited
-        for (auto type : searchable->getAllNodes()) visited[type] = false;
+        for (T type : searchable->getAllNodes()) visited[type] = false;
         // push initial state
         stateQueue.push(searchable->getInitialState());
         State<T> node;

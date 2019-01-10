@@ -4,12 +4,15 @@
 
 #ifndef SECONDYEARPROJECT_BIU_POSITION_H
 #define SECONDYEARPROJECT_BIU_POSITION_H
+
+#include "math.h"
 /**
  * simple Position class
  */
 class Position {
     unsigned int i;
     unsigned int j;
+    int manhattanDist;
 public:
     inline Position() : i(0), j(0) {}
 
@@ -30,6 +33,12 @@ public:
     inline bool rightToMe(const Position &other) const{ return other.j > this->j;}
 
     inline bool leftToMe(const Position &other) const{ return other.j < this->j;}
+
+    int setManhattanDist(const Position& target){
+        manhattanDist = abs((int)this->i - (int)target.i) + abs((int)this->j - (int)target.j);
+    }
+
+    inline int getManhattanDist(){ return manhattanDist;}
 
 };
 #endif //SECONDYEARPROJECT_BIU_POSITION_H
