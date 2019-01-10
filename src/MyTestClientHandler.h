@@ -12,29 +12,29 @@
 #include "StringReverser.h"
 #include "FileCacheManager.h"
 #include "genClient.h"
+
 /**
  * A type of Client Handler
  */
-class MyTestClientHandler : public genClient<std::string ,std::string> {
+class MyTestClientHandler : public genClient<std::string, std::string> {
 public:
-        void handleClient(std::istream &inputStream, std::ostream &outputStream) {
-            string line,answer;
-            getline(inputStream,line);
-            string sent(line);
-            while (sent != "end" ||!sent.empty()) {
-                if (this->cachemanager->containsSolution(&sent))
-                    this->cachemanager->getSolution(&sent);
-                else {
-                    answer = this->solver->solve(sent);
-                }
-                this->cachemanager->saveSolution(&sent, &answer);
-                std::getline(std::cin,sent);
-            }
+    void handleClient(std::istream &inputStream, std::ostream &outputStream) {
+        std::string line, answer;
+        getline(inputStream, line);
+        std::string sent(line);
+        while (sent != "end" || !sent.empty()) {
+            if (this->cachemanager->containsSolution(&sent))
+                this->cachemanager->getSolution(&sent);
+            else
+                answer = this->solver->solve(sent);
+            this->cachemanager->saveSolution(&sent, &answer);
+            std::getline(std::cin, sent);
         }
+    }
 
     MyTestClientHandler() {
         this->solver = new StringReverser();
-        this->cachemanager = new server_side::cache::FileCacheManager<string,string>();
+        this->cachemanager = new server_side::cache::FileCacheManager<std::string, std::string>();
     }
 };
 

@@ -19,7 +19,7 @@ namespace server_side {
         template <class Problem,class Solution>
         class FileCacheManager : public CacheManager<Problem,Solution> {
             std::fstream file;
-            unordered_map<Problem*,Solution*> problems;
+            std::unordered_map<Problem*,Solution*> problems;
         public:
             FileCacheManager() {};
             bool containsSolution(Problem *problem){
@@ -30,14 +30,13 @@ namespace server_side {
             }
 
             Solution* getSolution(Problem* problem){
-               return this->problems[problem];
+                return this->problems[problem];
             }
 
             void saveSolution(Problem* problem,Solution* solution){
-                    file.open(FILE,std::fstream::in | std::fstream::out | std::fstream::app);
-                    file <<solution << "\n";
-                    file.flush();
-                    this->problems[problem] = solution;
+                file.open(FILE,std::fstream::in | std::fstream::out | std::fstream::app);
+//                file <<solution.tostring();
+                this->problems[problem] = solution;
             }
         };
     }

@@ -4,6 +4,7 @@
 
 #ifndef SECONDYEARPROJECT_BIU_MYSERIALSERVER_H
 #define SECONDYEARPROJECT_BIU_MYSERIALSERVER_H
+
 #define PARAMETERS_SIZE 23
 #define BUFFER_SIZE 1024
 #include <stdio.h>
@@ -25,12 +26,13 @@ namespace server_side {
 /**
  * A type of Server, which take care of clients one by one
  */
- template <class Problem,class Solution>
-    class MySerialServer : public server_side::Server<Problem,Solution> {
+    template <class Problem,class Solution>
+    class MySerialServer : server_side::Server<Problem,Solution> {
         bool openCustumer = false;
         int portID;
     public:
-        MySerialServer<Problem,Solution>(){};
+        MySerialServer<Problem,Solution>(int port)
+        {this->portID = port;}
         /**
          * Opens the server and waits for clients
          * @param port
@@ -82,30 +84,30 @@ namespace server_side {
             tv.tv_sec = TIMEOUT_SECONDE;
             tv.tv_usec = TIMEOUT_MILISECONDE;
             while (this->active && select(this->sockfd + 1, &rfds, nullptr, nullptr, &tv)) {
-            /* Accept actual connection from the client */
-            // the massage.
-            newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *) &clilen);
+                /* Accept actual connection from the client */
+                // the massage.
+                newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *) &clilen);
                 if (newsockfd < 0)	{
                     if (errno == EWOULDBLOCK)	{
-                      cout << "timeout!" << endl;
+                        cout << "timeout!" << endl;
                         exit(2);
                     }	else	{
                         perror("other error");
                         exit(3);
                     }
                 }
-            openCustumer = true;
-            string output,input;
-            int start = leftovers.length() ? leftovers.length() - 1 : 0;
-            // set input
-            read(newsockfd, buffer + start, BUFFER_SIZE - start);
-            input = string(buffer);
-            // set output
+                openCustumer = true;
+                string output,input;
+                int start = leftovers.length() ? leftovers.length() - 1 : 0;
+                // set input
+                read(newsockfd, buffer + start, BUFFER_SIZE - start);
+                input = string(buffer);
+                // set output
 //            output = write(this->portID,"1",1);
-//            istringstream realInput(input);
-//            stringstream output1(output);
-     clientHandler->handleClient(cin,cout);
-                }
+                istringstream realInput(input);
+                stringstream output1(output);
+//     clientHandler->handleClient(realInput,output1);
+            }
         }
         void start(int port,ClientHandler* clientHandler) {
             portID = port;
@@ -120,5 +122,6 @@ namespace server_side {
         }
     };
 }
+
 
 #endif //SECONDYEARPROJECT_BIU_MYSERIALSERVER_H
