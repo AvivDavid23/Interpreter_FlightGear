@@ -33,7 +33,7 @@ public:
         std::set<T> visited;
         // push initial state
         stateQueue.push(searchable->getInitialState());
-        visited.insert(searchable->getInitialState().getState());
+        visited.emplace(searchable->getInitialState().getState());
         State<T> node;
         while (openListSize() > 0) {
             node = popOpenList();
@@ -43,7 +43,7 @@ public:
             // push all unvisited neighbors
             for (auto neighbor : searchable->getAllPossibleStates(node)) {
                 if (std::find(visited.begin(), visited.end(), neighbor.getState()) == visited.end()) {
-                    visited.insert(neighbor.getState());
+                    visited.emplace(neighbor.getState());
                     stateQueue.push(neighbor);
                 }
             }

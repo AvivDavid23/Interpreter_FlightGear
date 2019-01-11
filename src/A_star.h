@@ -42,7 +42,7 @@ public:
         while (openListSize() > 0) {
             // pop the min of all odes
             State<T> n = popOpenList();
-            closed.insert(n);
+            closed.emplace(n);
             // goal state -> finish
             if (searchable->isGoalState(n)) {
                 return searchable->backtrace(n);
