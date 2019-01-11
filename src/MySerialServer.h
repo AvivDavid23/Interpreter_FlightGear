@@ -27,18 +27,19 @@ namespace server_side {
  * A type of Server, which take care of clients one by one
  */
     template <class Problem,class Solution>
-    class MySerialServer : server_side::Server<Problem,Solution> {
+    class MySerialServer : public server_side::Server<Problem,Solution> {
         bool openCustumer = false;
         int portID;
+        int sockfd;
     public:
-        MySerialServer<Problem,Solution>(int port)
-        {this->portID = port;}
+        MySerialServer<Problem,Solution>()
+        {}
         /**
          * Opens the server and waits for clients
          * @param port
          */
-        void open(int port, ClientHandler* clientHandler){
-            int sockfd, newsockfd, clilen;
+        void open(int port, ClientHandler* clientHandler) {
+            int newsockfd, clilen;
             char buffer[BUFFER_SIZE];
             std::string values;
             std::string leftovers;
@@ -66,15 +67,16 @@ namespace server_side {
                 exit(1);
             }
 
-            /* Now start listening for the clients, here process will
-               * go in sleep mode and will wait for the incoming connection
-            */
-            /* Now start listening for the clients, here process will
-             * go in sleep mode and will wait for the incoming connection
-          */
-
             // only one can conncet.
             listen(sockfd, 1);
+            thread t(&MySerialServer::start, this, port, clientHandler);
+            t.join();
+            //
+
+        }
+        void start(int port,ClientHandler* clientHandler) {
+            struct sockaddr_in cli_addr;
+            int newsockfd,clilen;
             clilen = sizeof(cli_addr);
             fd_set rfds;
             struct timeval tv;
@@ -83,36 +85,28 @@ namespace server_side {
             //set a timeout timer
             tv.tv_sec = TIMEOUT_SECONDE;
             tv.tv_usec = TIMEOUT_MILISECONDE;
-            while (this->active && select(this->sockfd + 1, &rfds, nullptr, nullptr, &tv)) {
-                /* Accept actual connection from the client */
-                // the massage.
+            openCustumer = true;
+            setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (char *) &tv, sizeof(tv));
+            openCustumer = true;
+            /* Accept actual connection from the client */
+            // the massage.
+            while(openCustumer) {
                 newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *) &clilen);
-                if (newsockfd < 0)	{
-                    if (errno == EWOULDBLOCK)	{
+                string output, input;
+                if (newsockfd < 0) {
+                    if (errno == EWOULDBLOCK) {
                         cout << "timeout!" << endl;
-                        exit(2);
-                    }	else	{
+                        stopPro();
+                        break;
+                    } else {
                         perror("other error");
-                        exit(3);
+                        stopPro();
+                        break;
                     }
                 }
-                openCustumer = true;
-                string output,input;
-                int start = leftovers.length() ? leftovers.length() - 1 : 0;
-                // set input
-                read(newsockfd, buffer + start, BUFFER_SIZE - start);
-                input = string(buffer);
-                // set output
-//            output = write(this->portID,"1",1);
-                istringstream realInput(input);
-                stringstream output1(output);
-//     clientHandler->handleClient(realInput,output1);
+                clientHandler->handleClient(newsockfd);
             }
-        }
-        void start(int port,ClientHandler* clientHandler) {
-            portID = port;
-            thread t(&MySerialServer::open, this, port, clientHandler);
-        }
+            }
         /**
          * Close the server
          */

@@ -18,7 +18,7 @@ namespace server_side {
          * @param clientHandler
          */
         virtual void open(int port, ClientHandler* clientHandler) = 0;
-
+        virtual void start(int port,ClientHandler* clientHandler) = 0;
         /**
          * Close the server
          */

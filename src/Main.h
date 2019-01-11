@@ -18,7 +18,6 @@ namespace boot{
             ClientHandler *clientHandler = new MyTestClientHandler();
             server =  new server_side::MySerialServer<string,string>();
             server->open(atoi(argv[1]),clientHandler);
-                clientHandler->handleClient(cin,cout);
         }
         };
 }

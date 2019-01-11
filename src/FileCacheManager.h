@@ -7,10 +7,10 @@
 
 #include "CacheManager.h"
 #include <fstream>
-#include "algorithm"
+#include "vector"
 #include <unordered_map>
-#define FILE "saveSolution.txt"
-
+#define FILEAS "saveSolution.txt"
+#define FILEQ "saveQuestion.txt"
 /**
  * A cache manager that save solutions in a file
  */
@@ -18,26 +18,61 @@ namespace server_side {
     namespace cache {
         template <class Problem,class Solution>
         class FileCacheManager : public CacheManager<Problem,Solution> {
-            std::fstream file;
-            std::unordered_map<Problem*,Solution*> problems;
+            std::ofstream file1;
+            std::ifstream read;
+            std::unordered_map<Problem,Solution> probAndSol;
         public:
             FileCacheManager() {};
-            bool containsSolution(Problem *problem){
-                auto got = problems.find (problem);
-                return !(got ==problems.end());
+            bool containsSolution(Problem problem){
+                auto got = probAndSol.find (problem);
+                return !(got ==probAndSol.end());
 
 
             }
 
-            Solution* getSolution(Problem* problem){
-                return this->problems[problem];
+            Solution getSolution(Problem problem){
+                return this->probAndSol[problem];
             }
 
-            void saveSolution(Problem* problem,Solution* solution){
-                file.open(FILE,std::fstream::in | std::fstream::out | std::fstream::app);
-//                file <<solution.tostring();
-                this->problems[problem] = solution;
+            void writeToFiles() {
+                if(!file1.is_open()) file1.open(FILEQ);
+                for ( auto it = probAndSol.begin(); it != probAndSol.end(); ++it ) {
+                    Problem problem = it-> first;
+                    file1 << problem;
+                }
+                file1.close();
+                file1.open(FILEAS);
+                for ( auto it = probAndSol.begin(); it != probAndSol.end(); ++it ) {
+                    Solution solution = it ->second;
+                    file1 << solution;
+                }
+                file1.close();
             }
+            void saveSolution(Problem problem,Solution solution){
+                this->probAndSol[problem] = solution;
+            }
+
+            void RefreshMap(factory::Factory<Problem,Solution> *factory1) {
+                if(!read.is_open()) read.open(FILEAS);
+                vector<Solution> solutions;
+                vector <Problem>problems;
+                string line;
+                while(read >> line) {
+                    solutions.push_back(factory1->CreateSolution(line));
+                }
+                read.close();
+                read.open(FILEQ);
+                while(read >> line) {
+                    problems.push_back(factory1->CreateProblem(line));
+                }
+                read.close();
+                auto it2 = solutions.begin();
+                for (auto const &problem:problems) {
+                    this->probAndSol[problem] = *it2;
+                    it2++;
+                }
+            }
+
         };
     }
 }

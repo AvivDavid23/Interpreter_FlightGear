@@ -8,11 +8,14 @@
 #include "ClientHandler.h"
 #include "Solver.h"
 #include "CacheManager.h"
+#include "Factory.h"
+
 template <class Problem,class Solution>
 class genClient :  public ClientHandler {
 protected:
     server_side::Solver<Problem, Solution> *solver;
     server_side::cache::CacheManager <Problem,Solution> *cachemanager;
+    factory::Factory<Problem,Solution> * createObjects;
 };
 
 

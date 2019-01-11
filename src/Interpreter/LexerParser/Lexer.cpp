@@ -28,7 +28,7 @@ vector<string> Lexer::fromStringToExp(vector<string> commands) {
     vector<string> words;
     bool check;
     string s;
-    // goes all the lines in the file.
+    // goes all the lines in the file1.
     for (auto const item:commands) {
         // if there is a '=' in the line.
         if (item.find('=') != std::string::npos) {

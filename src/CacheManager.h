@@ -9,7 +9,7 @@
  * an Interface, which can save and load solutions to problems we already solved(on disk, database, etc...)
  */
 #include <map>
-
+#include "Factory.h"
 namespace server_side {
     namespace cache {
         template <class Problem,class Solution>
@@ -19,19 +19,21 @@ namespace server_side {
              * @param problem
              * @return true if the cache manager has a solution to the problem, else false
              */
-            virtual bool containsSolution(Problem* problem) = 0;
+            virtual bool containsSolution(Problem problem) = 0;
 
             /**
              * @param problem
              * @return solution the the problem
              */
-            virtual Solution* getSolution(Problem* problem1) = 0;
+            virtual Solution getSolution(Problem problem1) = 0;
 
             /**
              * Save solution the problem
              * @param problem
              */
-            virtual void saveSolution(Problem* problem,Solution* solution) = 0;
+            virtual void saveSolution(Problem problem,Solution solution) = 0;
+            virtual void RefreshMap(factory::Factory<Solution,Problem> *factory1) = 0;
+            virtual void writeToFiles() = 0;
         };
     }
 }
