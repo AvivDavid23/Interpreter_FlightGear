@@ -27,7 +27,7 @@ public:
     }
 
     ~State() {
-        //if (cameFrom != nullptr) delete cameFrom;
+        //delete cameFrom;
     }
 
     void setCost(double cost) {

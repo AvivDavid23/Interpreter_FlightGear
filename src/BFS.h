@@ -30,9 +30,7 @@ public:
 
     std::string search(ISearchable<T, std::string> *searchable) {
         bool goalReached = false;
-        std::map<T, bool> visited;
-        // initialize all nodes to not visited
-        for (T type : searchable->getAllNodes()) visited[type] = false;
+        std::set<T> visited;
         // push initial state
         stateQueue.push(searchable->getInitialState());
         State<T> node;
@@ -42,10 +40,12 @@ public:
             goalReached = searchable->isGoalState(node);
             if (goalReached) break;
             // if not visited, mark visited
-            if (!visited[node.getState()]) visited[node.getState()] = true;
+            if (std::find(visited.begin(), visited.end(), node.getState()) == visited.end())
+                visited.insert(node.getState());
             // push all unvisited neighbors
             for (auto neighbor : searchable->getAllPossibleStates(node)) {
-                if (!visited[neighbor.getState()]) stateQueue.push(neighbor);
+                if (std::find(visited.begin(), visited.end(), neighbor.getState()) == visited.end())
+                    stateQueue.push(neighbor);
             }
         }
         if (goalReached) {
