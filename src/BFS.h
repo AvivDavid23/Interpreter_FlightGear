@@ -33,19 +33,19 @@ public:
         std::set<T> visited;
         // push initial state
         stateQueue.push(searchable->getInitialState());
+        visited.insert(searchable->getInitialState().getState());
         State<T> node;
         while (openListSize() > 0) {
             node = popOpenList();
             // if node is goal, we will break
             goalReached = searchable->isGoalState(node);
             if (goalReached) break;
-            // if not visited, mark visited
-            if (std::find(visited.begin(), visited.end(), node.getState()) == visited.end())
-                visited.insert(node.getState());
             // push all unvisited neighbors
             for (auto neighbor : searchable->getAllPossibleStates(node)) {
-                if (std::find(visited.begin(), visited.end(), neighbor.getState()) == visited.end())
+                if (std::find(visited.begin(), visited.end(), neighbor.getState()) == visited.end()) {
+                    visited.insert(neighbor.getState());
                     stateQueue.push(neighbor);
+                }
             }
         }
         if (goalReached) {
