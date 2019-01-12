@@ -13,7 +13,10 @@
 #include "set"
 #include "BestFirstSearch.h"
 
-
+/**
+ * DFS algorithm
+ * @tparam T type
+ */
 template<class T>
 class DFS : public Searcher<T, std::string> {
     stack<State<T>> stateStack;
@@ -29,32 +32,30 @@ public:
         return state;
     }
 
-    std::string search(ISearchable<T> *searchable) {
+    std::string search(ISearchable<T, std::string> *searchable) {
         bool goalReached = false;
-        std::map<T, bool> visited;
-        // initialize all nodes to not visited
-        for (auto type : searchable->getAllNodes()) visited[type] = false;
+        std::set<T> visited;
         // push initial state
         stateStack.push(searchable->getInitialState());
+        visited.emplace(searchable->getInitialState().getState());
         State<T> node;
         while (openListSize() > 0) {
             node = popOpenList();
             // if node is goal, we will break
             goalReached = searchable->isGoalState(node);
             if (goalReached) break;
-            // if not visited, mark visited
-            if (!visited[node.getState()]) visited[node.getState()] = true;
             // push all unvisited neighbors
             for (auto neighbor : searchable->getAllPossibleStates(node)) {
-                if (!visited[neighbor.getState()]) stateStack.push(neighbor);
+                if (std::find(visited.begin(), visited.end(), neighbor.getState()) == visited.end()) {
+                    visited.emplace(neighbor.getState());
+                    stateStack.push(neighbor);
+                }
             }
         }
         if (goalReached) {
-            // TODO : backtrace
-            exit(1);
+            return searchable->backtrace(node);
         } else {
-            // TODO : NO SOLUTION
-            exit(1);
+            return "No Solution! \n";
         }
 
     }
