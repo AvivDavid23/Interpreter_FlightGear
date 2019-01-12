@@ -72,6 +72,10 @@ public:
     double getCost() const {
         return cost;
     }
+
+    void setManDist(const T&goal){
+        state.setManhattanDist(goal);
+    }
 };
 
 

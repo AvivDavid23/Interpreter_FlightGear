@@ -45,6 +45,7 @@ public:
             closed.emplace(n);
             // goal state -> finish
             if (searchable->isGoalState(n)) {
+                cout << "PRICE: " + to_string(n.getCost()) << '\n';
                 return searchable->backtrace(n);
             }
             // all the nodes we can visit from n

@@ -81,13 +81,13 @@ public:
         auto j = state.getState().getJ();
         // all directions. note that not all are accessible
         StateP up(Position(i - 1, j));
-        up.getState().setManhattanDist(goal);
+        up.setManDist(goal);
         StateP down(Position(i + 1, j));
-        down.getState().setManhattanDist(goal);
+        down.setManDist(goal);
         StateP left(Position(i, j - 1));
-        left.getState().setManhattanDist(goal);
+        left.setManDist(goal);
         StateP right(Position(i, j + 1));
-        right.getState().setManhattanDist(goal);
+        right.setManDist(goal);
         /**
          * check if we can access each one
          * if we can, first update new price
