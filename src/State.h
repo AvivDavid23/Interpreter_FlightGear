@@ -6,7 +6,6 @@
 #define SECONDYEARPROJECT_BIU_STATE_H
 
 
-
 template<class T>
 class State {
     T state;
@@ -17,18 +16,25 @@ public:
 
     State(T state) : state(state) {}
 
-    State(const State<T>& other){
+    State(const State<T> &other) {
         state = other.state;
         cost = other.cost;
-        if (other.cameFrom != nullptr){
+        if (other.cameFrom != nullptr) {
             cameFrom = new State<T>();
             *cameFrom = *other.cameFrom;
         }
     }
 
-    ~State() {
-        //delete cameFrom;
-    }
+    /*~State() {
+        State<T> *current = this;
+        State<T> *next = current;
+        current = current->getCameFrom();
+        if (next->cameFrom)
+            free (next->cameFrom);
+        if (current != nullptr)
+            delete current;
+    }*/
+
 
     void setCost(double cost) {
         this->cost = cost;

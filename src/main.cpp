@@ -5,10 +5,10 @@
 #include "BFS.h"
 #include "A_star.h"
 int main(int argc, char **argv) {
-    MatrixMaze<30> matrixMaze;
+    MatrixMaze<3,5> matrixMaze;
     string start = "0,0";
     matrixMaze.setStart(start);
-    string end = "29,29";
+    string end = "2,3";
     matrixMaze.setGoal(end);
     cout << matrixMaze.to_string();
     DFS<Position> dfs;
@@ -19,9 +19,9 @@ int main(int argc, char **argv) {
     cout << "A_star evaluated: " + to_string(a_star.getEvaluatedNodes()) + "\n\n";
     cout <<  bestFirstSearch.search(&matrixMaze) + '\n';
     cout << "BestFirstSearch evaluated: " + to_string(bestFirstSearch.getEvaluatedNodes()) + "\n\n";
-    cout <<  bfs.search(&matrixMaze) + '\n';
-    cout << "BFS evaluated: " + to_string(bfs.getEvaluatedNodes())+ "\n\n";
-    cout <<  dfs.search(&matrixMaze) + '\n';
-    cout << "DFS evaluated: " + to_string(dfs.getEvaluatedNodes()) + "\n\n";
+    /*cout <<  bfs.search(&matrixMaze) + '\n';
+    cout << "BFS evaluated: " + to_string(bfs.getEvaluatedNodes())+ "\n\n";*/
+    /*cout <<  dfs.search(&matrixMaze) + '\n';
+    cout << "DFS evaluated: " + to_string(dfs.getEvaluatedNodes()) + "\n\n";*/
     return 0;
 }

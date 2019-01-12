@@ -18,23 +18,23 @@
 /**
  * Searchable that uses a NxN matrix, and each State is a Position in the matrix
  */
-template<unsigned int N>
+template<unsigned int N, unsigned int M>
 class MatrixMaze : public ISearchable<Position, std::string> {
     using StateP = State<Position>;
 private:
-    int matrix[N][N];
+    int matrix[N][M];
     Position start;
     Position goal;
 public:
     // TODO: After benchmarks, change constructor to deal with user input and create matrix
     MatrixMaze() {
         for (int i = 0; i < N; ++i) {
-            for (int j = 0; j < N; ++j) {
+            for (int j = 0; j < M; ++j) {
                 std::mt19937 rng;
                 rng.seed(std::random_device()());
                 std::uniform_int_distribution<std::mt19937::result_type> dist6(0, 11);
                 auto randNum = (int) dist6(rng);
-                if (randNum == 11 && (i != 0 && j != 0) && (i != N - 1 && j != N - 1)) randNum = -1;
+                if (randNum == 11 && (i != 0 && j != 0) && (i != N - 1 && j != M - 1)) randNum = -1;
                 matrix[i][j] = randNum;
             }
         }
@@ -59,7 +59,7 @@ public:
     std::list<Position> getAllNodes() {
         std::list<Position> positions;
         for (unsigned int i = 0; i < N ; ++i) {
-            for (unsigned int j = 0; j < N; ++j) {
+            for (unsigned int j = 0; j < M; ++j) {
                 positions.emplace_back(Position(i, j));
             }
         }
@@ -81,13 +81,13 @@ public:
         auto j = state.getState().getJ();
         // all directions. note that not all are accessible
         StateP up(Position(i - 1, j));
-        up.getState().setManhattanDist(Position(N - 1, N - 1));
+        up.getState().setManhattanDist(goal);
         StateP down(Position(i + 1, j));
-        down.getState().setManhattanDist(Position(N - 1, N - 1));
+        down.getState().setManhattanDist(goal);
         StateP left(Position(i, j - 1));
-        left.getState().setManhattanDist(Position(N - 1, N - 1));
+        left.getState().setManhattanDist(goal);
         StateP right(Position(i, j + 1));
-        right.getState().setManhattanDist(Position(N - 1, N - 1));
+        right.getState().setManhattanDist(goal);
         /**
          * check if we can access each one
          * if we can, first update new price
@@ -100,7 +100,7 @@ public:
                 statesVec.emplace_back(left);
             }
         }
-        if (j != N - 1) {
+        if (j != M - 1) {
             right.setCost(fatherCost + matrix[i][j + 1]);
             if (matrix[i][j + 1] != -1 && *state.getCameFrom() != right) {
                 right.setCameFrom(&state);
@@ -127,10 +127,10 @@ public:
     std::string to_string() {
         std::string output;
         for (int i = 0; i < N; ++i) {
-            for (int j = 0; j < N; ++j) {
+            for (int j = 0; j < M; ++j) {
                 if (matrix[i][j] < 10 && matrix[i][j] > -1) output += ' ';
                 output += std::to_string(matrix[i][j]);
-                if (j < N - 1) output += ',';
+                if (j < M - 1) output += ',';
             }
             output += '\n';
         }
