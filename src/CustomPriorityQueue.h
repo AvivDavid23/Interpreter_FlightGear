@@ -39,13 +39,6 @@ public:
         auto it = std::find(this->c.begin(), this->c.end(), value);
         return it != this->c.end();
     }
-
-/**
- * make heap
- */
-    inline void heapify() {
-        std::make_heap(this->c.begin(), this->c.end(), this->comp);
-    }
 };
 
 #endif //SECONDYEARPROJECT_BIU_CUSTOM_PRIORITY_QUEUE_H

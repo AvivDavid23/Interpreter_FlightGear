@@ -60,7 +60,6 @@ public:
                 // add to out queue
                 if (!inOpen && !inClosed) {
                     priorityQueue.push(item);
-                    this->priorityQueue.heapify();
                 } else {
                     // if item in close, skip
                     if (inClosed) continue;
@@ -72,7 +71,6 @@ public:
                     }
                     // reenter temp to queue
                     priorityQueue.push(tmp);
-                    this->priorityQueue.heapify();
 
                 }
             }
