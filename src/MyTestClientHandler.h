@@ -35,21 +35,27 @@ public:
             std::getline(std::cin, sent);
             */
         std::string solution,problem;
+        std:: vector<string> matrix;
         char buf[1024];
         int n = 0;
         while ((n = read(newsockfd, buf, 1024) > 0)) {
             solution = buf;
             problem = buf;
             if(solution.substr(0,3) == "end" || solution.empty()) {
-                this->cachemanager->writeToFiles();
+                solution = solver->solve(matrix);
+                this->cachemanager->saveData();
                 break;
             }
-            if(this->cachemanager->containsSolution(solution))
+             // for part 2
+            /* if(this->cachemanager->containsSolution(solution))
                 solution = this->cachemanager->getSolution(solution);
             else
             solution  = solver->solve(solution);
             this->cachemanager->saveSolution(problem,solution);
              send(newsockfd,solution.c_str(), solution.length(),0);
+             */
+            else
+                matrix.push_back(problem);
         }
     }
 

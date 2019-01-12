@@ -34,7 +34,7 @@ namespace server_side {
                 return this->probAndSol[problem];
             }
 
-            void writeToFiles() {
+            void saveData() {
                 if(!file1.is_open()) file1.open(FILEQ);
                 for ( auto it = probAndSol.begin(); it != probAndSol.end(); ++it ) {
                     Problem problem = it-> first;

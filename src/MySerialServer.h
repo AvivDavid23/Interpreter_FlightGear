@@ -85,7 +85,6 @@ namespace server_side {
             //set a timeout timer
             tv.tv_sec = TIMEOUT_SECONDE;
             tv.tv_usec = TIMEOUT_MILISECONDE;
-            openCustumer = true;
             setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (char *) &tv, sizeof(tv));
             openCustumer = true;
             /* Accept actual connection from the client */

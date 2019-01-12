@@ -6,6 +6,7 @@
 #define SECONDYEARPROJECT_BIU_STATE_H
 
 
+#include <iostream>
 
 template<class T>
 class State {
@@ -27,7 +28,8 @@ public:
     }
 
     ~State() {
-        //if (cameFrom != nullptr) delete cameFrom;
+        std::cout << "delete node" <<std::endl;
+        delete cameFrom;
     }
 
     void setCost(double cost) {
