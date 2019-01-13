@@ -18,26 +18,31 @@
 /**
  * Searchable that uses a NxN matrix, and each State is a Position in the matrix
  */
-template<unsigned int N, unsigned int M>
 class MatrixMaze : public ISearchable<Position, std::string> {
     using StateP = State<Position>;
 private:
-    int matrix[N][M];
+    std::vector<std::vector<int>> matrix;
+    int N;
+    int M;
     Position start;
     Position goal;
 public:
     // TODO: After benchmarks, change constructor to deal with user input and create matrix
-    MatrixMaze() {
-        for (int i = 0; i < N; ++i) {
-            for (int j = 0; j < M; ++j) {
+    MatrixMaze(unsigned int n, unsigned int m) {
+        for (int i = 0; i < n; ++i) {
+            std::vector<int> inner;
+            for (int j = 0; j < m; ++j) {
                 std::mt19937 rng;
                 rng.seed(std::random_device()());
                 std::uniform_int_distribution<std::mt19937::result_type> dist6(0, 11);
                 auto randNum = (int) dist6(rng);
                 if (randNum == 11 && (i != 0 && j != 0) && (i != N - 1 && j != M - 1)) randNum = -1;
-                matrix[i][j] = randNum;
+                inner.push_back(randNum);
             }
+            matrix.push_back(inner);
         }
+        N = n;
+        M = m;
     }
 
     void setStart(std::string &input) {
@@ -58,7 +63,7 @@ public:
 
     std::list<Position> getAllNodes() {
         std::list<Position> positions;
-        for (unsigned int i = 0; i < N ; ++i) {
+        for (unsigned int i = 0; i < N; ++i) {
             for (unsigned int j = 0; j < M; ++j) {
                 positions.emplace_back(Position(i, j));
             }
@@ -67,7 +72,9 @@ public:
     }
 
     State<Position> getInitialState() {
-        return State<Position>(start);
+        State<Position> p(start);
+        p.setCost(matrix[start.getI()][start.getJ()]);
+        return p;
     }
 
     bool isGoalState(State<Position> state) {
