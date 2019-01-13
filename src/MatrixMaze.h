@@ -151,10 +151,10 @@ public:
         while (tmp.getCameFrom() != nullptr) {
             Position myPosition = tmp.getState();
             Position fatherPosition = tmp.getCameFrom()->getState();
-            if (myPosition.aboveMe(fatherPosition)) vec.emplace_back("DOWN,");
-            else if (myPosition.belowMe(fatherPosition)) vec.emplace_back("UP,");
-            else if (myPosition.leftToMe(fatherPosition)) vec.emplace_back("RIGHT,");
-            else vec.emplace_back("LEFT,");
+            if (myPosition.aboveMe(fatherPosition)) vec.emplace_back("Down,");
+            else if (myPosition.belowMe(fatherPosition)) vec.emplace_back("Up,");
+            else if (myPosition.leftToMe(fatherPosition)) vec.emplace_back("Right,");
+            else vec.emplace_back("Left,");
             tmp = *tmp.getCameFrom();
         }
         long i = vec.size() - 1;
@@ -169,7 +169,23 @@ public:
     }
 
     MatrixMaze(std::vector<std::string> vector) {
-
+        int length = (int)vector.size();
+        N = length - 2;
+        M = (int)std::count(vector[0].begin(), vector[0].end(), ',') + 1;
+        for (int i = 0; i < N; ++i) {
+            std::vector<int> inner;
+            std::string withoutNewLine = vector[i].substr(0, vector[i].length() - 1);
+            std::vector<std::string> tmp = Utils::split(withoutNewLine, ',');
+            for (int j = 0; j < M; ++j) {
+                inner.push_back(stoi(tmp[j]));
+            }
+            matrix.push_back(inner);
+            inner.clear();
+        }
+        vector[length - 2] = vector[length - 2].substr(0, vector[length - 2].length() - 1);
+        vector[length - 1] = vector[length - 1].substr(0, vector[length - 1].length() - 1);
+        setStart(vector[length - 2]);
+        setGoal(vector[length - 1]);
     }
 };
 
