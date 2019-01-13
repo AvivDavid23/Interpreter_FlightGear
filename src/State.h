@@ -73,7 +73,7 @@ public:
         return cost;
     }
 
-    void setManDist(const T&goal){
+    void setManDist(const T &goal) {
         state.setManhattanDist(goal);
     }
 };

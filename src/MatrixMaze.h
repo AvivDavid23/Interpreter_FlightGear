@@ -29,9 +29,11 @@ private:
 public:
     // TODO: After benchmarks, change constructor to deal with user input and create matrix
     MatrixMaze(unsigned int n, unsigned int m) {
-        for (int i = 0; i < n; ++i) {
+        N = n;
+        M = m;
+        for (int i = 0; i < N; ++i) {
             std::vector<int> inner;
-            for (int j = 0; j < m; ++j) {
+            for (int j = 0; j < M; ++j) {
                 std::mt19937 rng;
                 rng.seed(std::random_device()());
                 std::uniform_int_distribution<std::mt19937::result_type> dist6(0, 11);
@@ -41,8 +43,6 @@ public:
             }
             matrix.push_back(inner);
         }
-        N = n;
-        M = m;
     }
 
     void setStart(std::string &input) {
