@@ -49,8 +49,10 @@ public:
             }
         }
         if (goalReached) {
+            searchable->clear();
             return searchable->backtrace(node);
         } else {
+            searchable->clear();
             return "No Solution! \n";
         }
 

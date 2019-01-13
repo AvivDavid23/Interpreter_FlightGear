@@ -22,6 +22,7 @@ class MatrixMaze : public ISearchable<Position, std::string> {
     using StateP = State<Position>;
 private:
     std::vector<std::vector<int>> matrix;
+    std::vector<std::vector<int>> originalValues;
     int N;
     int M;
     double shortestPathCost = -1;
@@ -37,13 +38,14 @@ public:
             for (int j = 0; j < M; ++j) {
                 std::mt19937 rng;
                 rng.seed(std::random_device()());
-                std::uniform_int_distribution<std::mt19937::result_type> dist6(0, 11);
+                std::uniform_int_distribution<std::mt19937::result_type> dist6(1, 11);
                 auto randNum = (int) dist6(rng);
                 if (randNum == 11 && (i != 0 && j != 0) && (i != N - 1 && j != M - 1)) randNum = -1;
                 inner.push_back(randNum);
             }
             matrix.push_back(inner);
         }
+        originalValues = matrix;
     }
 
     void setStart(std::string &input) {
@@ -170,7 +172,11 @@ public:
 
     }
 
-    double getShortestPathCost(){ return shortestPathCost;}
+    int getShortestPathCost(){ return (int)shortestPathCost;}
+
+    void markClosed(Position closed){matrix[closed.getI()][closed.getJ()] = -1;}
+
+    void clear(){matrix = originalValues;}
 };
 
 

@@ -52,6 +52,7 @@ public:
                 }
             }
         }
+        searchable->clear();
         if (goalReached) {
             return searchable->backtrace(node);
         } else {

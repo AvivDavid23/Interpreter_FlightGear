@@ -42,15 +42,18 @@ public:
         while (openListSize() > 0) {
             // pop the min of all odes
             State<T> n = popOpenList();
+            searchable->markClosed(n.getState());
             closed.emplace(n);
             // goal state -> finish
             if (searchable->isGoalState(n)) {
+                searchable->clear();
                 return searchable->backtrace(n);
             }
             // all the nodes we can visit from n
             std::vector<State<T>> neighbors = searchable->getAllPossibleStates(n);
             // no solution
             if (neighbors.empty() && this->priorityQueue.empty()) {
+                searchable->clear();
                 return "No Solution! \n";
             }
             for (State<T> &item : neighbors) {

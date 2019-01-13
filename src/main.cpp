@@ -5,10 +5,10 @@
 #include "BFS.h"
 #include "A_star.h"
 int main(int argc, char **argv) {
-    MatrixMaze matrixMaze(15,15);
+    MatrixMaze matrixMaze(50,50);
     string start = "0,0";
     matrixMaze.setStart(start);
-    string end = "14,14";
+    string end = "49,49";
     matrixMaze.setGoal(end);
     cout << matrixMaze.to_string();
     DFS<Position> dfs;
