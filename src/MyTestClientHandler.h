@@ -41,16 +41,13 @@ public:
             */
         std::string solution,problem;
         std:: vector<string> matrix;
-        unsigned int getRow ,getCow ;
         char buf[1024];
         int n = 0;
         while ((n = read(newsockfd, buf, 1024) > 0)) {
             solution = buf;
             problem = buf;
             if(solution.substr(0,3) == "end" || solution.empty()) {
-                getRow = (unsigned int )matrix.size() - 2 ;
-                getCow = (unsigned int )std::count(matrix[0].begin(),matrix[0].end(), ',');
-                MatrixMaze matrixMaze(getRow,getCow);
+                MatrixMaze matrixMaze(matrix);
                 // if there is a solution.
                 if(this->cachemanager->containsSolution(matrixMaze))
                     solution = this->cachemanager->getSolution(matrixMaze);

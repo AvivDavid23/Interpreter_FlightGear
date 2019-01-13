@@ -167,6 +167,10 @@ public:
         return path;
 
     }
+
+    MatrixMaze(std::vector<std::string> vector) {
+
+    }
 };
 
 

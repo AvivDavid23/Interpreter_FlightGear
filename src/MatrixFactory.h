@@ -11,8 +11,7 @@ namespace factory {
 class MatrixFactory : public factory::Factory<MatrixMaze,std::string>{
 public:
     MatrixMaze CreateProblem(std::vector<std::string> lines) {
-        unsigned int getCow = (unsigned int )std::count(lines[0].begin(),lines[0].end(), ',');
-        MatrixMaze matrixMaze((unsigned)lines.size()-2,getCow);
+        MatrixMaze matrixMaze(lines);
         return matrixMaze;
     }
     std::string CreateSolution(std::vector<std::string> lines) {
