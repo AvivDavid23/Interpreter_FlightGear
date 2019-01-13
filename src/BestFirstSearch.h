@@ -18,15 +18,15 @@
  */
 template<class T>
 class BestFirstSearch : public Searcher<T, std::string> {
-    CustomPriorityQueue<State<T>, stateComparator<T>> priorityQueue;
+    CustomPriorityQueue<State<T>*, stateComparator<T>> priorityQueue;
 public:
     inline BestFirstSearch() {}
 
     int openListSize() { return (int) this->priorityQueue.size(); }
 
-    State<T> popOpenList() {
+    State<T>* popOpenList() {
         ++this->nodesEvaluated;
-        State<T> state = priorityQueue.top();
+        State<T>* state = priorityQueue.top();
         priorityQueue.pop();
         return state;
     }
@@ -35,23 +35,23 @@ public:
         // initialize queue with first state
         priorityQueue.push(searchable->getInitialState());
         // set for nodes that we finished to deal with
-        std::set<State<T>> closed;
+        std::set<State<T>*> closed;
         // while we have untreated nodes
         while (openListSize() > 0) {
             // pop the min of all odes
-            State<T> n = popOpenList();
+            State<T>* n = popOpenList();
             closed.emplace(n);
             // goal state -> finish
             if (searchable->isGoalState(n)) {
                 return searchable->backtrace(n);
             }
             // all the nodes we can visit from n
-            std::vector<State<T>> neighbors = searchable->getAllPossibleStates(n);
+            std::vector<State<T>*> neighbors = searchable->getAllPossibleStates(n);
             // no solution
             if (neighbors.empty() && this->priorityQueue.empty()) {
                 return "No Solution! \n";
             }
-            for (State<T> &item : neighbors) {
+            for (State<T> *item : neighbors) {
                 bool inOpen = priorityQueue.atQueue(item);
                 bool inClosed = std::find(closed.begin(), closed.end(), item) != closed.end();
                 // add to out queue
@@ -60,11 +60,11 @@ public:
                 } else {
                     // if item in close, skip
                     if (inClosed) continue;
-                    State<T> tmp = priorityQueue.remove(item);
+                    State<T>* tmp = priorityQueue.remove(item);
                     // if item is better, means better path, update tmp
                     if (item < tmp) {
-                        tmp.setCameFrom(item.getCameFrom());
-                        tmp.setCost(item.getCost());
+                        tmp->setCameFrom(item->getCameFrom());
+                        tmp->setCost(item->getCost());
                     }
                     // reenter temp to queue
                     priorityQueue.push(tmp);

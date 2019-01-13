@@ -16,9 +16,9 @@
 template <class T>
 struct stateComparator{
 public:
-    bool operator() (const State<T>& a, const State<T>& b)
+    bool operator() (const State<T>* a, const State<T>* b)
     {
-        return a.getCost() > b.getCost();
+        return a->getCost() > b->getCost();
     }
 };
 
@@ -28,9 +28,9 @@ public:
  */
 template <class T>
 struct manhattanHeuristicOfStates{
-    bool operator() (const State<T>& a, const State<T>& b)
+    bool operator() (const State<T>* a, const State<T>* b)
     {
-        return a.getCost() + a.getState().getManhattanDist() > b.getCost() + b.getState().getManhattanDist();
+        return a->getCost() + a->getState().getManhattanDist() > b->getCost() + b->getState().getManhattanDist();
     }
 };
 #endif //SECONDYEARPROJECT_BIU_COMPARATORS_H

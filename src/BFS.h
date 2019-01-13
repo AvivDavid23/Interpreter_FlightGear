@@ -15,15 +15,15 @@
  */
 template<class T>
 class BFS : public Searcher<T, std::string> {
-    queue<State<T>> stateQueue;
+    queue<State<T>*> stateQueue;
 public:
     inline BFS() {}
 
     int openListSize() { return (int) this->stateQueue.size(); }
 
-    State<T> popOpenList() {
+    State<T>* popOpenList() {
         ++this->nodesEvaluated;
-        State<T> state = stateQueue.front();
+        State<T>* state = stateQueue.front();
         stateQueue.pop();
         return state;
     }
@@ -33,17 +33,17 @@ public:
         std::set<T> visited;
         // push initial state
         stateQueue.push(searchable->getInitialState());
-        visited.emplace(searchable->getInitialState().getState());
-        State<T> node;
+        visited.emplace(searchable->getInitialState()->getState());
+        State<T>* node;
         while (openListSize() > 0) {
             node = popOpenList();
             // if node is goal, we will break
             goalReached = searchable->isGoalState(node);
             if (goalReached) break;
             // push all unvisited neighbors
-            for (auto neighbor : searchable->getAllPossibleStates(node)) {
-                if (std::find(visited.begin(), visited.end(), neighbor.getState()) == visited.end()) {
-                    visited.emplace(neighbor.getState());
+            for (State<T>* neighbor : searchable->getAllPossibleStates(node)) {
+                if (std::find(visited.begin(), visited.end(), neighbor->getState()) == visited.end()) {
+                    visited.emplace(neighbor->getState());
                     stateQueue.push(neighbor);
                 }
             }

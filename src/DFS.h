@@ -19,15 +19,15 @@
  */
 template<class T>
 class DFS : public Searcher<T, std::string> {
-    stack<State<T>> stateStack;
+    stack<State<T>*> stateStack;
 public:
     inline DFS() {}
 
     int openListSize() { return (int) this->stateStack.size(); }
 
-    State<T> popOpenList() {
+    State<T>* popOpenList() {
         ++this->nodesEvaluated;
-        State<T> state = stateStack.top();
+        State<T>* state = stateStack.top();
         stateStack.pop();
         return state;
     }
@@ -37,17 +37,17 @@ public:
         std::set<T> visited;
         // push initial state
         stateStack.push(searchable->getInitialState());
-        visited.emplace(searchable->getInitialState().getState());
-        State<T> node;
+        visited.emplace(searchable->getInitialState()->getState());
+        State<T>* node;
         while (openListSize() > 0) {
             node = popOpenList();
             // if node is goal, we will break
             goalReached = searchable->isGoalState(node);
             if (goalReached) break;
             // push all unvisited neighbors
-            for (auto neighbor : searchable->getAllPossibleStates(node)) {
-                if (std::find(visited.begin(), visited.end(), neighbor.getState()) == visited.end()) {
-                    visited.emplace(neighbor.getState());
+            for (State<T>* neighbor : searchable->getAllPossibleStates(node)) {
+                if (std::find(visited.begin(), visited.end(), neighbor->getState()) == visited.end()) {
+                    visited.emplace(neighbor->getState());
                     stateStack.push(neighbor);
                 }
             }

@@ -21,7 +21,7 @@ public:
 
     virtual int openListSize() = 0;
 
-    virtual State<T> popOpenList() = 0;
+    virtual State<T>* popOpenList() = 0;
 
     // get number of nodes evaluated by the algorithm
     inline int getEvaluatedNodes() { return nodesEvaluated; }
