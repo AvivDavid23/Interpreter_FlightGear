@@ -7,12 +7,14 @@
 
 #include "Solver.h"
 #include "Searcher.h"
+#include "ISearcher.h"
 template <class Problem,class Solution>
 class algorithmSolver: public server_side::Solver<Problem,Solution>{
-Searcher < Problem,Solution> * searcher;
+    ISearcher <Problem,Solution> * searchable;
+    ISearchable<Problem,Solution> * iSearchable;
 public:
     Solution solve(Problem & problem) {
-        searcher
+        searchable->search(iSearchable);
     }
 };
 

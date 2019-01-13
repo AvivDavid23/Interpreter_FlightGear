@@ -6,8 +6,6 @@
 #define SECONDYEARPROJECT_BIU_STATE_H
 
 
-#include <iostream>
-
 template<class T>
 class State {
     T state;
@@ -18,19 +16,25 @@ public:
 
     State(T state) : state(state) {}
 
-    State(const State<T>& other){
+    State(const State<T> &other) {
         state = other.state;
         cost = other.cost;
-        if (other.cameFrom != nullptr){
+        if (other.cameFrom != nullptr) {
             cameFrom = new State<T>();
             *cameFrom = *other.cameFrom;
         }
     }
 
-    ~State() {
-        std::cout << "delete node" <<std::endl;
-        delete cameFrom;
-    }
+    /*~State() {
+        State<T> *current = this;
+        State<T> *next = current;
+        current = current->getCameFrom();
+        if (next->cameFrom)
+            free (next->cameFrom);
+        if (current != nullptr)
+            delete current;
+    }*/
+
 
     void setCost(double cost) {
         this->cost = cost;
@@ -67,6 +71,10 @@ public:
 
     double getCost() const {
         return cost;
+    }
+
+    void setManDist(const T&goal){
+        state.setManhattanDist(goal);
     }
 };
 

@@ -7,6 +7,8 @@
 
 #include <queue>
 #include <map>
+#include <set>
+#include <algorithm>
 #include "State.h"
 #include "Searcher.h"
 /**
@@ -56,5 +58,6 @@ public:
 
     }
 };
+
 
 #endif //SECONDYEARPROJECT_BIU_BFS_H

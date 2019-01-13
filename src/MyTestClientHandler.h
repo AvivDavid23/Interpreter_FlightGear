@@ -13,11 +13,13 @@
 #include "FileCacheManager.h"
 #include "genClient.h"
 #include "StringReverseFactory.h"
+#include "algorithmSolver.h"
+#include "MatrixMaze.h"
 
 /**
  * A type of Client Handler
  */
-class MyTestClientHandler : public genClient<std::string, std::string> {
+class MyTestClientHandler : public genClient<MatrixMaze, std::string> {
 public:
     void handleClient(int newsockfd) {
         this->cachemanager->RefreshMap(this->createObjects);
@@ -36,12 +38,14 @@ public:
             */
         std::string solution,problem;
         std:: vector<string> matrix;
+        unsigned int getRow ,getCow ;
         char buf[1024];
         int n = 0;
         while ((n = read(newsockfd, buf, 1024) > 0)) {
             solution = buf;
             problem = buf;
             if(solution.substr(0,3) == "end" || solution.empty()) {
+                solver = new algorithmSolver<MatrixMaze<5,3>,string>();
                 solution = solver->solve(matrix);
                 this->cachemanager->saveData();
                 break;
@@ -60,8 +64,8 @@ public:
     }
 
     MyTestClientHandler() {
-        this->solver = new StringReverser();
-        this->cachemanager = new server_side::cache::FileCacheManager<std::string, std::string>();
+//        this->solver = new algorithmSolver <MatrixMaze,string()>;
+        this->cachemanager = new server_side::cache::FileCacheManager<MatrixMaze, std::string>();
         this->createObjects = new factory::StringReverseFactory();
     }
 };
