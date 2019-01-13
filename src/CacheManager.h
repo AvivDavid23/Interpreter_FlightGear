@@ -32,7 +32,7 @@ namespace server_side {
              * @param problem
              */
             virtual void saveSolution(Problem problem,Solution solution) = 0;
-            virtual void RefreshMap(factory::Factory<Solution,Problem> *factory1) = 0;
+            virtual void RefreshMap(factory::Factory<Problem,Solution> *factory1) = 0;
             virtual void saveData() = 0;
         };
     }

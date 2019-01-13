@@ -5,16 +5,19 @@
 #ifndef SECONDYEARPROJECT_BIU_MYTESTCLIENTHANDLER_H
 #define SECONDYEARPROJECT_BIU_MYTESTCLIENTHANDLER_H
 
-#include <iostream>
+#include <zconf.h>
 #include "ClientHandler.h"
 #include "Solver.h"
 #include "CacheManager.h"
-#include "StringReverser.h"
+//#include "StringReverser.h"
 #include "FileCacheManager.h"
 #include "genClient.h"
 #include "StringReverseFactory.h"
 #include "algorithmSolver.h"
 #include "MatrixMaze.h"
+#include "MatrixFactory.h"
+#include <algorithm>
+#include <sys/socket.h>
 
 /**
  * A type of Client Handler
@@ -22,7 +25,7 @@
 class MyTestClientHandler : public genClient<MatrixMaze, std::string> {
 public:
     void handleClient(int newsockfd) {
-        this->cachemanager->RefreshMap(this->createObjects);
+        this->cachemanager->RefreshMap(createObjects);
         /*
         std::string solution, answer;
         getline(inputStream, solution);
@@ -45,9 +48,19 @@ public:
             solution = buf;
             problem = buf;
             if(solution.substr(0,3) == "end" || solution.empty()) {
-                solver = new algorithmSolver<MatrixMaze<5,3>,string>();
-                solution = solver->solve(matrix);
-                this->cachemanager->saveData();
+                getRow = (unsigned int )matrix.size() - 2 ;
+                getCow = (unsigned int )std::count(matrix[0].begin(),matrix[0].end(), ',');
+                MatrixMaze matrixMaze(getRow,getCow);
+                // if there is a solution.
+                if(this->cachemanager->containsSolution(matrixMaze))
+                    solution = this->cachemanager->getSolution(matrixMaze);
+                else {
+                    // solve and save
+                    solution = solver->solve(matrixMaze);
+                    this->cachemanager->saveSolution(matrixMaze, solution);
+                    this->cachemanager->saveData();
+                }
+                send(newsockfd,solution.c_str(), solution.length(),0);
                 break;
             }
              // for part 2
@@ -58,16 +71,24 @@ public:
             this->cachemanager->saveSolution(problem,solution);
              send(newsockfd,solution.c_str(), solution.length(),0);
              */
-            else
+            else {
                 matrix.push_back(problem);
+            }
         }
     }
 
     MyTestClientHandler() {
-//        this->solver = new algorithmSolver <MatrixMaze,string()>;
+        solver = new algorithmSolver<MatrixMaze,string>();
         this->cachemanager = new server_side::cache::FileCacheManager<MatrixMaze, std::string>();
-        this->createObjects = new factory::StringReverseFactory();
+        this->createObjects = new factory::MatrixFactory();
+    }
+
+     ~MyTestClientHandler(){
+         delete solver;
+         delete cachemanager;
+         delete createObjects;
     }
 };
+
 
 #endif //SECONDYEARPROJECT_BIU_MYTESTCLIENTHANDLER_H

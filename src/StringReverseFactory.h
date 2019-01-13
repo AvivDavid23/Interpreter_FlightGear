@@ -11,9 +11,9 @@
 namespace factory {
     class StringReverseFactory : public factory::Factory<std::string, std::string> {
 
-        virtual std::string CreateProblem(std::string &line) { return line; }
+        virtual std::string CreateProblem(std::vector<std::string> lines) { return lines[0]; }
 
-        virtual std::string CreateSolution(std::string &line) { return line;};
+        virtual std::string CreateSolution(std::vector<std::string> lines) { return lines[0];};
     };
 }
 

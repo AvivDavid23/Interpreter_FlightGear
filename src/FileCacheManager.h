@@ -54,9 +54,9 @@ namespace server_side {
 
             void RefreshMap(factory::Factory<Problem,Solution> *factory1) {
                 if(!read.is_open()) read.open(FILEAS);
-                vector<Solution> solutions;
-                vector <Problem>problems;
-                string line;
+                std::vector<Solution> solutions;
+                std::vector <Problem>problems;
+                std::string line;
                 while(read >> line) {
                     solutions.push_back(factory1->CreateSolution(line));
                 }

@@ -6,14 +6,16 @@
 #define SECONDYEARPROJECT_BIU_FACTORY_H
 
 #include <string>
+#include <vector>
+
 namespace factory {
     template<class Problem, class Solution>
 
     class Factory {
     public:
-        virtual Problem CreateProblem(std::string &line) = 0;
+        virtual Problem CreateProblem(std::vector<std::string> lines) = 0;
 
-        virtual Solution CreateSolution(std::string &line) = 0;
+        virtual Solution CreateSolution(std::vector<std::string> lines) = 0;
     };
 }
 #endif //SECONDYEARPROJECT_BIU_FACTORY_H
