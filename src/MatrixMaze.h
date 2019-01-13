@@ -155,10 +155,10 @@ public:
         while (tmp.getCameFrom() != nullptr) {
             Position myPosition = tmp.getState();
             Position fatherPosition = tmp.getCameFrom()->getState();
-            if (myPosition.aboveMe(fatherPosition)) vec.emplace_back("DOWN,");
-            else if (myPosition.belowMe(fatherPosition)) vec.emplace_back("UP,");
-            else if (myPosition.leftToMe(fatherPosition)) vec.emplace_back("RIGHT,");
-            else vec.emplace_back("LEFT,");
+            if (myPosition.aboveMe(fatherPosition)) vec.emplace_back("Down,");
+            else if (myPosition.belowMe(fatherPosition)) vec.emplace_back("Up,");
+            else if (myPosition.leftToMe(fatherPosition)) vec.emplace_back("Right,");
+            else vec.emplace_back("Left,");
             tmp = *tmp.getCameFrom();
         }
         long i = vec.size() - 1;
