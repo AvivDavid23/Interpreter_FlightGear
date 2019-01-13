@@ -31,6 +31,8 @@ public:
     // backtrace from goal to start, returns solution
     virtual Solution backtrace(const State<T>& goal) = 0;
 
+    virtual double getShortestPathCost() = 0;
+
 };
 
 

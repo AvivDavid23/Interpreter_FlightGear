@@ -24,6 +24,7 @@ private:
     std::vector<std::vector<int>> matrix;
     int N;
     int M;
+    double shortestPathCost = -1;
     Position start;
     Position goal;
 public:
@@ -145,6 +146,7 @@ public:
     }
 
     std::string backtrace(const State<Position> &goal) {
+        shortestPathCost = goal.getCost();
         State<Position> tmp = goal;
         std::vector<std::string> vec;
         std::string path;
@@ -167,6 +169,8 @@ public:
         return path;
 
     }
+
+    double getShortestPathCost(){ return shortestPathCost;}
 };
 
 
