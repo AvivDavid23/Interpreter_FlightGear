@@ -5,14 +5,27 @@
 #include "BFS.h"
 #include "A_star.h"
 
-int main(int argc, char **argv) {
-    string s1 = "1,2,3\n";
-    string s2 = "5,6,7\n";
-    string s3 = "8,9,10\n";
-    string s4 = "0,0\n";
-    string s5 = "2,2\n";
-    std::vector<string> vector1 = {s1 ,s2 ,s3 ,s4 ,s5};
-    MatrixMaze matrixMaze(vector1);
+int main(int argc, char **) {
+    MatrixMaze matrixMaze(40, 40);
+    string start = "0,0";
+    cout << start << endl;
+    matrixMaze.setStart(start);
+    string end = "39,39";
+    cout << end << endl;
+    matrixMaze.setGoal(end);
     cout << matrixMaze.to_string();
+    DFS<Position> dfs;
+    BFS<Position> bfs;
+    A_star<Position> a_star;
+    BestFirstSearch<Position> bestFirstSearch;
+
+    bestFirstSearch.search(&matrixMaze);
+    cout << to_string(bestFirstSearch.getEvaluatedNodes()) + "," + to_string(matrixMaze.getShortestPathCost()) + "\n";
+    dfs.search(&matrixMaze);
+    cout << to_string(dfs.getEvaluatedNodes()) + "," + to_string(matrixMaze.getShortestPathCost()) + "\n";
+    bfs.search(&matrixMaze);
+    cout << to_string(bfs.getEvaluatedNodes()) + "," + to_string(matrixMaze.getShortestPathCost()) + "\n";
+    a_star.search(&matrixMaze);
+    cout << to_string(a_star.getEvaluatedNodes()) + "," + to_string(matrixMaze.getShortestPathCost()) + "\n";
     return 0;
 }
