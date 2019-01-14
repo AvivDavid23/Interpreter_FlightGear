@@ -75,7 +75,8 @@ public:
     }
 
     MyTestClientHandler() {
-        solver = new algorithmSolver<MatrixMaze,string>();
+        ISearcher<Position, string>* iSearcher = new A_star<Position>();
+        solver = new algorithmSolver<Position,string, MatrixMaze>(iSearcher);
         this->cachemanager = new server_side::cache::FileCacheManager<MatrixMaze, std::string>();
         this->createObjects = new factory::MatrixFactory();
     }

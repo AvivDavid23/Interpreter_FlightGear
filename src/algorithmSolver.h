@@ -9,13 +9,15 @@
 #include "Searcher.h"
 #include "ISearcher.h"
 #include "ISearchable.h"
-template <class Problem,class Solution>
-class algorithmSolver: public server_side::Solver<Problem,Solution>{
-    ISearcher <Problem,Solution> * searchable;
-    ISearchable<Problem,Solution> * iSearchable;
+
+template<class T, class Solution,class Problem>
+class algorithmSolver : public server_side::Solver<Problem, Solution> {
+    ISearcher<T, Solution> *searcher;
 public:
-    Solution solve(Problem & problem) {
-        searchable->search(iSearchable);
+    algorithmSolver(ISearcher<T, Solution> *searcher) : searcher(searcher) {}
+
+    Solution solve(Problem &problem) {
+        searcher->search(&problem);
     }
 };
 
