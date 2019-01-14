@@ -26,7 +26,6 @@ private:
     std::vector<std::vector<int>> originalValues;
     int N;
     int M;
-    std::map<std::pair<int, int>, bool> closedPositions;
     double shortestPathCost = -1;
     Position start;
     Position goal;
@@ -44,7 +43,6 @@ public:
                 auto randNum = (int) dist6(rng);
                 if (randNum == 11 && (i != 0 && j != 0) && (i != N - 1 && j != M - 1)) randNum = -1;
                 inner.push_back(randNum);
-                closedPositions[std::pair<int, int>(i, j)] = false;
             }
             matrix.push_back(inner);
         }
@@ -61,7 +59,6 @@ public:
             std::vector<std::string> tmp = Utils::split(withoutNewLine, ',');
             for (int j = 0; j < M; ++j) {
                 inner.push_back(stoi(tmp[j]));
-                closedPositions[std::pair<int, int>(i, j)] = false;
             }
             matrix.push_back(inner);
             inner.clear();
@@ -130,32 +127,28 @@ public:
          */
         if (j != 0) {
             left.setCost(fatherCost + matrix[i][j - 1]);
-            if (matrix[i][j - 1] != -1 && *state.getCameFrom() != left &&
-                !closedPositions[std::pair<int, int>(i, j - 1)]) {
+            if (matrix[i][j - 1] != -1 && *state.getCameFrom() != left) {
                 left.setCameFrom(&state);
                 statesVec.emplace_back(left);
             }
         }
         if (j != M - 1) {
             right.setCost(fatherCost + matrix[i][j + 1]);
-            if (matrix[i][j + 1] != -1 && *state.getCameFrom() != right &&
-                !closedPositions[std::pair<int, int>(i, j + 1)]) {
+            if (matrix[i][j + 1] != -1 && *state.getCameFrom() != right) {
                 right.setCameFrom(&state);
                 statesVec.emplace_back(right);
             }
         }
         if (i != N - 1) {
             down.setCost(fatherCost + matrix[i + 1][j]);
-            if (matrix[i + 1][j] != -1 && *state.getCameFrom() != down &&
-                !closedPositions[std::pair<int, int>(i + 1, j)]) {
+            if (matrix[i + 1][j] != -1 && *state.getCameFrom() != down ) {
                 down.setCameFrom(&state);
                 statesVec.emplace_back(down);
             }
         }
         if (i != 0) {
             up.setCost(fatherCost + matrix[i - 1][j]);
-            if (matrix[i - 1][j] != -1 && *state.getCameFrom() != up &&
-                !closedPositions[std::pair<int, int>(i - 1, j)]) {
+            if (matrix[i - 1][j] != -1 && *state.getCameFrom() != up ) {
                 up.setCameFrom(&state);
                 statesVec.emplace_back(up);
             }
@@ -203,11 +196,10 @@ public:
 
     int getShortestPathCost() { return (int) shortestPathCost; }
 
-    void markClosed(Position closed) { closedPositions[std::pair<int, int>(closed.getI(), closed.getJ())] = true; }
+    void markClosed(Position closed) { matrix[closed.getI()][closed.getJ()] = -1; }
 
     void clear() {
         matrix = originalValues;
-        for (auto item : closedPositions) closedPositions[item.first] = false;
     }
 };
 
