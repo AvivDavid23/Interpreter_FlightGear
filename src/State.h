@@ -6,6 +6,8 @@
 #define SECONDYEARPROJECT_BIU_STATE_H
 
 
+#include <vector>
+
 template<class T>
 class State {
     T state;
@@ -73,8 +75,15 @@ public:
         return cost;
     }
 
-    void setManDist(const T &goal) {
-        state.setManhattanDist(goal);
+    void setManDist(const T &goal, std::vector<int> neighborsCosts) {
+        int minNeighborCost = 10;
+        if (neighborsCosts.empty()) minNeighborCost = 1;
+        else{
+            for (int item : neighborsCosts)
+                if (item < minNeighborCost)
+                    minNeighborCost = item;
+        }
+        state.setManhattanDist(goal, minNeighborCost);
     }
 };
 

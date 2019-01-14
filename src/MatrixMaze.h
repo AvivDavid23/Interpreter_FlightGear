@@ -30,7 +30,6 @@ private:
     Position start;
     Position goal;
 public:
-    // TODO: After benchmarks, change constructor to deal with user input and create matrix
     MatrixMaze(unsigned int n, unsigned int m) {
         N = n;
         M = m;
@@ -99,6 +98,7 @@ public:
     State<Position> getInitialState() {
         State<Position> p(start);
         p.setCost(matrix[start.getI()][start.getJ()]);
+        p.setManDist(goal, neighborsCosts(p.getState()));
         return p;
     }
 
@@ -113,13 +113,13 @@ public:
         auto j = state.getState().getJ();
         // all directions. note that not all are accessible
         StateP up(Position(i - 1, j));
-        up.setManDist(goal);
+        up.setManDist(goal, neighborsCosts(up));
         StateP down(Position(i + 1, j));
-        down.setManDist(goal);
+        down.setManDist(goal, neighborsCosts(down));
         StateP left(Position(i, j - 1));
-        left.setManDist(goal);
+        left.setManDist(goal, neighborsCosts(left));
         StateP right(Position(i, j + 1));
-        right.setManDist(goal);
+        right.setManDist(goal, neighborsCosts(right));
         /**
          * check if we can access each one
          * if we can, first update new price
@@ -154,6 +154,18 @@ public:
             }
         }
         return statesVec;
+    }
+
+    std::vector<int> neighborsCosts(const StateP& stateP){
+        std::vector<int> vec;
+        auto i = stateP.getState().getI();
+        auto j = stateP.getState().getJ();
+        if (i >= N || j >= M) return vec;
+        if (j != 0 && matrix[i][j - 1] != -1) vec.push_back(matrix[i][j - 1]);
+        if (j != M - 1 && matrix[i][j + 1] != -1) vec.push_back(matrix[i][j + 1]);
+        if (i != 0 && matrix[i - 1][j] != -1) vec.push_back(matrix[i - 1][j]);
+        if (i != N - 1 && matrix[i + 1][j] != -1) vec.push_back(matrix[i + 1][j]);
+        return vec;
     }
 
     std::string to_string() {

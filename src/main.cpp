@@ -6,11 +6,11 @@
 #include "A_star.h"
 
 int main(int argc, char **) {
-    MatrixMaze matrixMaze(40, 40);
+    MatrixMaze matrixMaze(50, 50);
     string start = "0,0";
     cout << start << endl;
     matrixMaze.setStart(start);
-    string end = "39,39";
+    string end = "49,49";
     cout << end << endl;
     matrixMaze.setGoal(end);
     cout << matrixMaze.to_string();
