@@ -51,6 +51,28 @@ public:
         originalValues = matrix;
     }
 
+    MatrixMaze(std::vector<std::string> vector) {
+        int length = (int)vector.size();
+        N = length - 2;
+        M = (int)std::count(vector[0].begin(), vector[0].end(), ',') + 1;
+        for (int i = 0; i < N; ++i) {
+            std::vector<int> inner;
+            std::string withoutNewLine = vector[i].substr(0, vector[i].length() - 1);
+            std::vector<std::string> tmp = Utils::split(withoutNewLine, ',');
+            for (int j = 0; j < M; ++j) {
+                inner.push_back(stoi(tmp[j]));
+                closedPositions[std::pair<int, int>(i, j)] = false;
+            }
+            matrix.push_back(inner);
+            inner.clear();
+        }
+        vector[length - 2] = vector[length - 2].substr(0, vector[length - 2].length() - 1);
+        vector[length - 1] = vector[length - 1].substr(0, vector[length - 1].length() - 1);
+        setStart(vector[length - 2]);
+        setGoal(vector[length - 1]);
+        originalValues = matrix;
+    }
+
     void setStart(std::string &input) {
         unsigned int x, y;
         std::vector<std::string> vec = Utils::split(input, ',');
