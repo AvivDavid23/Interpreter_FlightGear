@@ -156,16 +156,16 @@ public:
         return statesVec;
     }
 
-    std::vector<int> neighborsCosts(const StateP& stateP){
+    int neighborsCosts(const StateP& stateP){
         std::vector<int> vec;
         auto i = stateP.getState().getI();
         auto j = stateP.getState().getJ();
-        if (i >= N || j >= M) return vec;
+        if (i >= N || j >= M) return 1;
         if (j != 0 && matrix[i][j - 1] != -1) vec.push_back(matrix[i][j - 1]);
         if (j != M - 1 && matrix[i][j + 1] != -1) vec.push_back(matrix[i][j + 1]);
         if (i != 0 && matrix[i - 1][j] != -1) vec.push_back(matrix[i - 1][j]);
         if (i != N - 1 && matrix[i + 1][j] != -1) vec.push_back(matrix[i + 1][j]);
-        return vec;
+        return !vec.empty() ? *std::min_element(vec.begin(), vec.end()) : 1;
     }
 
     std::string to_string() {

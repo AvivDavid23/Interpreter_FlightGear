@@ -75,15 +75,9 @@ public:
         return cost;
     }
 
-    void setManDist(const T &goal, std::vector<int> neighborsCosts) {
-        int minNeighborCost = 10;
-        if (neighborsCosts.empty()) minNeighborCost = 1;
-        else{
-            for (int item : neighborsCosts)
-                if (item < minNeighborCost)
-                    minNeighborCost = item;
-        }
-        state.setManhattanDist(goal, minNeighborCost);
+    void setManDist(const T &goal, int minNeighborsCost) {
+
+        state.setManhattanDist(goal, minNeighborsCost);
     }
 };
 
