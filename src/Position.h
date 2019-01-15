@@ -34,8 +34,8 @@ public:
 
     inline bool leftToMe(const Position &other) const{ return other.j == this->j - 1  && this->i == other.i;}
 
-    int setManhattanDist(const Position& target, int D){
-        manhattanDist = D * (abs((int)this->i - (int)target.i) + abs((int)this->j - (int)target.j));
+    int setManhattanDist(const Position& target){
+        manhattanDist = (abs((int)this->i - (int)target.i) + abs((int)this->j - (int)target.j));
     }
 
     inline int getManhattanDist(){ return manhattanDist;}

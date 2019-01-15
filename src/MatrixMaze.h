@@ -98,7 +98,7 @@ public:
     State<Position> getInitialState() {
         State<Position> p(start);
         p.setCost(matrix[start.getI()][start.getJ()]);
-        p.setManDist(goal, neighborsCosts(p.getState()));
+        p.setManDist(goal);
         return p;
     }
 
@@ -113,13 +113,13 @@ public:
         auto j = state.getState().getJ();
         // all directions. note that not all are accessible
         StateP up(Position(i - 1, j));
-        up.setManDist(goal, neighborsCosts(up));
+        up.setManDist(goal);
         StateP down(Position(i + 1, j));
-        down.setManDist(goal, neighborsCosts(down));
+        down.setManDist(goal);
         StateP left(Position(i, j - 1));
-        left.setManDist(goal, neighborsCosts(left));
+        left.setManDist(goal);
         StateP right(Position(i, j + 1));
-        right.setManDist(goal, neighborsCosts(right));
+        right.setManDist(goal);
         /**
          * check if we can access each one
          * if we can, first update new price
@@ -154,18 +154,6 @@ public:
             }
         }
         return statesVec;
-    }
-
-    int neighborsCosts(const StateP& stateP){
-        std::vector<int> vec;
-        auto i = stateP.getState().getI();
-        auto j = stateP.getState().getJ();
-        if (i >= N || j >= M) return 1;
-        if (j != 0 && matrix[i][j - 1] != -1) vec.push_back(matrix[i][j - 1]);
-        if (j != M - 1 && matrix[i][j + 1] != -1) vec.push_back(matrix[i][j + 1]);
-        if (i != 0 && matrix[i - 1][j] != -1) vec.push_back(matrix[i - 1][j]);
-        if (i != N - 1 && matrix[i + 1][j] != -1) vec.push_back(matrix[i + 1][j]);
-        return !vec.empty() ? *std::min_element(vec.begin(), vec.end()) : 1;
     }
 
     std::string to_string() {

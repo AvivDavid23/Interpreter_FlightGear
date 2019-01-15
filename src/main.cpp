@@ -21,10 +21,10 @@ int main(int argc, char **) {
 
     bestFirstSearch.search(&matrixMaze);
     cout << to_string(bestFirstSearch.getEvaluatedNodes()) + "," + to_string(matrixMaze.getShortestPathCost()) + "\n";
-    dfs.search(&matrixMaze);
+   /* dfs.search(&matrixMaze);
     cout << to_string(dfs.getEvaluatedNodes()) + "," + to_string(matrixMaze.getShortestPathCost()) + "\n";
     bfs.search(&matrixMaze);
-    cout << to_string(bfs.getEvaluatedNodes()) + "," + to_string(matrixMaze.getShortestPathCost()) + "\n";
+    cout << to_string(bfs.getEvaluatedNodes()) + "," + to_string(matrixMaze.getShortestPathCost()) + "\n";*/
     a_star.search(&matrixMaze);
     cout << to_string(a_star.getEvaluatedNodes()) + "," + to_string(matrixMaze.getShortestPathCost()) + "\n";
     return 0;

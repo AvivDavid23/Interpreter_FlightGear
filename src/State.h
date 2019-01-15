@@ -75,9 +75,8 @@ public:
         return cost;
     }
 
-    void setManDist(const T &goal, int minNeighborsCost) {
-
-        state.setManhattanDist(goal, minNeighborsCost);
+    void setManDist(const T &goal) {
+        state.setManhattanDist(goal);
     }
 };
 
