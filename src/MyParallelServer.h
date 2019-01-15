@@ -20,7 +20,7 @@
 #include <sys/socket.h>
 #include <thread>
 #include "Server.h"
-#define TIMEOUT_SECONDE 10
+#define TIMEOUT_SECONDE 1
 #define TIMEOUT_MILISECONDE 0
 using namespace std;
 /**
@@ -67,11 +67,10 @@ using namespace std;
                  perror("ERROR on binding");
                  exit(1);
              }
-
-             // only one can conncet.
+             // max conncet
              listen(sockfd, SOMAXCONN);
              thread t(&MyParallelServer::start, this, port, clientHandler);
-             t.join();
+             t.detach();
              //
 
          }

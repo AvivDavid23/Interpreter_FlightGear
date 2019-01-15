@@ -19,7 +19,7 @@
 #include <sys/socket.h>
 #include <thread>
 #include "Server.h"
-#define TIMEOUT_SECONDE 10
+#define TIMEOUT_SECONDE 1
 #define TIMEOUT_MILISECONDE 0
 using namespace std;
 namespace server_side {
@@ -66,7 +66,6 @@ namespace server_side {
                 perror("ERROR on binding");
                 exit(1);
             }
-
             // only one can conncet.
             listen(sockfd, 1);
             thread t(&MySerialServer::start, this, port, clientHandler);
@@ -82,6 +81,9 @@ namespace server_side {
             struct timeval tv;
             FD_ZERO(&rfds);
             FD_SET(this->sockfd, &rfds);
+            bool check = false;
+            newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *) &clilen);
+            check = true;
             //set a timeout timer
             tv.tv_sec = TIMEOUT_SECONDE;
             tv.tv_usec = TIMEOUT_MILISECONDE;
@@ -90,7 +92,8 @@ namespace server_side {
             /* Accept actual connection from the client */
             // the massage.
             while(openCustumer) {
-                newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *) &clilen);
+                if(!check)
+                    newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *) &clilen);
                 string output, input;
                 if (newsockfd < 0) {
                     if (errno == EWOULDBLOCK) {
@@ -104,6 +107,7 @@ namespace server_side {
                     }
                 }
                 clientHandler->handleClient(newsockfd);
+                check = false;
             }
             }
         /**
@@ -112,6 +116,7 @@ namespace server_side {
         void stopPro() {
             this->openCustumer = false;
             close(this->portID);
+            exit(2);
         }
     };
 }

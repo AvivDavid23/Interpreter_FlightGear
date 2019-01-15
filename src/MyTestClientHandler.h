@@ -23,6 +23,7 @@
  * A type of Client Handler
  */
 class MyTestClientHandler : public genClient<MatrixMaze, std::string> {
+    ISearcher<Position, string>* iSearcher;
 public:
     void handleClient(int newsockfd) {
         this->cachemanager->RefreshMap(createObjects);
@@ -43,9 +44,11 @@ public:
         std:: vector<string> matrix;
         char buf[1024];
         int n = 0;
+        // read from user
         while ((n = read(newsockfd, buf, 1024) > 0)) {
             solution = buf;
             problem = buf;
+            // if it's end
             if(solution.substr(0,3) == "end" || solution.empty()) {
                 MatrixMaze matrixMaze(matrix);
                 // if there is a solution.
@@ -53,10 +56,11 @@ public:
                     solution = this->cachemanager->getSolution(matrixMaze);
                 else {
                     // solve and save
-                    solution = solver->solve(matrixMaze);
+                    solution =this->solver->solve(&matrixMaze) + "\n";
                     this->cachemanager->saveSolution(matrixMaze, solution);
                     this->cachemanager->saveData();
                 }
+                // send answer to the user.
                 send(newsockfd,solution.c_str(), solution.length(),0);
                 break;
             }
@@ -75,8 +79,8 @@ public:
     }
 
     MyTestClientHandler() {
-        ISearcher<Position, string>* iSearcher = new A_star<Position>();
-        solver = new algorithmSolver<Position,string, MatrixMaze>(iSearcher);
+        iSearcher = new A_star<Position>();
+        solver = new algorithmSolver<Position,MatrixMaze,string>(iSearcher);
         this->cachemanager = new server_side::cache::FileCacheManager<MatrixMaze, std::string>();
         this->createObjects = new factory::MatrixFactory();
     }
@@ -85,6 +89,7 @@ public:
          delete solver;
          delete cachemanager;
          delete createObjects;
+         delete iSearcher;
     }
 };
 

@@ -17,62 +17,75 @@
 namespace server_side {
     namespace cache {
         template <class Problem,class Solution>
+                /**
+                 * @tparam Problem the problem we solve.
+                 * @tparam Solution the solution.
+                 */
         class FileCacheManager : public CacheManager<Problem,Solution> {
             std::ofstream file1;
             std::ifstream read;
-            std::unordered_map<Problem,Solution> probAndSol;
+            std::unordered_map<string,string> probAndSol;
         public:
             FileCacheManager() {};
+
             bool containsSolution(Problem problem){
-                auto got = probAndSol.find (problem);
+                auto got = probAndSol.find (problem.to_string());
                 return !(got ==probAndSol.end());
-
-
             }
 
             Solution getSolution(Problem problem){
-                return this->probAndSol[problem];
+                return this->probAndSol[problem.to_string()];
             }
 
             void saveData() {
                 if(!file1.is_open()) file1.open(FILEQ);
                 for ( auto it = probAndSol.begin(); it != probAndSol.end(); ++it ) {
-                    Problem problem = it-> first;
-                    file1 << problem;
+                    file1 << it->first;
+                    file1 << "\n";
                 }
                 file1.close();
                 file1.open(FILEAS);
                 for ( auto it = probAndSol.begin(); it != probAndSol.end(); ++it ) {
-                    Solution solution = it ->second;
-                    file1 << solution;
+                    file1 << it ->second;
+                    file1 << "\n";
                 }
                 file1.close();
             }
             void saveSolution(Problem problem,Solution solution){
-                this->probAndSol[problem] = solution;
+                this->probAndSol[problem.to_string()] = solution;
             }
 
             void RefreshMap(factory::Factory<Problem,Solution> *factory1) {
+                // open the file of the Answers
                 if(!read.is_open()) read.open(FILEAS);
-                std::vector<Solution> solutions;
-                std::vector <Problem>problems;
+                std::vector<string> solutions;
+                std::vector <string>problems;
                 std::string line;
-                while(read >> line) {
-                    solutions.push_back(factory1->CreateSolution(line));
+                while(getline(read ,line)) {
+                    if(line!= "")
+                    solutions.push_back(line);
                 }
+//                bool check = false;
+                int i =0;
                 read.close();
                 read.open(FILEQ);
-                while(read >> line) {
-                    problems.push_back(factory1->CreateProblem(line));
+                while(getline(read ,line)) {
+                    if(line!= "")
+                    problems.push_back(line);
+//                    else if(!check)
+//                        check = true;
+                    else {
+                        if(! problems.empty()) {
+                            Problem problem = factory1->CreateProblem(problems);
+                            Solution solution = factory1->CreateSolution(solutions[i]);
+                            this->probAndSol[problem.to_string()] = solution;
+                            ++i;
+                            problems.clear();
+                        }
+                    }
                 }
                 read.close();
-                auto it2 = solutions.begin();
-                for (auto const &problem:problems) {
-                    this->probAndSol[problem] = *it2;
-                    it2++;
-                }
             }
-
         };
     }
 }

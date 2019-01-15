@@ -1,4 +1,3 @@
-//
 // Created by aviv on 1/4/19.
 //
 
@@ -141,6 +140,9 @@ public:
             }
             output += '\n';
         }
+        std::string printStar = std::to_string(start.getI()) + "   ," + std::to_string(start.getJ()) + "\n";
+        std::string printEnd = std::to_string(goal.getI()) + "   ," + std::to_string(goal.getJ()) + "\n";
+        output += printStar + printEnd + '\n';
         return output;
     }
 
@@ -163,27 +165,36 @@ public:
             --i;
         }
         // remove last ','
-        path = path.substr(0, path.length() - 1);
+        path = path.substr(0, path.length() - 1) + "\n";
         return path;
 
     }
 
-    MatrixMaze(std::vector<std::string> vector) {
+    MatrixMaze(std::vector<std::string> &vector) {
+       int i = 0,index;
+        for(; i!=vector.size(); ++i) {
+            if(vector[i] == "")
+               vector.erase(vector.begin() + i);
+        }
         int length = (int)vector.size();
         N = length - 2;
         M = (int)std::count(vector[0].begin(), vector[0].end(), ',') + 1;
         for (int i = 0; i < N; ++i) {
             std::vector<int> inner;
-            std::string withoutNewLine = vector[i].substr(0, vector[i].length() - 1);
+             index = 0;
+            while(vector[i- index -1]== " ") index++;
+            std::string withoutNewLine = vector[i].substr(0, vector[i].length() - index);
             std::vector<std::string> tmp = Utils::split(withoutNewLine, ',');
             for (int j = 0; j < M; ++j) {
-                inner.push_back(stoi(tmp[j]));
+                if(tmp[j]!= " ")
+                    inner.push_back(stoi(tmp[j]));
             }
             matrix.push_back(inner);
             inner.clear();
         }
-        vector[length - 2] = vector[length - 2].substr(0, vector[length - 2].length() - 1);
-        vector[length - 1] = vector[length - 1].substr(0, vector[length - 1].length() - 1);
+        index = 0;
+        vector[length - 2] = vector[length - 2].substr(0, vector[length - 2].length()); //- 1);
+        vector[length - 1] = vector[length - 1].substr(0, vector[length - 1].length()); //- 1);
         setStart(vector[length - 2]);
         setGoal(vector[length - 1]);
     }

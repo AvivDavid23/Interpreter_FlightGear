@@ -32,7 +32,13 @@ namespace server_side {
              * @param problem
              */
             virtual void saveSolution(Problem problem,Solution solution) = 0;
+            /**
+             * @param factory1 refresh our map from the files.
+             */
             virtual void RefreshMap(factory::Factory<Problem,Solution> *factory1) = 0;
+            /**
+             * save the dada on the files.
+             */
             virtual void saveData() = 0;
         };
     }

@@ -1,7 +1,3 @@
-//
-// Created by dvir on 1/12/19.
-//
-
 #ifndef SECONDYEARPROJECT_BIU_ALGORITHMSOLVER_H
 #define SECONDYEARPROJECT_BIU_ALGORITHMSOLVER_H
 
@@ -10,14 +6,19 @@
 #include "ISearcher.h"
 #include "ISearchable.h"
 
-template<class T, class Solution,class Problem>
+template<class T, class Problem,class Solution>
 class algorithmSolver : public server_side::Solver<Problem, Solution> {
-    ISearcher<T, Solution> *searcher;
 public:
+    ISearcher<T, Solution> *searcher;
     algorithmSolver(ISearcher<T, Solution> *searcher) : searcher(searcher) {}
+    /**
+     * @param problem
+     * @return
+     */
 
-    Solution solve(Problem &problem) {
-        searcher->search(&problem);
+    Solution solve(Problem *problem) {
+        return searcher->search(problem);
+
     }
 };
 

@@ -13,8 +13,9 @@
 template <class Problem,class Solution>
 class genClient :  public ClientHandler {
 protected:
+    // members
     server_side::Solver<Problem, Solution> *solver;
-    server_side::cache::CacheManager <Problem,Solution> *cachemanager;
+    server_side::cache::CacheManager<Problem, Solution> *cachemanager;
     factory::Factory<Problem,Solution> * createObjects;
 };
 

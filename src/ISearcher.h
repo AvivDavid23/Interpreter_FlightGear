@@ -14,6 +14,7 @@
 template<class T, class Solution>
 class ISearcher {
     // search for a solution to the Searchable object
+public:
     virtual Solution search(ISearchable<T, Solution> *searchable) = 0;
 };
 

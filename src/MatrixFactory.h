@@ -14,8 +14,8 @@ public:
         MatrixMaze matrixMaze(lines);
         return matrixMaze;
     }
-    std::string CreateSolution(std::vector<std::string> lines) {
-        return lines[0];
+    std::string CreateSolution(std::string lines) {
+        return lines;
     }
     };
 }

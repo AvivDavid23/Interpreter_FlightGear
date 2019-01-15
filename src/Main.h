@@ -18,14 +18,12 @@ namespace boot {
         static int main(int argc, char **argv) {
             server_side::Server<MatrixMaze, string> *server;
             ClientHandler *clientHandler = new MyTestClientHandler();
-//            server =  new server_side::MySerialServer<string,string>();
-//            server->open(atoi(argv[1]),clientHandler);
-            server = new server_side::MyParallelServer<MatrixMaze, string>();
-            while (true) {
-                thread thread1(&server_side::MyParallelServer<MatrixMaze, string>::open, server, atoi(argv[1]), argc);
-                break;
+            server =  new server_side::MySerialServer<MatrixMaze,string>();
+            server->open(atoi(argv[1]),clientHandler);
+//            while (true) {
+//                thread thread1(&server_side::MyParallelServer<MatrixMaze, string>::open, server, atoi(argv[1]), clientHandler);
+//                break;
             }
-        }
     };
 }
 
