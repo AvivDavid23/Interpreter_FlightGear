@@ -31,7 +31,12 @@ public:
     // backtrace from goal to start, returns solution
     virtual Solution backtrace(const State<T>& goal) = 0;
 
-};
+    virtual int getShortestPathCost() = 0;
 
+    virtual void markClosed(T closed) = 0;
+
+    virtual void clear() = 0;
+
+};
 
 #endif //SECONDYEARPROJECT_BIU_ISEARCHABLE_H

@@ -6,6 +6,8 @@
 #define SECONDYEARPROJECT_BIU_STATE_H
 
 
+#include <vector>
+
 template<class T>
 class State {
     T state;
@@ -73,7 +75,7 @@ public:
         return cost;
     }
 
-    void setManDist(const T&goal){
+    void setManDist(const T &goal) {
         state.setManhattanDist(goal);
     }
 };

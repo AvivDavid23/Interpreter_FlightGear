@@ -22,7 +22,7 @@
 /**
  * A type of Client Handler
  */
-class MyTestClientHandler : public genClient<MatrixMaze, std::string> {
+class MyClientHandler : public genClient<MatrixMaze, std::string> {
     ISearcher<Position, string>* iSearcher;
 public:
     void handleClient(int newsockfd) {
@@ -78,14 +78,14 @@ public:
         }
     }
 
-    MyTestClientHandler() {
+    MyClientHandler() {
         iSearcher = new A_star<Position>();
         solver = new algorithmSolver<Position,MatrixMaze,string>(iSearcher);
         this->cachemanager = new server_side::cache::FileCacheManager<MatrixMaze, std::string>();
         this->createObjects = new factory::MatrixFactory();
     }
 
-     ~MyTestClientHandler(){
+     ~MyClientHandler(){
          delete solver;
          delete cachemanager;
          delete createObjects;

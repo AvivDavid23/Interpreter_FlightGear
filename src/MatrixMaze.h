@@ -1,3 +1,4 @@
+//
 // Created by aviv on 1/4/19.
 //
 
@@ -11,6 +12,7 @@
 #include <random>
 #include <climits>
 #include <stdlib.h>
+#include <map>
 #include "algorithm"
 
 
@@ -21,27 +23,50 @@ class MatrixMaze : public ISearchable<Position, std::string> {
     using StateP = State<Position>;
 private:
     std::vector<std::vector<int>> matrix;
+    std::vector<std::vector<int>> originalValues;
     int N;
     int M;
+    double shortestPathCost = -1;
     Position start;
     Position goal;
 public:
-    // TODO: After benchmarks, change constructor to deal with user input and create matrix
     MatrixMaze(unsigned int n, unsigned int m) {
-        for (int i = 0; i < n; ++i) {
+        N = n;
+        M = m;
+        for (int i = 0; i < N; ++i) {
             std::vector<int> inner;
-            for (int j = 0; j < m; ++j) {
+            for (int j = 0; j < M; ++j) {
                 std::mt19937 rng;
                 rng.seed(std::random_device()());
-                std::uniform_int_distribution<std::mt19937::result_type> dist6(0, 11);
+                std::uniform_int_distribution<std::mt19937::result_type> dist6(1, 11);
                 auto randNum = (int) dist6(rng);
                 if (randNum == 11 && (i != 0 && j != 0) && (i != N - 1 && j != M - 1)) randNum = -1;
                 inner.push_back(randNum);
             }
             matrix.push_back(inner);
         }
-        N = n;
-        M = m;
+        originalValues = matrix;
+    }
+
+    MatrixMaze(std::vector<std::string> &vector) {
+        int length = (int)vector.size();
+        N = length - 2;
+        M = (int)std::count(vector[0].begin(), vector[0].end(), ',') + 1;
+        for (int i = 0; i < N; ++i) {
+            std::vector<int> inner;
+            std::string withoutNewLine = vector[i].substr(0, vector[i].length() - 1);
+            std::vector<std::string> tmp = Utils::split(withoutNewLine, ',');
+            for (int j = 0; j < M; ++j) {
+                inner.push_back(stoi(tmp[j]));
+            }
+            matrix.push_back(inner);
+            inner.clear();
+        }
+        vector[length - 2] = vector[length - 2].substr(0, vector[length - 2].length() - 1);
+        vector[length - 1] = vector[length - 1].substr(0, vector[length - 1].length() - 1);
+        setStart(vector[length - 2]);
+        setGoal(vector[length - 1]);
+        originalValues = matrix;
     }
 
     void setStart(std::string &input) {
@@ -73,6 +98,7 @@ public:
     State<Position> getInitialState() {
         State<Position> p(start);
         p.setCost(matrix[start.getI()][start.getJ()]);
+        p.setManDist(goal);
         return p;
     }
 
@@ -115,21 +141,20 @@ public:
         }
         if (i != N - 1) {
             down.setCost(fatherCost + matrix[i + 1][j]);
-            if (matrix[i + 1][j] != -1 && *state.getCameFrom() != down) {
+            if (matrix[i + 1][j] != -1 && *state.getCameFrom() != down ) {
                 down.setCameFrom(&state);
                 statesVec.emplace_back(down);
             }
         }
         if (i != 0) {
             up.setCost(fatherCost + matrix[i - 1][j]);
-            if (matrix[i - 1][j] != -1 && *state.getCameFrom() != up) {
+            if (matrix[i - 1][j] != -1 && *state.getCameFrom() != up ) {
                 up.setCameFrom(&state);
                 statesVec.emplace_back(up);
             }
         }
         return statesVec;
     }
-
     std::string to_string() {
         std::string output;
         for (int i = 0; i < N; ++i) {
@@ -140,13 +165,11 @@ public:
             }
             output += '\n';
         }
-        std::string printStar = std::to_string(start.getI()) + "   ," + std::to_string(start.getJ()) + "\n";
-        std::string printEnd = std::to_string(goal.getI()) + "   ," + std::to_string(goal.getJ()) + "\n";
-        output += printStar + printEnd + '\n';
         return output;
     }
 
     std::string backtrace(const State<Position> &goal) {
+        shortestPathCost = goal.getCost();
         State<Position> tmp = goal;
         std::vector<std::string> vec;
         std::string path;
@@ -165,40 +188,20 @@ public:
             --i;
         }
         // remove last ','
-        path = path.substr(0, path.length() - 1) + "\n";
+        path = path.substr(0, path.length() - 1);
         return path;
 
     }
 
-    MatrixMaze(std::vector<std::string> &vector) {
-       int i = 0,index;
-        for(; i!=vector.size(); ++i) {
-            if(vector[i] == "")
-               vector.erase(vector.begin() + i);
-        }
-        int length = (int)vector.size();
-        N = length - 2;
-        M = (int)std::count(vector[0].begin(), vector[0].end(), ',') + 1;
-        for (int i = 0; i < N; ++i) {
-            std::vector<int> inner;
-             index = 0;
-            while(vector[i- index -1]== " ") index++;
-            std::string withoutNewLine = vector[i].substr(0, vector[i].length() - index);
-            std::vector<std::string> tmp = Utils::split(withoutNewLine, ',');
-            for (int j = 0; j < M; ++j) {
-                if(tmp[j]!= " ")
-                    inner.push_back(stoi(tmp[j]));
-            }
-            matrix.push_back(inner);
-            inner.clear();
-        }
-        index = 0;
-        vector[length - 2] = vector[length - 2].substr(0, vector[length - 2].length()); //- 1);
-        vector[length - 1] = vector[length - 1].substr(0, vector[length - 1].length()); //- 1);
-        setStart(vector[length - 2]);
-        setGoal(vector[length - 1]);
+    int getShortestPathCost() { return (int) shortestPathCost; }
+
+    void markClosed(Position closed) { matrix[closed.getI()][closed.getJ()] = -1; }
+
+    void clear() {
+        matrix = originalValues;
     }
 };
+
 
 
 #endif //SECONDYEARPROJECT_BIU_MATRIXMAZE_H

@@ -8,7 +8,7 @@
 #include "MySerialServer.h"
 #include "MyParallelServer.h"
 #include "Solver.h"
-#include "MyTestClientHandler.h"
+#include "MyClientHandler.h"
 #include "istream"
 #include "Server.h"
 
@@ -17,7 +17,7 @@ namespace boot {
     public:
         static int main(int argc, char **argv) {
             server_side::Server<MatrixMaze, string> *server;
-            ClientHandler *clientHandler = new MyTestClientHandler();
+            ClientHandler *clientHandler = new MyClientHandler();
             server =  new server_side::MySerialServer<MatrixMaze,string>();
             server->open(atoi(argv[1]),clientHandler);
 //            while (true) {

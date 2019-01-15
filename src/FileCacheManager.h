@@ -34,7 +34,7 @@ namespace server_side {
             }
 
             Solution getSolution(Problem problem){
-                return this->probAndSol[problem.to_string()];
+                    return this->probAndSol[problem.to_string()];
             }
 
             void saveData() {
@@ -52,7 +52,7 @@ namespace server_side {
                 file1.close();
             }
             void saveSolution(Problem problem,Solution solution){
-                this->probAndSol[problem.to_string()] = solution;
+                    this->probAndSol[problem.to_string()] = solution;
             }
 
             void RefreshMap(factory::Factory<Problem,Solution> *factory1) {
@@ -78,6 +78,7 @@ namespace server_side {
                         if(! problems.empty()) {
                             Problem problem = factory1->CreateProblem(problems);
                             Solution solution = factory1->CreateSolution(solutions[i]);
+                            if(strcmp(typeid(problem).name() ,"string"))
                             this->probAndSol[problem.to_string()] = solution;
                             ++i;
                             problems.clear();
