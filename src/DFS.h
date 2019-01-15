@@ -60,6 +60,10 @@ public:
         }
 
     }
+    void clear(){
+        this->nodesEvaluated = 0;
+        while (!stateStack.empty()) stateStack.pop();
+    }
 };
 
 #endif //SECONDYEARPROJECT_BIU_DFS_H

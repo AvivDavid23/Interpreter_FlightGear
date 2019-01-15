@@ -57,6 +57,11 @@ public:
         }
 
     }
+
+    void clear(){
+        this->nodesEvaluated = 0;
+        while (!stateQueue.empty()) stateQueue.pop();
+    }
 };
 
 #endif //SECONDYEARPROJECT_BIU_BFS_H

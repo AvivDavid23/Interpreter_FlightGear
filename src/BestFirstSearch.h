@@ -76,6 +76,10 @@ public:
             }
         }
     }
+    void clear(){
+        this->nodesEvaluated = 0;
+        while (!priorityQueue.empty()) priorityQueue.pop();
+    }
 };
 
 #endif //SECONDYEARPROJECT_BIU_BESTFIRSTSEARCH_H
