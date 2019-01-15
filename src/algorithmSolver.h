@@ -15,7 +15,6 @@ public:
      * @param problem
      * @return
      */
-
     Solution solve(Problem *problem) {
         return searcher->search(problem);
 

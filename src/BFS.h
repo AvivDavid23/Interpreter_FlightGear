@@ -59,6 +59,11 @@ public:
         }
 
     }
+
+    void clear(){
+        this->nodesEvaluated = 0;
+        while (!stateQueue.empty()) stateQueue.pop();
+    }
 };
 
 

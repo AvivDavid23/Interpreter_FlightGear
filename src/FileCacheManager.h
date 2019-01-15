@@ -65,20 +65,17 @@ namespace server_side {
                     if(line!= "")
                     solutions.push_back(line);
                 }
-//                bool check = false;
+
                 int i =0;
                 read.close();
                 read.open(FILEQ);
                 while(getline(read ,line)) {
                     if(line!= "")
                     problems.push_back(line);
-//                    else if(!check)
-//                        check = true;
                     else {
                         if(! problems.empty()) {
                             Problem problem = factory1->CreateProblem(problems);
                             Solution solution = factory1->CreateSolution(solutions[i]);
-                            if(strcmp(typeid(problem).name() ,"string"))
                             this->probAndSol[problem.to_string()] = solution;
                             ++i;
                             problems.clear();
