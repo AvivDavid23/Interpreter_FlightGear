@@ -14,8 +14,6 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <thread>
-#define TIMEOUT_SECONDE 5
-#define TIMEOUT_MILISECONDE 0
 namespace server_side {
     class MyParallelServer : public server_side::Server {
         int sockfd;
@@ -72,7 +70,7 @@ namespace server_side {
  * MakeConnection- create connection with client
  */
         void MakeConnection(int port,ClientHandler* clientHandler) {
-            listen(this->sockfd, SOMAXCONN);
+            listen(this->sockfd, 5);
 
             int newsockfd, clilen, n;
             struct sockaddr_in cli_addr;
@@ -82,7 +80,7 @@ namespace server_side {
             FD_ZERO(&rfds);
             FD_SET(this->sockfd, &rfds);
             //set a timeout timer
-            tv.tv_sec = 1000000000000;
+            tv.tv_sec = 40;
             tv.tv_usec = 0;
             while (this->active && (select(this->sockfd + 1, &rfds, nullptr, nullptr, &tv) || this->first)) {
                 this->first = false;
@@ -93,7 +91,7 @@ namespace server_side {
                 if (newsockfd < 0) {
                     throw runtime_error(string("ERROR on accept"));
                 }
-                thread t1(&MyParallelServer::StartCliendHandlerThread, this, port,clientHandler);
+                thread t1(&MyParallelServer::StartCliendHandlerThread, this, newsockfd ,clientHandler);
                 this->threadList.push_back(std::move(t1));
             }
             for (int i = 0; i < this->threadList.size(); ++i) {

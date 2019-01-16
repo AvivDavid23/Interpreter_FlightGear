@@ -31,7 +31,7 @@ public:
         std:: vector<string> matrix;
         char buf[1024];
         // read from user
-        while ((read(newsockfd, buf, 1024) > 0)) {
+            while ((read(newsockfd, buf, 1024) > 0)) {
             solution = buf;
             problem = buf;
             // if it's end
