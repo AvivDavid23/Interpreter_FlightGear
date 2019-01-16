@@ -80,8 +80,8 @@ namespace server_side {
             FD_ZERO(&rfds);
             FD_SET(this->sockfd, &rfds);
             //set a timeout timer
-            tv.tv_sec = 40;
-            tv.tv_usec = 0;
+            tv.tv_sec = TIMEOUT_SECONDE;
+            tv.tv_usec = TIMEOUT_SECONDE;
             while (this->active && (select(this->sockfd + 1, &rfds, nullptr, nullptr, &tv) || this->first)) {
                 this->first = false;
                 FD_ZERO(&rfds);
