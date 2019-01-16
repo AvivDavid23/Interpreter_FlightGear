@@ -1,3 +1,4 @@
-1. Finish loops and conditions(if, while,(functions?))
-2. Fix server reading from simulator
-3. Write to the simulator
+1. finish dfs bfs improves.
+2. build MyParallelServer
+3. fix bugs
+4. finish end
