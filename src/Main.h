@@ -7,22 +7,23 @@
 
 #include "MySerialServer.h"
 #include "MyParallelServer.h"
-#include "Solver.h"
 #include "MyClientHandler.h"
-#include "istream"
 #include "Server.h"
 
 namespace boot {
     class Main {
     public:
+        /**
+         * @param argc how many inputs have from user.
+         * @param argv inputs from the user.
+         * @return
+         */
         static int main(int argc, char **argv) {
-            server_side::Server<MatrixMaze, string> *server;
+
             ClientHandler *clientHandler = new MyClientHandler();
-            server =  new server_side::MySerialServer<MatrixMaze,string>();
+            server_side::Server *server =  new server_side::MyParallelServer();
             server->open(atoi(argv[1]),clientHandler);
-//            while (true) {
-//                thread thread1(&server_side::MyParallelServer<MatrixMaze, string>::open, server, atoi(argv[1]), clientHandler);
-//                break;
+            return 0;
             }
     };
 }

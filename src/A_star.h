@@ -63,7 +63,7 @@ public:
                 if (!inOpen && !inClosed) {
                     priorityQueue.push(item);
                 } else {
-                    // if item in close, skip
+                    // if item in stop, skip
                     if (inClosed) continue;
                     State<T> tmp = priorityQueue.remove(item);
                     // if item is better, means better path, update tmp

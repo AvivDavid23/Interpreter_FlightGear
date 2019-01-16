@@ -9,7 +9,6 @@
 
 namespace server_side {
     // Server Interface
-    template <class Problem,class  Solution>
     class Server {
     public:
         /**
@@ -22,7 +21,7 @@ namespace server_side {
         /**
          * Close the server
          */
-        virtual void stopPro() = 0 ;
+        virtual void stop() = 0;
     };
 
 }

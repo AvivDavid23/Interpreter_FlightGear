@@ -20,20 +20,17 @@
 #include <sys/socket.h>
 #include <thread>
 #include "Server.h"
-#define TIMEOUT_SECONDE 1
-#define TIMEOUT_MILISECONDE 0
+
 using namespace std;
 /**
  * A type of Server, which take care of clients one by one
  */
  namespace server_side {
-     template<class Problem, class Solution>
-     class MyParallelServer : public server_side::Server<Problem, Solution> {
+     class MyParallelServer : public server_side::Server {
          bool openCustumer = false;
-         int portID;
          int sockfd;
      public:
-         MyParallelServer<Problem, Solution>() {};
+         MyParallelServer() = default;
 
          /**
           * Opens the server and waits for clients
@@ -64,18 +61,19 @@ using namespace std;
 
              /* Now bind the host address using bind() call.*/
              if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
-                 perror("ERROR on binding");
-                 exit(1);
+                 throw runtime_error(string("ERROR on binding"));
+
              }
              // max conncet
-             listen(sockfd, SOMAXCONN);
              thread t(&MyParallelServer::start, this, port, clientHandler);
-             t.detach();
+             t.join();
+             stop();
              //
 
          }
 
          void start(int port, ClientHandler *clientHandler) {
+             listen(sockfd, SOMAXCONN);
              struct sockaddr_in cli_addr;
              int newsockfd, clilen;
              clilen = sizeof(cli_addr);
@@ -84,36 +82,51 @@ using namespace std;
              FD_ZERO(&rfds);
              FD_SET(this->sockfd, &rfds);
              //set a timeout timer
-             tv.tv_sec = TIMEOUT_SECONDE;
-             tv.tv_usec = TIMEOUT_MILISECONDE;
-             setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (char *) &tv, sizeof(tv));
+//             tv.tv_sec = TIMEOUT_SECONDE;
+//             tv.tv_usec = TIMEOUT_MILISECONDE;
+//             setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (char *) &tv, sizeof(tv));
              openCustumer = true;
              /* Accept actual connection from the client */
              // the massage.
-             while (openCustumer) {
+             queue<thread> threads = {};
+             while (true) {
                  newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *) &clilen);
                  string output, input;
                  if (newsockfd < 0) {
                      if (errno == EWOULDBLOCK) {
                          cout << "timeout!" << endl;
-                         stopPro();
                          break;
                      } else {
                          perror("other error");
-                         stopPro();
+                         exit(2);
                          break;
                      }
                  }
-                 clientHandler->handleClient(newsockfd);
+                 //        thread handleClientThread(&MyParallelServer::callHandleClientOnNewThread, this, ch, newsockfd);
+                 //clientHandler->handleClient(newsockfd)
+                 thread thread1(&MyParallelServer::openClient, this, clientHandler,port);
+                 threads.push(move(thread1));   
+                 if (openCustumer) {
+                     tv.tv_sec = 10;
+                     tv.tv_usec = 0;
+                     setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (char *) &tv, sizeof(tv));
+                     openCustumer = false;
+                 }
+             }
+             while (!threads.empty()) {
+                 threads.front().join();
+                 threads.pop();
              }
          }
-
          /**
           * Close the server
           */
-         void stopPro() {
+         void openClient(ClientHandler *client, int port) {
+             client->handleClient(port);
+         }
+         void stop() {
              this->openCustumer = false;
-             close(this->portID);
+             close(this->sockfd);
          }
      };
  }
