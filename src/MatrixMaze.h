@@ -54,16 +54,17 @@ public:
         M = (int)std::count(vector[0].begin(), vector[0].end(), ',') + 1;
         for (int i = 0; i < N; ++i) {
             std::vector<int> inner;
-            std::string withoutNewLine = vector[i].substr(0, vector[i].length() - 1);
+            std::string withoutNewLine = vector[i].substr(0, vector[i].length());
             std::vector<std::string> tmp = Utils::split(withoutNewLine, ',');
             for (int j = 0; j < M; ++j) {
+             if(tmp[j] != " ")
                 inner.push_back(stoi(tmp[j]));
             }
             matrix.push_back(inner);
             inner.clear();
         }
-        vector[length - 2] = vector[length - 2].substr(0, vector[length - 2].length() - 1);
-        vector[length - 1] = vector[length - 1].substr(0, vector[length - 1].length() - 1);
+        vector[length - 2] = vector[length - 2].substr(0, vector[length - 2].length());
+        vector[length - 1] = vector[length - 1].substr(0, vector[length - 1].length());
         setStart(vector[length - 2]);
         setGoal(vector[length - 1]);
         originalValues = matrix;
@@ -165,6 +166,8 @@ public:
             }
             output += '\n';
         }
+        output += std::to_string(this->start.getI()) + " ," + std::to_string(this->start.getJ()) + "\n";
+        output += std::to_string(this->goal.getI()) + " ," + std::to_string(this->goal.getJ()) + "\n";
         return output;
     }
 

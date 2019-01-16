@@ -22,7 +22,8 @@ namespace boot {
 
             ClientHandler *clientHandler = new MyClientHandler();
             server_side::Server *server =  new server_side::MyParallelServer();
-            server->open(atoi(argv[1]),clientHandler);
+            server->Open(atoi(argv[1]),clientHandler);
+            server->Start(atoi(argv[1]),clientHandler);
             return 0;
             }
     };

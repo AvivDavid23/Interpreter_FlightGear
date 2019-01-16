@@ -37,7 +37,7 @@ namespace server_side {
          * Opens the server and waits for clients
          * @param port
          */
-        void open(int port, ClientHandler* clientHandler) {
+        void Open(int port, ClientHandler* clientHandler) {
             int newsockfd, clilen;
             char buffer[BUFFER_SIZE];
             std::string values;
@@ -67,12 +67,12 @@ namespace server_side {
             }
             // only one can conncet.
             listen(sockfd, 1);
-            thread t(&MySerialServer::start, this, port, clientHandler);
+            thread t(&MySerialServer::Start, this, port, clientHandler);
             t.join();
             //
 
         }
-        void start(int port,ClientHandler* clientHandler) {
+        void Start(int port,ClientHandler* clientHandler) {
             struct sockaddr_in cli_addr;
             int newsockfd,clilen;
             clilen = sizeof(cli_addr);
@@ -113,7 +113,7 @@ namespace server_side {
         /**
          * Close the server
          */
-         void stop() {
+         void Stop() {
             this->openCustumer = false;
             close(this->sockfd);
          }
