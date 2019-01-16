@@ -72,7 +72,7 @@ namespace server_side {
  * MakeConnection- create connection with client
  */
         void MakeConnection(int port,ClientHandler* clientHandler) {
-            listen(this->sockfd, 5);
+            listen(this->sockfd, SOMAXCONN);
 
             int newsockfd, clilen, n;
             struct sockaddr_in cli_addr;
@@ -96,7 +96,7 @@ namespace server_side {
                 std::thread t1(&MyParallelServer::StartCliendHandlerThread, this, newsockfd ,clientHandler);
                 threadList.push_back(std::move(t1));
             }
-            for (int i = 0; i < this->threadList.size(); ++i) {
+            for (unsigned long i = 0; i < this->threadList.size(); ++i) {
                threadList.at(i).join();
             }
         }
