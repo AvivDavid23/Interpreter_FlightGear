@@ -27,25 +27,11 @@ class MyClientHandler : public genClient<MatrixMaze, std::string> {
 public:
     void handleClient(int newsockfd) {
         this->cachemanager->RefreshMap(createObjects);
-        /*
-        std::string solution, answer;
-        getline(inputStream, solution);
-        std::string sent(solution);
-        while (sent != "end" && !sent.empty()) {
-            if (this->cachemanager->containsSolution(sent))
-                this->cachemanager->getSolution(sent);
-            else
-                answer = this->solver->solve(sent);
-            outputStream << answer << endl;
-            this->cachemanager->saveSolution(sent, answer);
-            std::getline(std::cin, sent);
-            */
         std::string solution,problem;
         std:: vector<string> matrix;
         char buf[1024];
-        int n = 0;
         // read from user
-        while ((n = read(newsockfd, buf, 1024) > 0)) {
+            while ((read(newsockfd, buf, 1024) > 0)) {
             solution = buf;
             problem = buf;
             // if it's end
