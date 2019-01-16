@@ -6,19 +6,21 @@
 #define SECONDYEARPROJECT_BIU_MYPARALLELSERVER_H
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <vector>
 #include <netdb.h>
 #include <unistd.h>
 #include <netinet/in.h>
-
+#include "ClientHandler.h"
 #include <string.h>
 #include <sys/socket.h>
+#include "Server.h"
 #include <thread>
+#define TIMEOUT_SECONDE 1
 namespace server_side {
     class MyParallelServer : public server_side::Server {
         int sockfd;
         bool active;
-        vector<thread> threadList;
+        std::vector<std::thread> threadList;
         bool first = true;
     public:
 
@@ -39,7 +41,7 @@ namespace server_side {
             this->sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
             if (sockfd < 0) {
-                throw runtime_error(string("ERROR opening socket"));
+                throw std::runtime_error(std::string("ERROR opening socket"));
             }
 
             /* Initialize socket structure */
@@ -51,7 +53,7 @@ namespace server_side {
 
             /* Now bind the host address using bind() call.*/
             if (bind(this->sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
-                throw runtime_error(string("ERROR on binding"));
+                throw std::runtime_error(std::string("ERROR on binding"));
             }
             this->active = true;
 
@@ -62,7 +64,7 @@ namespace server_side {
  */
         void Start(int port,ClientHandler* clientHandler) {
             //open a thread to server-client stream
-            thread t1(&MyParallelServer::MakeConnection, this, port,clientHandler);
+            std::thread t1(&MyParallelServer::MakeConnection, this, port,clientHandler);
             t1.join();
         }
 
@@ -89,13 +91,13 @@ namespace server_side {
                 /* Accept actual connection from the client */
                 newsockfd = accept(this->sockfd, (struct sockaddr *) &cli_addr, (socklen_t *) &clilen);
                 if (newsockfd < 0) {
-                    throw runtime_error(string("ERROR on accept"));
+                    throw std::runtime_error(std::string("ERROR on accept"));
                 }
-                thread t1(&MyParallelServer::StartCliendHandlerThread, this, newsockfd ,clientHandler);
-                this->threadList.push_back(std::move(t1));
+                std::thread t1(&MyParallelServer::StartCliendHandlerThread, this, newsockfd ,clientHandler);
+                threadList.push_back(std::move(t1));
             }
             for (int i = 0; i < this->threadList.size(); ++i) {
-                this->threadList.at(i).join();
+               threadList.at(i).join();
             }
         }
 
