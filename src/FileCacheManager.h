@@ -11,6 +11,7 @@
 #include <unordered_map>
 #define FILEAS "saveSolution.txt"
 #define FILEQ "saveQuestion.txt"
+using namespace std;
 /**
  * A cache manager that save solutions in a file
  */

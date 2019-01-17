@@ -3,7 +3,7 @@
 #include "MatrixMaze.h"
 #include "DFS.h"
 #include "BFS.h"
-#include "A_star.h"
+#include "Astar.h"
     #include "Main.h"
 
 int main(int argc, char **argv) {

@@ -19,10 +19,10 @@
  * @tparam T type
  */
 template<class T>
-class A_star : public Searcher<T, std::string> {
+class Astar : public Searcher<T, std::string> {
     CustomPriorityQueue<State<T>, manhattanHeuristicOfStates<T>> priorityQueue;
 public:
-    inline A_star() {}
+    inline Astar() {}
 
     int openListSize() { return (int) this->priorityQueue.size(); }
 

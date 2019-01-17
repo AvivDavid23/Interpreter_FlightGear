@@ -24,6 +24,8 @@ namespace boot {
             server_side::Server *server =  new server_side::MyParallelServer();
             server->Open(atoi(argv[1]),clientHandler);
             server->Start(atoi(argv[1]),clientHandler);
+            delete clientHandler;
+            delete server;
             return 0;
             }
     };

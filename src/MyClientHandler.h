@@ -7,16 +7,18 @@
 
 #include <zconf.h>
 #include "ClientHandler.h"
-#include "Solver.h"
+//#include "Solver.h"
 #include "CacheManager.h"
+//#include "Position.h"
 //#include "StringReverser.h"
 #include "FileCacheManager.h"
 #include "genClient.h"
-#include "StringReverseFactory.h"
+//#include "StringReverseFactory.h"
 #include "algorithmSolver.h"
 #include "MatrixMaze.h"
 #include "MatrixFactory.h"
-#include <algorithm>
+//#include <algorithm>
+#include "Astar.h"
 #include <sys/socket.h>
 
 /**
@@ -65,7 +67,7 @@ public:
     }
 
     MyClientHandler() {
-        iSearcher = new A_star<Position>();
+        iSearcher = new Astar<Position>();
         solver = new algorithmSolver<Position,MatrixMaze,string>(iSearcher);
         this->cachemanager = new server_side::cache::FileCacheManager<MatrixMaze, std::string>();
         this->createObjects = new factory::MatrixFactory();
