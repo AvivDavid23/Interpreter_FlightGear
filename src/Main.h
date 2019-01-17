@@ -5,10 +5,10 @@
 #ifndef SECONDYEARPROJECT_BIU_MAIN_H
 #define SECONDYEARPROJECT_BIU_MAIN_H
 
-#include "MySerialServer.h"
-#include "MyParallelServer.h"
-#include "MyClientHandler.h"
-#include "Server.h"
+#include "Server Side/Servers/MySerialServer.h"
+#include "Server Side/Servers/MyParallelServer.h"
+#include "Server Side/Client/MyClientHandler.h"
+#include "Server Side/Servers/Server.h"
 
 namespace boot {
     class Main {

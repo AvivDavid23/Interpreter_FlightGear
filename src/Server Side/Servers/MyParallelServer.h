@@ -10,7 +10,7 @@
 #include <netdb.h>
 #include <unistd.h>
 #include <netinet/in.h>
-#include "ClientHandler.h"
+#include "../Client/ClientHandler.h"
 #include <string.h>
 #include <sys/socket.h>
 #include "Server.h"

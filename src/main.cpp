@@ -1,9 +1,9 @@
 
-#include "State.h"
-#include "MatrixMaze.h"
-#include "DFS.h"
-#include "BFS.h"
-#include "Astar.h"
+#include "Server Side/Problems/State.h"
+#include "Server Side/Problems/MatrixMaze.h"
+#include "Server Side/Solvers/DFS.h"
+#include "Server Side/Solvers/BFS.h"
+#include "Server Side/Solvers/Astar.h"
     #include "Main.h"
 
 int main(int argc, char **argv) {

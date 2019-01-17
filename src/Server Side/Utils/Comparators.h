@@ -5,7 +5,7 @@
 #ifndef SECONDYEARPROJECT_BIU_COMPARATORS_H
 #define SECONDYEARPROJECT_BIU_COMPARATORS_H
 
-#include "State.h"
+#include "../Problems/State.h"
 /**
  * The file contains several comparators we can use(for example, with priority queue)
  */

@@ -1,28 +1,26 @@
 //
-// Created by aviv on 1/10/19.
+// Created by aviv on 1/3/19.
 //
 
-#ifndef SECONDYEARPROJECT_BIU_A_H
-#define SECONDYEARPROJECT_BIU_A_H
+#ifndef SECONDYEARPROJECT_BIU_BESTFIRSTSEARCH_H
+#define SECONDYEARPROJECT_BIU_BESTFIRSTSEARCH_H
 
-#include <set>
-#include "State.h"
-#include "queue"
-#include "CustomPriorityQueue.h"
+#include <queue>
+#include <algorithm>
+#include <iostream>
 #include "Searcher.h"
-#include "string"
-#include "map"
-#include "Comparators.h"
-
+#include "set"
+#include "../Utils/CustomPriorityQueue.h"
+#include "../Utils/Comparators.h"
 /**
- * A* algorithm which uses Manhattan Distance heuristic
+ * Best First Search algorithm
  * @tparam T type
  */
 template<class T>
-class Astar : public Searcher<T, std::string> {
-    CustomPriorityQueue<State<T>, manhattanHeuristicOfStates<T>> priorityQueue;
+class BestFirstSearch : public Searcher<T, std::string> {
+    CustomPriorityQueue<State<T>, stateComparator<T>> priorityQueue;
 public:
-    inline Astar() {}
+    inline BestFirstSearch() {}
 
     int openListSize() { return (int) this->priorityQueue.size(); }
 
@@ -83,4 +81,5 @@ public:
         while (!priorityQueue.empty()) priorityQueue.pop();
     }
 };
-#endif //SECONDYEARPROJECT_BIU_A_H
+
+#endif //SECONDYEARPROJECT_BIU_BESTFIRSTSEARCH_H

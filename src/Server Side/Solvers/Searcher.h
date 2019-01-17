@@ -5,7 +5,7 @@
 #ifndef SECONDYEARPROJECT_BIU_SEARCHER_H
 #define SECONDYEARPROJECT_BIU_SEARCHER_H
 
-#include "ISearchable.h"
+#include "../Problems/ISearchable.h"
 #include "ISearcher.h"
 /**
  * Abstract searcher which saves the number of nodes evaluated for the main searcher(BFS, DFS, A*...)

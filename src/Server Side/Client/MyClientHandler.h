@@ -8,17 +8,17 @@
 #include <zconf.h>
 #include "ClientHandler.h"
 //#include "Solver.h"
-#include "CacheManager.h"
+#include "../Cache/CacheManager.h"
 //#include "Position.h"
 //#include "StringReverser.h"
-#include "FileCacheManager.h"
+#include "../Cache/FileCacheManager.h"
 #include "genClient.h"
 //#include "StringReverseFactory.h"
-#include "algorithmSolver.h"
-#include "MatrixMaze.h"
-#include "MatrixFactory.h"
+#include "../Solvers/algorithmSolver.h"
+#include "../Problems/MatrixMaze.h"
+#include "../Factory/MatrixFactory.h"
 //#include <algorithm>
-#include "Astar.h"
+#include "../Solvers/Astar.h"
 #include <sys/socket.h>
 
 /**

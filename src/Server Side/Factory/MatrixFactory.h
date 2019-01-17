@@ -6,7 +6,7 @@
 #define SECONDYEARPROJECT_BIU_MATRIXFACTORY_H
 
 #include "Factory.h"
-#include "MatrixMaze.h"
+#include "../Problems/MatrixMaze.h"
 namespace factory {
 class MatrixFactory : public factory::Factory<MatrixMaze,std::string>{
 public:

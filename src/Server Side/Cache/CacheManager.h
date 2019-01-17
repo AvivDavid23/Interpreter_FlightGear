@@ -9,7 +9,7 @@
  * an Interface, which can save and load solutions to problems we already solved(on disk, database, etc...)
  */
 #include <map>
-#include "Factory.h"
+#include "../Factory/Factory.h"
 namespace server_side {
     namespace cache {
         template <class Problem,class Solution>

@@ -5,7 +5,7 @@
 #ifndef SECONDYEARPROJECT_BIU_ISEARCHER_H
 #define SECONDYEARPROJECT_BIU_ISEARCHER_H
 
-#include "ISearchable.h"
+#include "../Problems/ISearchable.h"
 
 /**
  * Searcher interface

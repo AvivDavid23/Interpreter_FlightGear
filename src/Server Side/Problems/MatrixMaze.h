@@ -5,10 +5,10 @@
 #ifndef SECONDYEARPROJECT_BIU_MATRIXMAZE_H
 #define SECONDYEARPROJECT_BIU_MATRIXMAZE_H
 
-#include "Utils.h"
+#include "../Utils/Utils.h"
 #include "ISearchable.h"
 #include "State.h"
-#include "Position.h"
+#include "../Utils/Position.h"
 #include <random>
 #include <climits>
 #include <stdlib.h>

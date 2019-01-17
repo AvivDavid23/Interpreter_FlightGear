@@ -6,9 +6,9 @@
 #define SECONDYEARPROJECT_BIU_GENCLIENT_H
 
 #include "ClientHandler.h"
-#include "Solver.h"
-#include "CacheManager.h"
-#include "Factory.h"
+#include "../Solvers/Solver.h"
+#include "../Cache/CacheManager.h"
+#include "../Factory/Factory.h"
 
 template <class Problem,class Solution>
 class genClient :  public ClientHandler {

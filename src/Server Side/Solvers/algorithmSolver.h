@@ -4,7 +4,7 @@
 #include "Solver.h"
 #include "Searcher.h"
 #include "ISearcher.h"
-#include "ISearchable.h"
+#include "../Problems/ISearchable.h"
 
 template<class T, class Problem,class Solution>
 class algorithmSolver : public server_side::Solver<Problem, Solution> {

@@ -6,7 +6,7 @@
 #define SECONDYEARPROJECT_BIU_STRINGREVERSER_H
 
 #include <string>
-#include "Solver.h"
+#include "../Solvers/Solver.h"
 #include "algorithm"
 
 class StringReverser : public server_side::Solver<std::string, std::string> {

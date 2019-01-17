@@ -5,7 +5,7 @@
 #ifndef SECONDYEARPROJECT_BIU_SERVER_H
 #define SECONDYEARPROJECT_BIU_SERVER_H
 
-#include "ClientHandler.h"
+#include "../Client/ClientHandler.h"
 
 namespace server_side {
     // Server Interface

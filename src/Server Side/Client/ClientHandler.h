@@ -7,8 +7,8 @@
 
 #include "istream"
 #include "ostream"
-#include "Solver.h"
-#include "CacheManager.h"
+#include "../Solvers/Solver.h"
+#include "../Cache/CacheManager.h"
 // Client Handler Interface
 class ClientHandler {
 public:

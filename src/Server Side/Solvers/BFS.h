@@ -9,7 +9,7 @@
 #include <map>
 #include <set>
 #include <algorithm>
-#include "State.h"
+#include "../Problems/State.h"
 #include "Searcher.h"
 /**
  * BFS algorithm
